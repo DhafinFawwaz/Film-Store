@@ -7,9 +7,7 @@ from app.models import GeneralUser
 
 def protected(view_func):
     @wraps(view_func)
-    def _wrapped_view(*args):
-        print("Protected view called")
-        print(args)
+    def _wrapped_view(*args, **kwargs):
         request = None
         for req in args:
             if isinstance(req, Request):
@@ -34,7 +32,7 @@ def protected(view_func):
         except GeneralUser.DoesNotExist:
             return APIResponse().error("User does not exist").set_status(status.HTTP_401_UNAUTHORIZED)
         
-        return view_func(*args)
+        return view_func(*args, **kwargs)
     
     return _wrapped_view
 

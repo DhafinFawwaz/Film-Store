@@ -21,3 +21,8 @@ class APIResponse(Response):
     def set_status(self, status_code: status = status.HTTP_400_BAD_REQUEST):
         self.status_code = status_code
         return self
+
+class APIResponseMissingIDError(APIResponse):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.error("id is required").set_status(status.HTTP_400_BAD_REQUEST)

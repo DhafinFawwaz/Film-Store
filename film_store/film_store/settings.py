@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_cleanup.apps.CleanupConfig', # Automatically delete media files when update or delete
 ]
 
 MIDDLEWARE = [

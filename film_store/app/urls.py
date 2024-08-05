@@ -17,7 +17,7 @@ urlpatterns = [
     path('users/<int:id>/balance', user.increment_user_balance_by_id),
     path('users/<int:id>', user.delete_user_by_id),
 
-    path('films/<int:id>', APIFilmDetail.as_view()),
+    path('films/<int:id>', APIFilmDetail.as_view(), name='film-detail'),
     path('films', APIFilm.as_view()),
 
     path('seed', seed.seed_db),

@@ -1,15 +1,16 @@
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import api_view
-from app.api.api_response import APIResponse
+from app.api.api_response import APIResponse, APIResponseMissingIDError
 from app.models import GeneralUser
 from app.serializers import GeneralUserSerializer
 from app.api.protected import protected, admin_only
 
 @api_view(['GET']) # /users?q, admin only
 @admin_only
-def get_all_users(request, *args, **kwargs):
+def get_all_users(request: Request, *args, **kwargs):
     try:
         q = request.query_params.get("q")
         
@@ -28,10 +29,9 @@ def get_all_users(request, *args, **kwargs):
 
 @api_view(['GET']) # /user/:id
 @admin_only
-def get_user_by_id(request, *args, **kwargs):
-    id = kwargs["id"]
+def get_user_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
-        if id is None: return APIResponse().error("id is required").set_status(status.HTTP_400_BAD_REQUEST)
+        if id is None: return APIResponseMissingIDError()
 
         user = GeneralUser.objects.get(id=id)
         user_dict = GeneralUserSerializer(user)
@@ -39,7 +39,7 @@ def get_user_by_id(request, *args, **kwargs):
         return APIResponse(user_dict.data)
     
     except GeneralUser.DoesNotExist as e:
-        return APIResponse().error("User with id =", id,"does not exist").set_status(status.HTTP_404_NOT_FOUND)
+        return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -47,10 +47,9 @@ def get_user_by_id(request, *args, **kwargs):
 
 @api_view(['POST']) # /users/:id/balance
 @admin_only
-def increment_user_balance_by_id(request, *args, **kwargs):
-    id = kwargs["id"]
+def increment_user_balance_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
-        if id is None: return APIResponse().error("id is required").set_status(status.HTTP_400_BAD_REQUEST)
+        if id is None: return APIResponseMissingIDError()
 
         increment = request.data.get("increment")
         if increment is None: return APIResponse().error("increment is required in body").set_status(status.HTTP_400_BAD_REQUEST)
@@ -63,7 +62,7 @@ def increment_user_balance_by_id(request, *args, **kwargs):
         return APIResponse(user_dict.data)
     
     except GeneralUser.DoesNotExist as e:
-        return APIResponse().error("User with id =", id,"does not exist").set_status(status.HTTP_404_NOT_FOUND)
+        return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -71,10 +70,9 @@ def increment_user_balance_by_id(request, *args, **kwargs):
 
 @api_view(['DELETE']) # /users/:id
 @admin_only
-def delete_user_by_id(request, *args, **kwargs):
-    id = kwargs["id"]
+def delete_user_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
-        if id is None: return APIResponse().error("id is required").set_status(status.HTTP_400_BAD_REQUEST)
+        if id is None: return APIResponseMissingIDError()
 
         user = GeneralUser.objects.get(id=id)
         user_dict = GeneralUserSerializer(user)
@@ -83,7 +81,7 @@ def delete_user_by_id(request, *args, **kwargs):
         return APIResponse(user_dict.data)
     
     except GeneralUser.DoesNotExist as e:
-        return APIResponse().error("User with id =", id,"does not exist").set_status(status.HTTP_404_NOT_FOUND)
+        return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
     
     except Exception as e:
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)

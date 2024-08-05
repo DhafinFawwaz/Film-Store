@@ -3,7 +3,7 @@ from rest_framework.request import Request
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.views import APIView
-from app.api.api_response import APIResponse
+from app.api.api_response import APIResponse, APIResponseMissingIDError
 from app.models import Film, Genre
 from app.serializers import FilmRequestSerializer, GenreSerializer, FilmResponseSerializer
 from typing import List
@@ -68,63 +68,76 @@ class APIFilmDetail(APIView):
     
     # /films/:id 
     @protected
-    def get(self, request: Request, id, *args, **kwargs):
-        print("=====================")
-        # id = kwargs.get("id")
-        # if id is None: return APIResponse().error("id is required")
+    def get(self, request: Request, id: int = None, *args, **kwargs):
+        if id is None: return APIResponseMissingIDError()
+        try:
+            film = Film.objects.get(id=id)
+            film_serializer = FilmResponseSerializer(film)
 
-        # film = Film.objects.get(id=id)
-        # film_serializer = FilmResponseSerializer(film)
-
-        # return APIResponse(film_serializer.data)
+            return APIResponse(film_serializer.data)
+        except Film.DoesNotExist:
+            return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # /films/:id
     @protected
-    def put(self, request, *args, **kwargs):
-        print("--------------------")
-        id = kwargs["id"]
-        if id is None: return APIResponse().error("id is required")
+    def put(self, request: Request, id: int = None, *args, **kwargs):
+        if id is None: return APIResponseMissingIDError()
 
-        title = request.data.get("title")
-        description = request.data.get("description")
-        director = request.data.get("director")
-        release_year = request.data.get("release_year")
-        genre = request.data.get("genre")
-        price = request.data.get("price")
-        duration = request.data.get("duration") # dalam detik
-        video = request.data.get("video") # binary file, jika null artinya tidak berubah
-        cover_image = request.data.get("cover_image") # binary file, jika null artinya tidak berubah
+        try:
+            film = Film.objects.get(id=id)
+            film.title = request.data.get("title")
+            film.description = request.data.get("description")
+            film.director = request.data.get("director")
+            film.release_year = request.data.get("release_year")
+            film.price = request.data.get("price")
+            film.duration = request.data.get("duration")
 
-        return APIResponse({
-           "id": "1",
-           "title": "string",
-           "description": "string",
-           "director": "string",
-           "release_year": 2020,
-           "genre": ["string", "string2"],
-           "price": 1000,
-           "duration": 100,
-           "video_url": "string",
-           "cover_image_url": "string", # | null
-           "created_at": "2020-01-01T00:00:00Z",
-           "updated_at": "2020-01-01T00:00:00Z",
-        })
+            
+            video = request.data.get("video") # binary file, jika null artinya tidak berubah
+            cover_image = request.data.get("cover_image") # binary file, jika null artinya tidak berubah
+
+            if video is not None:
+                film.video = video  
+            if cover_image is not None:
+                film.cover_image = cover_image
+            film.save()
+
+            # update genre
+            genre_list = request.POST.getlist("genre")
+            film.genre.clear()
+            for genre_name in genre_list:
+                genre = Genre.objects.get_or_create(name=genre_name)
+                film.genre.add(genre[0])
+
+            film.save()
+
+            film_serializer = FilmResponseSerializer(film)
+            return APIResponse(film_serializer.data)
+            
+        
+        except Film.DoesNotExist:
+            return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     # /films/:id
     @protected
-    def delete(self, request, *args, **kwargs):
-        id = kwargs["id"]
-        if id is None: return APIResponse().error("id is required")
+    def delete(self, request: Request, id: int = None, *args, **kwargs):
+        if id is None: return APIResponseMissingIDError()
 
-        return APIResponse({
-           "id": "1",
-           "title": "string",
-           "description": "string",
-           "director": "string",
-           "release_year": 2020,
-           "genre": ["string", "string2"],
-           "video_url": "string",
-           "created_at": "2020-01-01T00:00:00Z",
-           "updated_at": "2020-01-01T00:00:00Z",
-        })
+        try:
+            film = Film.objects.get(id=id)
+            film_serializer = FilmResponseSerializer(film)
+            film.delete()
+            return APIResponse(film_serializer.data)
+
+        except Film.DoesNotExist:
+            return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
