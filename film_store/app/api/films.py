@@ -8,7 +8,8 @@ from app.models import Film, Genre
 from app.serializers import FilmRequestSerializer, GenreSerializer, FilmResponseSerializer
 from typing import List
 from app.api.route_decorator import protected
-import datetime
+from rest_framework.decorators import api_view
+from app.models import GeneralUser
 
 class APIFilm(APIView):
 
@@ -145,3 +146,37 @@ class APIFilmDetail(APIView):
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
+# /films/:id/buy
+@api_view(['POST'])
+@protected
+def buy_film(request: Request, id: int = None, *args, **kwargs):
+    try:
+        film = Film.objects.get(id=id)
+        user: GeneralUser = request.user
+        if user.balance < film.price:
+            return APIResponse().error("Insufficient balance").set_status(status.HTTP_400_BAD_REQUEST)
+        
+        user.balance -= film.price
+        user.save()
+
+        return APIResponse(film)
+    
+    except Film.DoesNotExist:
+        return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+    
+    except Exception as e:
+        return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+# /films/bought
+@api_view(['GET'])
+@protected
+def get_bought_films(request: Request, *args, **kwargs):
+    try:
+        user: GeneralUser = request.user
+        film_list = user.films.all()
+        film_serializer = FilmResponseSerializer(film_list, many=True)
+        return APIResponse(film_serializer.data)
+    
+    except Exception as e:
+        return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
