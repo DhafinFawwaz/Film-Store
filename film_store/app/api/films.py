@@ -131,8 +131,9 @@ class APIFilmDetail(APIView):
         try:
             film = Film.objects.get(id=id)
             film_serializer = FilmResponseSerializer(film)
+            res = film_serializer.data # must be done before delete
             film.delete()
-            return APIResponse(film_serializer.data)
+            return APIResponse(res)
 
         except Film.DoesNotExist:
             return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
