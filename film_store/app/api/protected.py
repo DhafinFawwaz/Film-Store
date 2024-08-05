@@ -42,7 +42,5 @@ def admin_only(view_func):
     def _wrapped_view(request, *args, **kwargs):
         if request.user.username != 'admin':
             return APIResponse().error("Unauthorized").set_status(status.HTTP_403_FORBIDDEN)
-        
         return view_func(request, *args, **kwargs)
-    
     return _wrapped_view

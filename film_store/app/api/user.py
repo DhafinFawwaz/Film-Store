@@ -70,9 +70,10 @@ def delete_user_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
         user = GeneralUser.objects.get(id=id)
         user_dict = GeneralUserSerializer(user)
+        res = user_dict.data # must be done before delete
         user.delete()
 
-        return APIResponse(user_dict.data)
+        return APIResponse(res)
     
     except GeneralUser.DoesNotExist as e:
         return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)

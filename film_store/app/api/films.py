@@ -51,7 +51,14 @@ class APIFilm(APIView):
     @protected
     def get(self, request: Request, *args, **kwargs):
 
-        film_list = Film.objects.all()
+        q = request.GET.get("q")
+        film_list = []
+        
+        if q is not None:
+            film_list = Film.objects.filter(title__icontains=q)
+        else:
+            film_list = Film.objects.all()
+
         film_serializer = FilmResponseSerializer(film_list, many=True)
 
         # prefix host to video_url and cover_image_url
