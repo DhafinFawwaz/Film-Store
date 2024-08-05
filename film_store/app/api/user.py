@@ -5,8 +5,10 @@ from rest_framework.decorators import api_view
 from app.api.api_response import APIResponse
 from app.models import GeneralUser
 from app.serializers import GeneralUserSerializer
+from app.api.protected import protected, admin_only
 
-@api_view(['GET']) # /users?q
+@api_view(['GET']) # /users?q, admin only
+@admin_only
 def get_all_users(request, *args, **kwargs):
     try:
         q = request.query_params.get("q")
@@ -25,9 +27,10 @@ def get_all_users(request, *args, **kwargs):
     
 
 @api_view(['GET']) # /user/:id
+@admin_only
 def get_user_by_id(request, *args, **kwargs):
+    id = kwargs["id"]
     try:
-        id = kwargs["id"]
         if id is None: return APIResponse().error("id is required").set_status(status.HTTP_400_BAD_REQUEST)
 
         user = GeneralUser.objects.get(id=id)
@@ -43,9 +46,10 @@ def get_user_by_id(request, *args, **kwargs):
 
 
 @api_view(['POST']) # /users/:id/balance
+@admin_only
 def increment_user_balance_by_id(request, *args, **kwargs):
+    id = kwargs["id"]
     try:
-        id = kwargs["id"]
         if id is None: return APIResponse().error("id is required").set_status(status.HTTP_400_BAD_REQUEST)
 
         increment = request.data.get("increment")
@@ -66,9 +70,10 @@ def increment_user_balance_by_id(request, *args, **kwargs):
 
 
 @api_view(['DELETE']) # /users/:id
+@admin_only
 def delete_user_by_id(request, *args, **kwargs):
+    id = kwargs["id"]
     try:
-        id = kwargs["id"]
         if id is None: return APIResponse().error("id is required").set_status(status.HTTP_400_BAD_REQUEST)
 
         user = GeneralUser.objects.get(id=id)

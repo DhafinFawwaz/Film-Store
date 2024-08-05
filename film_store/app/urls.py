@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 from app.api import auth
 from app.api import user
-from app.api.films import Film, FilmDetail
+from app.api.films import APIFilm, APIFilmDetail
+from app.api import seed
 
 urlpatterns = [
     path('', views.members),
@@ -16,6 +17,8 @@ urlpatterns = [
     path('users/<int:id>/balance', user.increment_user_balance_by_id),
     path('users/<int:id>', user.delete_user_by_id),
 
-    path('films', Film.as_view()),
-    path('films/<int:id>', FilmDetail.as_view()),
+    path('films/<int:id>', APIFilmDetail.as_view()),
+    path('films', APIFilm.as_view()),
+
+    path('seed', seed.seed_db),
 ]

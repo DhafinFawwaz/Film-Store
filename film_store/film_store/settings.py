@@ -71,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -149,6 +149,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'COERCE_DECIMAL_TO_STRING': False # Change DecimalField to json number instead of string
 }
 
 SIMPLE_JWT = {
@@ -159,9 +160,17 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "https://labpro-fe.hmif.dev",
     "http://localhost:8000",
+    "http://localhost:5173",
     "http://127.0.0.1:8000"
 ]
 
 AUTH_USER_MODEL = 'app.GeneralUser'
 
 SESSION_COOKIE_HTTPONLY = True
+
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

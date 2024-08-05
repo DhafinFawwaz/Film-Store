@@ -1,6 +1,10 @@
 # Other
 venv
 postgres-data
+film_store/media/images/*
+!film_store/media/images/.gitkeep
+film_store/media/videos/*
+!film_store/media/videos/.gitkeep
 
 
 # Created by https://www.gitignore.io

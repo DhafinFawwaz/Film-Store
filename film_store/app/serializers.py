@@ -3,6 +3,7 @@ from rest_framework.serializers import ValidationError
 from .models import GeneralUser, Genre, Film
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import make_password
+import re
 
 class PasswordValidator:
     def __call__(self, value):
@@ -20,6 +21,7 @@ class PasswordValidator:
             raise ValidationError(f"Password must contain at least one special character")
 
 class GeneralUserSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(required=True)
     username = serializers.CharField(required=True, min_length=4, max_length=30, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="Username is taken")])
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="Email is taken")])
     password = serializers.CharField(required=True, validators=[PasswordValidator()], write_only=True)
@@ -34,6 +36,7 @@ class GeneralUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = GeneralUser
         fields = [
+            "id",
             "username",
             "email",
             "password",
@@ -49,18 +52,54 @@ class GenreSerializer(serializers.ModelSerializer):
         model = Genre
         fields = ["name"]
 
-class FilmSerializer(serializers.ModelSerializer):
-    genre = GenreSerializer(many=True, read_only=True)
+def is_duration_format_valid(duration: str):
+    return re.match(r"\d\d:[0-5]\d:[0-5]\d", duration)
 
-    title = serializers.CharField(max_length=255)
-    director = serializers.CharField(max_length=255)
+class DurationValidator:
+    def __call__(self, value):
+        # hh:mm:ss
+        if not is_duration_format_valid(value):
+            raise ValidationError(f"Duration must be in the format hh:mm:ss")
 
-    release_year = serializers.IntegerField()
+class FilmRequestSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(required=True)
+    description = serializers.CharField(required=True)
+    director = serializers.CharField(required=True)
+    release_year = serializers.IntegerField(required=True)
+    genre = serializers.CharField(required=True)
     price = serializers.DecimalField(max_digits=12, decimal_places=2)
-    duration = serializers.IntegerField()
-    video_url = serializers.URLField()
-    cover_image_url = serializers.URLField()
+    duration = serializers.IntegerField(required=True)
+    video = serializers.FileField(required=True)
+    cover_image = serializers.ImageField()
 
     class Meta:
         model = Film
-        fields = ["title", "description", "director", "release_year", "genre", "price", "duration", "video_url", "cover_image_url"]
+        fields = ["title", "description", "director", "release_year", "genre", "price", "duration", "video", "cover_image"]
+
+class FilmResponseSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(allow_blank=True)
+    title = serializers.CharField(required=True)
+    description = serializers.CharField(required=True)
+    director = serializers.CharField(required=True)
+    release_year = serializers.IntegerField(required=True)
+    genre = GenreSerializer(required=True)
+    price = serializers.DecimalField(max_digits=12, decimal_places=2)
+    duration = serializers.IntegerField(required=True)
+    video = serializers.URLField(allow_blank=True)
+    cover_image = serializers.URLField(allow_blank=True)
+    created_at = serializers.DateTimeField()
+    updated_at = serializers.DateTimeField()
+
+    class Meta:
+        model = Film
+        fields = ["id", "title", "description", "director", "release_year", "genre", "price", "duration", "video", "cover_image", "created_at", "updated_at"]
+
+    def to_representation(self, val):
+        representation = super().to_representation(val)
+        representation['video_url'] = val.video.url
+        representation['cover_image_url'] = val.cover_image.url
+        genre_list = val.genre.all()
+        representation['genre'] = [genre.name for genre in genre_list]
+        representation.pop('video')
+        representation.pop('cover_image')
+        return representation
