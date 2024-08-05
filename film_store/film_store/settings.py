@@ -150,12 +150,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'COERCE_DECIMAL_TO_STRING': False # Change DecimalField to json number instead of string
+    'COERCE_DECIMAL_TO_STRING': False, # Change DecimalField to json number instead of string
 }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=100),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
+
+    'AUTH_COOKIE': 'token',
+    'AUTH_COOKIE_DOMAIN': None,
+    'AUTH_COOKIE_SECURE': False,
+    'AUTH_COOKIE_HTTP_ONLY' : True,
+    'AUTH_COOKIE_PATH': '/',
+    'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 
 CORS_ALLOWED_ORIGINS = [

@@ -3,6 +3,7 @@ from typing import Dict
 from enum import Enum
 from http import HTTPStatus
 from rest_framework import status
+import datetime
 
 class APIResponse(Response):
     
@@ -20,6 +21,10 @@ class APIResponse(Response):
     
     def set_status(self, status_code: status = status.HTTP_400_BAD_REQUEST):
         self.status_code = status_code
+        return self
+    
+    def set_cookie(self, key: str, value: str = "", max_age: int | None = None, expires: str | datetime.datetime | None = None, path: str = "/", domain: str | None = None, secure: bool = False, httponly: bool = False, samesite: str = None):
+        super().set_cookie(key, value, max_age, expires, path, domain, secure, httponly, samesite)
         return self
 
 class APIResponseMissingIDError(APIResponse):

@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from app.api.api_response import APIResponse
 from app.models import GeneralUser
 from app.serializers import GeneralUserSerializer
-from app.api.protected import protected, admin_only
+from app.api.route_decorator import protected, admin_only
 
 @api_view(['POST'])
 @admin_only

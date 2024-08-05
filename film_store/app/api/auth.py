@@ -1,18 +1,20 @@
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
 from rest_framework import permissions
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from app.api.api_response import APIResponse
 from app.models import GeneralUser
 from app.serializers import GeneralUserSerializer
 from django.db.utils import IntegrityError
 from rest_framework.serializers import ValidationError
-from app.api.protected import protected
+from app.api.route_decorator import protected, public
+from django.contrib.auth import authenticate
+from django.conf import settings
 
 @api_view(['POST'])
+@public
 def login(request: Request, *args, **kwargs):
     username = request.data.get('username')
     password = request.data.get('password')
@@ -24,7 +26,14 @@ def login(request: Request, *args, **kwargs):
             return APIResponse({
                 "username": user.username,
                 "token": str(refresh.access_token),
-            })
+            }).set_cookie(
+                key = settings.SIMPLE_JWT['AUTH_COOKIE'], 
+                value = refresh,
+                expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
+                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+            )
         else:
             return APIResponse().error("Wrong password").set_status(status.HTTP_401_UNAUTHORIZED)
     except GeneralUser.DoesNotExist:
@@ -42,9 +51,9 @@ def self(request: Request, *args, **kwargs):
     user["token"] = split_auth[1]
 
     return APIResponse(user)
-    
 
 @api_view(['POST'])
+@public
 def register(request: Request, *args, **kwargs):
     try:
         request.data["balance"] = 0

@@ -4,6 +4,10 @@ from rest_framework import status
 from functools import wraps
 from rest_framework.request import Request
 from app.models import GeneralUser
+from django.contrib.auth import authenticate
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework import permissions
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 def protected(view_func):
     @wraps(view_func)
@@ -44,3 +48,13 @@ def admin_only(view_func):
             return APIResponse().error("Unauthorized").set_status(status.HTTP_403_FORBIDDEN)
         return view_func(request, *args, **kwargs)
     return _wrapped_view
+
+
+def public(view_func):
+    @wraps(view_func)
+    @authentication_classes([])
+    def _wrapped_view(request, *args, **kwargs):
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+

@@ -7,7 +7,7 @@ from app.api.api_response import APIResponse, APIResponseMissingIDError
 from app.models import Film, Genre
 from app.serializers import FilmRequestSerializer, GenreSerializer, FilmResponseSerializer
 from typing import List
-from app.api.protected import protected
+from app.api.route_decorator import protected
 import datetime
 
 class APIFilm(APIView):
