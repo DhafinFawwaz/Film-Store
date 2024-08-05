@@ -31,8 +31,6 @@ def get_all_users(request: Request, *args, **kwargs):
 @admin_only
 def get_user_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
-        if id is None: return APIResponseMissingIDError()
-
         user = GeneralUser.objects.get(id=id)
         user_dict = GeneralUserSerializer(user)
 
@@ -49,8 +47,6 @@ def get_user_by_id(request: Request, id: int = None, *args, **kwargs):
 @admin_only
 def increment_user_balance_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
-        if id is None: return APIResponseMissingIDError()
-
         increment = request.data.get("increment")
         if increment is None: return APIResponse().error("increment is required in body").set_status(status.HTTP_400_BAD_REQUEST)
 
@@ -72,8 +68,6 @@ def increment_user_balance_by_id(request: Request, id: int = None, *args, **kwar
 @admin_only
 def delete_user_by_id(request: Request, id: int = None, *args, **kwargs):
     try:
-        if id is None: return APIResponseMissingIDError()
-
         user = GeneralUser.objects.get(id=id)
         user_dict = GeneralUserSerializer(user)
         user.delete()

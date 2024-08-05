@@ -83,8 +83,6 @@ class APIFilmDetail(APIView):
     # /films/:id
     @protected
     def put(self, request: Request, id: int = None, *args, **kwargs):
-        if id is None: return APIResponseMissingIDError()
-
         try:
             film = Film.objects.get(id=id)
             film.title = request.data.get("title")
@@ -126,8 +124,6 @@ class APIFilmDetail(APIView):
     # /films/:id
     @protected
     def delete(self, request: Request, id: int = None, *args, **kwargs):
-        if id is None: return APIResponseMissingIDError()
-
         try:
             film = Film.objects.get(id=id)
             film_serializer = FilmResponseSerializer(film)
