@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.views.generic.base import TemplateView
+ 
+class Login(TemplateView):
+    template_name = 'login.html'
 
-def members(request):
-    return HttpResponse("Hello world!")
+class Register(TemplateView):
+    template_name = 'register.html'
