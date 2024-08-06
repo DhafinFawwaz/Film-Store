@@ -5,3 +5,6 @@ class Login(TemplateView):
 
 class Register(TemplateView):
     template_name = 'register.html'
+
+class Home(TemplateView):
+    template_name = 'home.html'
