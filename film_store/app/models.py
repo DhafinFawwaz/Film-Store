@@ -22,8 +22,15 @@ class Film(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    
 class GeneralUser(AbstractUser):
     balance = models.DecimalField(max_digits=12, decimal_places=2)
     email = models.EmailField(unique=True)
-    films = models.ManyToManyField(Film)
+    bought_films = models.ManyToManyField(Film)
+    wishlist_films = models.ManyToManyField(Film, related_name='wishlist')
+    
+class Review(models.Model):
+    film = models.ForeignKey(Film, on_delete=models.CASCADE)
+    user = models.ForeignKey(GeneralUser, on_delete=models.CASCADE)
+    rating = models.IntegerField(null=True) # 1-5
+    review = models.TextField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

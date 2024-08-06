@@ -174,7 +174,7 @@ def buy_film(request: Request, id: int = None, *args, **kwargs):
 def get_bought_films(request: Request, *args, **kwargs):
     try:
         user: GeneralUser = request.user
-        film_list = user.films.all()
+        film_list = user.bought_films.all()
         film_serializer = FilmResponseSerializer(film_list, many=True)
         return APIResponse(film_serializer.data)
     
