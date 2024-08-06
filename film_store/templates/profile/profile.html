@@ -5,7 +5,33 @@
 
 {% block main %} 
 <main>
-    <h1>Page</h1>  
+    <h1>Profile</h1>
+    
+    <div class="profile">
+        <div class="profile__field">
+            <label for="username">Username:</label>
+            <span id="username">{{ user.username }}</span>
+        </div>
+        <div class="profile__field">
+            <label for="email">Email:</label>
+            <span id="email">{{ user.email }}</span>
+        </div>
+        <div class="profile__field">
+            <label for="first_name">First Name:</label>
+            <span id="first_name">{{ user.first_name }}</span>
+        </div>
+        <div class="profile__field">
+            <label for="last_name">Last Name:</label>
+            <span id="last_name">{{ user.last_name }}</span>
+        </div>
+        <div class="profile__field">
+            <label for="balance">Balance:</label>
+            <span id="balance">{{ user.balance }}</span>
+        </div>
+        <div class="profile__field">
+            <label for="date_joined">Date Joined:</label>
+            <span id="date_joined">{{ user.date_joined }}</span>
+        </div>
 </main>
 {% endblock %}
 

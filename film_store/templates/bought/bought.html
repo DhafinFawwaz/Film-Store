@@ -5,7 +5,21 @@
 
 {% block main %} 
 <main>
-    <h1>Page</h1>  
+    <h1>Film That I Bought</h1>
+    
+    <div class="film-list">
+        <ul>
+            {% for film in films %}
+            <li>
+                <div class="film">
+                    <div class="film-info">
+                        <h3>{{ film.title }}</h3>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </main>
 {% endblock %}
 

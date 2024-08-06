@@ -6,6 +6,56 @@
 {% block main %} 
 <main>
     <h1>Browse</h1>  
+
+    <div class="browse-filter">
+        <form id="filter-form" method="get" action="/films">
+            <label for="search">Search</label>
+            <input type="text" name="q" id="search" placeholder="Search for a film">
+
+            <!-- <label for="genre">Genre</label>
+            <select name="genre" id="genre">
+                <option value="all">All</option>
+                <option value="action">Action</option>
+                <option value="comedy">Comedy</option>
+                <option value="drama">Drama</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="horror">Horror</option>
+                <option value="mystery">Mystery</option>
+                <option value="romance">Romance</option>
+                <option value="sci-fi">Sci-Fi</option>
+                <option value="thriller">Thriller</option>
+            </select>
+
+            <label for="sort">Sort</label>
+            <select name="sort" id="sort">
+                <option value="rating">Rating</option>
+                <option value="year">Year</option>
+                <option value="price">Price</option>
+                <option value="duration">Duration</option>
+            </select> -->
+
+            <button type="submit">Filter</button>
+        </form>
+
+        <button id="reset-filter">Reset</button>
+    </div>
+
+    <!-- if no search query -->
+    <div class="recommendation">
+        <h2>Recommendation</h2>
+        <div id="results"></div>
+    </div>
+
+    <!-- if has search query -->
+    <div class="browse-results">
+        <h2>Results</h2>
+        <ul id="results"> 
+        {% for film in films %} 
+            <li>{{ film }}</li> 
+        {% endfor %} 
+        </ul> 
+    </div>
+
 </main>
 {% endblock %}
 

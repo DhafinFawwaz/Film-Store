@@ -4,12 +4,17 @@
 {% block style %} <link rel="stylesheet" href="{% static './login.css' %}"> {% endblock %}
 
 {% block main %} 
-<main id="main">
-    <h1>Login Page</h1>  
-    <div>bruh</div>
-    <h3>bruh</h3>
-    <a href="/register">register</a>
-    <button id="button">button</button>
+<main>
+    <h1>Login</h1>
+    <form action="/login" method="post" style="display: flex; flex-direction: column;">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+    <a href="/register">Register</a>
 </main>
 {% endblock %}
 
