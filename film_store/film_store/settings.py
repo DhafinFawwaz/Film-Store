@@ -31,7 +31,8 @@ SECRET_KEY = 'django-insecure-!6hg7mwm+-f%xs477^ic73yndqzj6%kk6n&iu_*7hf=^hh6l9j
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "filmstore-gokbzfw6.b4a.run"
+    "filmstore-gokbzfw6.b4a.run",
+    "127.0.0.1"
 ]
 
 
@@ -67,6 +68,12 @@ ROOT_URLCONF = 'film_store.urls'
 
 STATICFILES_DIRS = [
     BASE_DIR / "templates",
+    BASE_DIR / "templates" / "browse",
+    BASE_DIR / "templates" / "wishlist",
+    BASE_DIR / "templates" / "profile",
+    BASE_DIR / "templates" / "review",
+    BASE_DIR / "templates" / "bought",
+    BASE_DIR / "templates" / "details",
     BASE_DIR / "templates" / "login",
     BASE_DIR / "templates" / "register",
 ]
