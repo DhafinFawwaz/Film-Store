@@ -30,7 +30,9 @@ SECRET_KEY = 'django-insecure-!6hg7mwm+-f%xs477^ic73yndqzj6%kk6n&iu_*7hf=^hh6l9j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "filmstore-gokbzfw6.b4a.run"
+]
 
 
 # Application definition
