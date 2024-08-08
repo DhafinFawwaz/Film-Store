@@ -8,9 +8,37 @@ from django.contrib.auth import authenticate
 from rest_framework.decorators import permission_classes, authentication_classes
 from rest_framework import permissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from typing import Tuple
+
+def populate_user_from_request(request: Request) -> GeneralUser:
+    user = None
+    token = request.COOKIES.get('token')
+    error_message = "No token provided"
+
+    # Case: HttpOnly Cookie Token
+    if token:
+        request.META['HTTP_AUTHORIZATION'] = 'Bearer ' + token
+        print("HttpOnly Cookie Token:", token)
+        user = JWTAuthentication().authenticate(request)
+        if user: 
+            request.user = user[0]
+            request.token = token
+        else: error_message = "Invalid token"
+
+    # Case: Authorization Header Token or HttpOnly Cookie Token failed
+    if not user:
+        token = request.headers.get('Authorization')
+        if not token: raise Exception(error_message)
+        print("Authorization:", token)    
+        user = JWTAuthentication().authenticate(request)
+        if user: 
+            request.user = user[0]
+            request.token = token
+        else: raise Exception("Invalid token")
 
 def protected(view_func):
     @wraps(view_func)
+    @authentication_classes([])
     def _wrapped_view(*args, **kwargs):
         request = None
         for req in args:
@@ -19,22 +47,11 @@ def protected(view_func):
                 break
         if not request:
             raise Exception("No request object found")
-
-        auth_str = request.headers.get('Authorization')
-        if not auth_str:
-            return APIResponse().error("No token provided").set_status(status.HTTP_401_UNAUTHORIZED)
-        
-        split_auth = auth_str.split(' ')
-        if len(split_auth) != 2:
-            return APIResponse().error("Invalid token").set_status(status.HTTP_401_UNAUTHORIZED)
-        
-        if split_auth[0].lower() != 'bearer':
-            return APIResponse().error("Invalid token prefix").set_status(status.HTTP_401_UNAUTHORIZED)
         
         try:
-            user = GeneralUser.objects.get(username=request.user.username)
-        except GeneralUser.DoesNotExist:
-            return APIResponse().error("User does not exist").set_status(status.HTTP_401_UNAUTHORIZED)
+            populate_user_from_request(request)
+        except Exception as e:
+            return APIResponse().error(str(e)).set_status(status.HTTP_401_UNAUTHORIZED)
         
         return view_func(*args, **kwargs)
     
@@ -53,8 +70,21 @@ def admin_only(view_func):
 def public(view_func):
     @wraps(view_func)
     @authentication_classes([])
-    def _wrapped_view(request, *args, **kwargs):
-        return view_func(request, *args, **kwargs)
+    def _wrapped_view(*args, **kwargs):
+        request = None
+        for req in args:
+            if isinstance(req, Request):
+                request = req
+                break
+        if not request:
+            raise Exception("No request object found")
+
+        try:
+            populate_user_from_request(request)
+        except Exception as e:
+            request.user = None
+
+        return view_func(*args, **kwargs)
     return _wrapped_view
 
 

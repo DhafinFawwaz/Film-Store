@@ -21,9 +21,9 @@ class PasswordValidator:
             raise ValidationError(f"Password must contain at least one special character")
 
 class GeneralUserSerializer(serializers.ModelSerializer):
-    id = serializers.CharField(required=True)
-    username = serializers.CharField(required=True, min_length=4, max_length=30, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="Username is taken")])
-    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="Email is taken")])
+    id = serializers.CharField(required=False)
+    username = serializers.CharField(required=True, min_length=4, max_length=30, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="This username is taken")])
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="This email is taken")])
     password = serializers.CharField(required=True, validators=[PasswordValidator()], write_only=True)
     first_name = serializers.CharField(required=True, min_length=1, max_length=30)
     last_name = serializers.CharField(required=True, min_length=1, max_length=30)

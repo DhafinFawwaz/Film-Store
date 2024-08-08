@@ -1,8 +1,6 @@
-from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
-from rest_framework import permissions
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
 from app.api.api_response import APIResponse
 from app.models import GeneralUser
@@ -10,7 +8,6 @@ from app.serializers import GeneralUserSerializer
 from django.db.utils import IntegrityError
 from rest_framework.serializers import ValidationError
 from app.api.route_decorator import protected, public
-from django.contrib.auth import authenticate
 from django.conf import settings
 
 @api_view(['POST'])
@@ -23,17 +20,18 @@ def login(request: Request, *args, **kwargs):
 
         if user.check_password(password):
             refresh = RefreshToken.for_user(user)
-            return APIResponse({
+            res = APIResponse({
                 "username": user.username,
                 "token": str(refresh.access_token),
             }).set_cookie(
-                key = settings.SIMPLE_JWT['AUTH_COOKIE'], 
-                value = refresh,
+                key = "token", 
+                value = refresh.access_token,
                 expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-                httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-                samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+                secure = True,
+                httponly = True,
+                samesite = False
             )
+            return res
         else:
             return APIResponse().error("Wrong password").set_status(status.HTTP_401_UNAUTHORIZED)
     except GeneralUser.DoesNotExist:
@@ -45,16 +43,16 @@ def login(request: Request, *args, **kwargs):
 @api_view(['GET'])
 @protected
 def self(request: Request, *args, **kwargs):
-    auth_str = request.META.get('HTTP_AUTHORIZATION')
-    split_auth = auth_str.split(' ')
     user = GeneralUserSerializer(request.user).data
-    user["token"] = split_auth[1]
-
+    user["token"] = request.token
     return APIResponse(user)
 
 @api_view(['POST'])
 @public
-def register(request: Request, *args, **kwargs):
+def register(request: Request, *args, **kwargs) -> APIResponse:
+    try: request.data._mutable=True
+    except Exception as e: pass
+
     try:
         request.data["balance"] = 0
         request.data["is_active"] = True
@@ -74,3 +72,10 @@ def register(request: Request, *args, **kwargs):
     except Exception as e:
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
     
+
+@api_view(['POST'])
+@protected
+def logout(request: Request, *args, **kwargs):
+    user = GeneralUserSerializer(request.user).data
+    res = APIResponse(user).delete_cookie("csrftoken").delete_cookie("token")
+    return res

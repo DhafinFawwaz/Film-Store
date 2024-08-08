@@ -23,7 +23,7 @@ class Film(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class GeneralUser(AbstractUser):
-    balance = models.DecimalField(max_digits=12, decimal_places=2)
+    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     email = models.EmailField(unique=True)
     bought_films = models.ManyToManyField(Film)
     wishlist_films = models.ManyToManyField(Film, related_name='wishlist')

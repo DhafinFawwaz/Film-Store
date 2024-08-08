@@ -174,13 +174,6 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=100),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=365),
-
-    'AUTH_COOKIE': 'token',
-    'AUTH_COOKIE_DOMAIN': None,
-    'AUTH_COOKIE_SECURE': False,
-    'AUTH_COOKIE_HTTP_ONLY' : True,
-    'AUTH_COOKIE_PATH': '/',
-    'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 
 CORS_ALLOWED_ORIGINS = [
@@ -193,6 +186,7 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL = 'app.GeneralUser'
 
 SESSION_COOKIE_HTTPONLY = True
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies" # Use HttpOnly cookie as said in specification
 
 
 # Base url to serve media files

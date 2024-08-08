@@ -1,26 +1,37 @@
+from typing import Any
 from django.views.generic.base import TemplateView
+from django.views.generic import FormView
 from app.models import GeneralUser, Film
 from app.serializers import GeneralUserSerializer, FilmResponseSerializer
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from app.api.auth import register
+from django.shortcuts import render
+from django import forms
+from django.views import generic
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.contrib.auth.forms import UserCreationForm
+
+
+class LoginForm():
+    template_name = 'login.html'
+
 
 class ProtectedView(TemplateView):
     def get(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/signin')
         return super().get(request, *args, **kwargs)
 
-class PublicView(TemplateView):
+class PublicFormView(FormView):
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             return HttpResponseRedirect('/')
         return super().get(request, *args, **kwargs)
  
-class Login(PublicView):
-    template_name = 'login.html'
 
-class Register(PublicView):
-    template_name = 'register.html'
 
 class Details(ProtectedView):
     template_name = 'details.html'

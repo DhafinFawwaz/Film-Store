@@ -26,6 +26,13 @@ class APIResponse(Response):
     def set_cookie(self, key: str, value: str = "", max_age: int | None = None, expires: str | datetime.datetime | None = None, path: str = "/", domain: str | None = None, secure: bool = False, httponly: bool = False, samesite: str = None):
         super().set_cookie(key, value, max_age, expires, path, domain, secure, httponly, samesite)
         return self
+    
+    def delete_cookie(self, key: str, path: str = "", domain: str | None = None):
+        super().delete_cookie(key, path, domain)
+        return self
+
+    def is_success(self):
+        return self.data["status"] == "success"
 
 class APIResponseMissingIDError(APIResponse):
     def __init__(self, *args, **kwargs):

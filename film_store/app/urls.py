@@ -4,6 +4,7 @@ from app.api import user
 from app.api.films import APIFilm, APIFilmDetail
 from app.api import seed
 from . import views
+from . import forms
 
 urlpatterns = [
     # Views
@@ -14,16 +15,16 @@ urlpatterns = [
     path('review', views.Review.as_view()),
     path('bought', views.Bought.as_view()),
     path('details/<int:id>', views.Details.as_view()),
-    path('login', views.Login.as_view()),
-    path('register', views.Register.as_view()),
+    path('signin', forms.sign_in_form),
+    path('signup', forms.sign_up_form),
 
 
 
     # API
     path('login', auth.login),
     path('self', auth.self),
-
     path('register', auth.register),
+    path('logout', auth.logout),
 
     path('users', user.get_all_users),
     path('user/<int:id>', user.get_user_by_id),
