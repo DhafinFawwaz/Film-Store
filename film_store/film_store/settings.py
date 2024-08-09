@@ -72,6 +72,10 @@ ROOT_URLCONF = 'film_store.urls'
 
 
 STATICFILES_DIRS = [
+    BASE_DIR / "theme" / "static",
+    BASE_DIR / "theme" / "static" / "css",
+    BASE_DIR / "theme" / "static" / "css" / "dist",
+    BASE_DIR / "theme" / "static" / "css" / "dist" / "style.css",
     BASE_DIR / "templates",
     BASE_DIR / "templates" / "browse",
     BASE_DIR / "templates" / "wishlist",
