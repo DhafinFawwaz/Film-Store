@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta # used for JWT token expiration
 from dotenv import load_dotenv
 import os
+import platform
 
 load_dotenv()
 
@@ -29,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = os.environ.get('DEBUG', False) == True or os.environ.get('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = [
     "filmstore-gokbzfw6.b4a.run",
@@ -203,4 +204,10 @@ TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+
+
+NPM_BIN_PATH = '/usr/bin/npm'
+if platform.system() == "Linux":
+    NPM_BIN_PATH = '/usr/bin/npm'
+else:
+    NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
