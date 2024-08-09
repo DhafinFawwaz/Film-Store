@@ -29,6 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 print("=====================================")
 print("SECRET_KEY = os.environ.get('SECRET_KEY')")
 print(os.environ.get('SECRET_KEY'))
+print("os.environ.get('DB_HOST')")
+print(os.environ.get('DB_HOST'))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
