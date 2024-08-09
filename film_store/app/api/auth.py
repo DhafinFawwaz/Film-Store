@@ -13,9 +13,9 @@ from django.conf import settings
 @api_view(['POST'])
 @public
 def login(request: Request, *args, **kwargs):
-    username = request.data.get('username')
-    password = request.data.get('password')
     try:
+        username = request.data.get('username')
+        password = request.data.get('password')
         user = GeneralUser.objects.get(username = username)
 
         if user.check_password(password):

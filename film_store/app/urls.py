@@ -15,8 +15,8 @@ urlpatterns = [
     path('review', views.Review.as_view()),
     path('bought', views.Bought.as_view()),
     path('details/<int:id>', views.Details.as_view()),
-    path('signin', forms.sign_in_form),
-    path('signup', forms.sign_up_form),
+    path('signin', views.SignIn.as_view()),
+    path('signup', views.SignUp.as_view()),
 
 
 
