@@ -6,6 +6,7 @@ film_store/media/images/*
 film_store/media/videos/*
 !film_store/media/videos/.gitkeep
 film_store/static
+film_store/theme/static
 
 
 # Created by https://www.gitignore.io
