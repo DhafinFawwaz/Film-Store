@@ -7,7 +7,7 @@
 <main>
     <form method="POST" novalidate action="/signin">
         {% csrf_token %}
-        <h2>Login</h2>
+        <h2 class="bg-slate-300">Login</h2>
             
         {% for field in form %}
         <p>
