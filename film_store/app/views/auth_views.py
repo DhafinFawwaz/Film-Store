@@ -85,7 +85,6 @@ class Profile(ProtectedView):
     def get(self, request, *args, **kwargs):
         context = {}
         user = self.request.user
-        user = GeneralUser.objects.get(id=user.id) # TODO: Handle exception
         user = GeneralUserSerializer(user).data
         context['user'] = user
         return render(request, self.template_name, context)

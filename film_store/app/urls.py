@@ -4,8 +4,8 @@ from app.api import user
 from app.api.films import APIFilm, APIFilmDetail
 from app.api import seed
 from .views import auth_views, film_views
-from . import forms
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotFound, HttpResponseNotAllowed
+from django.shortcuts import render
 
 
 def login_url(request):
@@ -18,26 +18,31 @@ def register_url(request):
     elif request.method == 'GET': return auth_views.Register.as_view()(request)
     else: return HttpResponseNotAllowed(['GET', 'POST'])
 
-urlpatterns = [
-    # Views
+def logout_url(request):
+    if request.method == 'POST': return auth.logout(request)
+    elif request.method == 'GET': return render(request, '404.html')
+    else: return HttpResponseNotAllowed(['POST'])
 
+urlpatterns = [
+
+    # Views
+    path('signup', auth_views.Register.as_view()),  # POST from views, return redirect('/login')
+    path('signin', auth_views.Login.as_view()),     # POST from views, return redirect('/')
+    path('signout', auth_views.Logout.as_view()),   # POST from views, return redirect('/login')
+    path('profile', auth_views.Profile.as_view()),
+    
     path('', film_views.Browse.as_view()),    
     path('wishlist', film_views.Wishlist.as_view()),
     path('review', film_views.Review.as_view()),
     path('bought', film_views.Bought.as_view()),
     path('details/<int:id>', film_views.Details.as_view()),
-    path('profile', auth_views.Profile.as_view()),
 
-    path('signin', auth_views.Login.as_view()), # POST from views, return redirect
-    path('signup', auth_views.Register.as_view()), # POST from views, return redirect
-    path('signout', auth_views.Logout.as_view()), # POST from views, return redirect
 
 
     # API
-    path('login', login_url), # POST from REST API, return json | GET from views, return views
     path('register', register_url), # POST from REST API, return json | GET from views, return views
-    path('logout', auth.logout), # POST from REST API, return json
-
+    path('login', login_url),       # POST from REST API, return json | GET from views, return views
+    path('logout', logout_url),     # POST from REST API, return json | GET from views, return 404 page manually because django won't automatically return 404 page
     path('self', auth.self),
 
     path('users', user.get_all_users),
