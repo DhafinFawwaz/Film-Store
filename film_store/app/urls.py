@@ -15,11 +15,13 @@ def login_url(request: Request):
     elif request.method == 'GET': return auth_views.Login.as_view()(request)
     else: return HttpResponseNotAllowed(['GET', 'POST'])
 
+@csrf_exempt
 def register_url(request: Request):
     if request.method == 'POST': return auth.register(request)
     elif request.method == 'GET': return auth_views.Register.as_view()(request)
     else: return HttpResponseNotAllowed(['GET', 'POST'])
 
+@csrf_exempt
 def logout_url(request):
     if request.method == 'POST': return auth.logout(request)
     elif request.method == 'GET': return render(request, '404.html')
