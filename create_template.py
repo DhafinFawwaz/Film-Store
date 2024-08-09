@@ -17,7 +17,7 @@ f = open(path + "/" + (page+".html"), "w")
 f.write("""{% extends "base.html" %}
 {% load static %}
 
-{% block style %}<link rel="stylesheet" href="{% static './"""+page+""".css' %}">{% endblock %}
+{% block style %}<link rel="stylesheet" href="{% static './"""+page+"/"+page+""".css' %}">{% endblock %}
 
 {% block main %} 
 <main>
@@ -25,7 +25,7 @@ f.write("""{% extends "base.html" %}
 </main>
 {% endblock %}
 
-{% block js %}<script src="{% static './"""+page+""".js' %}"></script>{% endblock %}
+{% block js %}<script src="{% static './"""+page+"/"+page+""".js' %}"></script>{% endblock %}
 """)
 
 
