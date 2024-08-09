@@ -30,7 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False) == True or os.environ.get('DEBUG', False) == 'True'
+true_str = os.environ.get('DEBUG', False)
+DEBUG = true_str == True or true_str == 'True' or true_str == 'true'
 
 ALLOWED_HOSTS = [
     "filmstore-gokbzfw6.b4a.run",

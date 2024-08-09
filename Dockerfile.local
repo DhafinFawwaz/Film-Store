@@ -1,0 +1,24 @@
+FROM python:3.12.4
+
+ARG PYTHONUNBUFFERED=1
+ARG DB_HOST=localhost
+ARG DEBUG=True
+
+ENV PYTHONUNBUFFERED=$PYTHONUNBUFFERED
+ENV DB_HOST=$DB_HOST
+ENV DEBUG=$DEBUG
+
+WORKDIR /app
+
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
+
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g tailwindcss
+
+COPY . /app/
+
+RUN python film_store/manage.py tailwind install
+
+EXPOSE 8000

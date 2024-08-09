@@ -4,8 +4,10 @@ from app.models import GeneralUser
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=65)
-    password = forms.CharField(max_length=65, widget=forms.PasswordInput)
+    input_style = "bg-gray-50 border text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'class': input_style}), label="Username", required=True)
+    password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'class': input_style}), label="Password", required=True)
 
     def clean(self):
         username = self.cleaned_data.get('username')

@@ -4,27 +4,36 @@
 {% block style %} <link rel="stylesheet" href="{% static './login/login.css' %}"> {% endblock %}
 
 {% block main %} 
-<main>
-    <form method="POST" novalidate action="/signin">
-        {% csrf_token %}
-        <h2 class="bg-slate-300">Login</h2>
-            
-        {% for field in form %}
-        <p>
-            {{ field.label_tag }} {{ field }}
-            {% if field.errors %}
-            <ul class="errorlist">
-                {% for error in field.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </p>
-        {% endfor %}
-        <input type="submit" value="Login"/>
-        <p>Don't have an account? <a href="/register">Register</a></p>
-    </form>
-</main>
+<section class="h-screen bg-zinc-950 justify-center">
+    <div class="flex flex-col items-center justify-center p-5 mx-auto h-screen lg:py-0">
+        <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-zinc-900 border-zinc-800">
+            <div class="p-4 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white justify-center flex">
+                    Login
+                </h1>
+                <form class="space-y-2 md:space-y-4"  method="POST" novalidate action="/signin">
+                    {% csrf_token %}
+                        
+                    {% for field in form %}
+                    <div>
+                        {{ field.label_tag }} {{ field }}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                            <div class="text-red-500 mt-2 text-sm">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <input type="submit" value="Login"/>
+                    
+                    <p class="text-sm">Don't have an account? <a href="/register">Register</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
 
 {% block js %}<script src="{% static './login/login.js' %}"></script>{% endblock %}
