@@ -1,9 +1,6 @@
 
-from app.api.api_response import APIResponse
-from rest_framework import status
 from functools import wraps
-from rest_framework.decorators import authentication_classes
-from app.utils import populate_user_from_request, extract_request_from_args
+from app.auth.auth import populate_user_from_request, extract_request_from_args
 from django.shortcuts import redirect
 
 def protected(view_func):
@@ -13,7 +10,7 @@ def protected(view_func):
         try: 
             populate_user_from_request(request)
             print(f"User: {request.user}")
-        except Exception as e: return redirect('/signin')
+        except Exception as e: return redirect('/login')
         return view_func(*args, **kwargs)
     
     return _wrapped_view

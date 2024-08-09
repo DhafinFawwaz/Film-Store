@@ -3,28 +3,42 @@ from app.api import auth
 from app.api import user
 from app.api.films import APIFilm, APIFilmDetail
 from app.api import seed
-from . import views
+from .views import auth_views, film_views
 from . import forms
+from django.http import HttpResponseNotAllowed
+
+
+def login_url(request):
+    if request.method == 'POST': return auth.login(request)
+    elif request.method == 'GET': return auth_views.Login.as_view()(request)
+    else: return HttpResponseNotAllowed(['GET', 'POST'])
+
+def register_url(request):
+    if request.method == 'POST': return auth.register(request)
+    elif request.method == 'GET': return auth_views.Register.as_view()(request)
+    else: return HttpResponseNotAllowed(['GET', 'POST'])
 
 urlpatterns = [
     # Views
 
-    path('', views.Browse.as_view()),    
-    path('wishlist', views.Wishlist.as_view()),
-    path('profile', views.Profile.as_view()),
-    path('review', views.Review.as_view()),
-    path('bought', views.Bought.as_view()),
-    path('details/<int:id>', views.Details.as_view()),
-    path('signin', views.SignIn.as_view()),
-    path('signup', views.SignUp.as_view()),
+    path('', film_views.Browse.as_view()),    
+    path('wishlist', film_views.Wishlist.as_view()),
+    path('review', film_views.Review.as_view()),
+    path('bought', film_views.Bought.as_view()),
+    path('details/<int:id>', film_views.Details.as_view()),
+    path('profile', auth_views.Profile.as_view()),
 
+    path('signin', auth_views.Login.as_view()), # POST from views, return redirect
+    path('signup', auth_views.Register.as_view()), # POST from views, return redirect
+    path('signout', auth_views.Logout.as_view()), # POST from views, return redirect
 
 
     # API
-    path('login', auth.login),
+    path('login', login_url), # POST from REST API, return json | GET from views, return views
+    path('register', register_url), # POST from REST API, return json | GET from views, return views
+    path('logout', auth.logout), # POST from REST API, return json
+
     path('self', auth.self),
-    path('register', auth.register),
-    path('logout', auth.logout),
 
     path('users', user.get_all_users),
     path('user/<int:id>', user.get_user_by_id),

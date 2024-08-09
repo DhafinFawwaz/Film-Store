@@ -4,9 +4,9 @@
 {% block style %} <link rel="stylesheet" href="{% static './register.css' %}"> {% endblock %}
 {% block main %} 
 <main>
-    <form method="POST" novalidate>
+    <form method="POST" novalidate action="/signup">
         {% csrf_token %}
-        <h2>Sign Up</h2>
+        <h2>Register</h2>
             
         {% for field in form %}
         <p>
@@ -21,9 +21,9 @@
             <br>
         </p>
         {% endfor %}
-        <input type="submit" value="Sign Up" />
+        <input type="submit" value="Register" />
     </form>
-    <p>Already have an account? <a href="/signin">Sign In</a></p>
+    <p>Already have an account? <a href="/login">Login</a></p>
     
 </main>
 {% endblock %}

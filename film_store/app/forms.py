@@ -1,12 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, UserChangeForm
 from django import forms
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
-from django.shortcuts import redirect, render
 from app.models import GeneralUser
-from django.views import generic
-from django.http import HttpRequest
-from django.views import View
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginForm(forms.Form):

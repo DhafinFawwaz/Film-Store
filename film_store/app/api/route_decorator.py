@@ -3,7 +3,7 @@ from app.api.api_response import APIResponse
 from rest_framework import status
 from functools import wraps
 from rest_framework.decorators import permission_classes, authentication_classes
-from app.utils import populate_user_from_request, extract_request_from_args
+from app.auth.auth import populate_user_from_request, extract_request_from_args
 
 def protected(view_func):
     @wraps(view_func)
