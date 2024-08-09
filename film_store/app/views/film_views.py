@@ -10,7 +10,7 @@ from django.conf import settings
 from app.views.views_class import PublicView, ProtectedView
 
 class Browse(ProtectedView):
-    template_name = 'browse.html'
+    template_name = 'browse/browse.html'
 
     def get_recommendations(self, user):
         return Film.objects.all()[:5]
@@ -32,7 +32,7 @@ class Browse(ProtectedView):
     
 
 class Details(ProtectedView):
-    template_name = 'details.html'
+    template_name = 'details/details.html'
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -44,7 +44,7 @@ class Details(ProtectedView):
         
 
 class Bought(ProtectedView):
-    template_name = 'bought.html'
+    template_name = 'bought/bought.html'
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -56,7 +56,7 @@ class Bought(ProtectedView):
 
 
 class Review(ProtectedView):
-    template_name = 'review.html'
+    template_name = 'review/review.html'
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -78,7 +78,7 @@ class Review(ProtectedView):
         return render(request, self.template_name, context)
 
 class Wishlist(ProtectedView):
-    template_name = 'wishlist.html'
+    template_name = 'wishlist/wishlist.html'
 
     def get(self, request, *args, **kwargs):
         context = {}

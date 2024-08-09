@@ -14,7 +14,7 @@ from app.auth.jwt import JWT
 
 class Register(PublicView):
     form_class = forms.RegisterForm
-    template_name = "register.html"
+    template_name = "register/register.html"
     
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -33,10 +33,11 @@ class Register(PublicView):
 
 class Login(PublicView):
     form_class = forms.LoginForm
-    template_name = "login.html"
+    template_name = "login/login.html"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
+        print("GET")
         return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
@@ -81,7 +82,7 @@ class Logout(ProtectedView):
 
 
 class Profile(ProtectedView):
-    template_name = 'profile.html'
+    template_name = 'profile/profile.html'
 
     def get(self, request, *args, **kwargs):
         context = {}

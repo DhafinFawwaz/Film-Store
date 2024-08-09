@@ -34,7 +34,7 @@ f = open("film_store/app/views.py", "a")
 f.write(f"""
 
 class {page.capitalize()}(TemplateView):
-    template_name = '{page}.html'""")
+    template_name = '{page}/{page}.html'""")
 
 # urls.py
 to_append = f"""
