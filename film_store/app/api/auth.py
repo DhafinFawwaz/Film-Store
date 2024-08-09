@@ -10,23 +10,25 @@ from rest_framework.serializers import ValidationError
 from app.api.route_decorator import protected, public
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from app.api.api_request import APIRequest
+from app.auth.jwt import JWT
 
 @api_view(['POST'])
 @public
-def login(request: Request, *args, **kwargs):
+def login(request: APIRequest, *args, **kwargs):
     try:
         username = request.data.get('username')
         password = request.data.get('password')
         user = GeneralUser.objects.get(username = username)
 
         if user.check_password(password):
-            refresh = RefreshToken.for_user(user)
+            token = JWT.encode(user)
             res = APIResponse({
                 "username": user.username,
-                "token": str(refresh.access_token),
+                "token": str(token),
             }).set_cookie(
                 key = "token", 
-                value = refresh.access_token,
+                value = token,
                 expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
                 secure = True,
                 httponly = True,
@@ -43,14 +45,14 @@ def login(request: Request, *args, **kwargs):
 
 @api_view(['GET'])
 @protected
-def self(request: Request, *args, **kwargs):
+def self(request: APIRequest, *args, **kwargs):
     user = GeneralUserSerializer(request.user).data
     user["token"] = request.token
     return APIResponse(user)
 
 @api_view(['POST'])
 @public
-def register(request: Request, *args, **kwargs) -> APIResponse:
+def register(request: APIRequest, *args, **kwargs) -> APIResponse:
     try: request.data._mutable=True
     except Exception as e: pass
 

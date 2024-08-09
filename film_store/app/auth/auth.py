@@ -4,10 +4,12 @@ from app.models import GeneralUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from typing import Tuple
 from django.core.handlers.wsgi import WSGIRequest
+from app.auth.jwt import JWT
+from app.api.api_request import APIRequest
 
 
 # will raise exception if token is invalid or not provided
-def populate_user_from_request(request: Request) -> GeneralUser:
+def populate_user_from_request(request: APIRequest) -> GeneralUser:
     user = None
     token = request.COOKIES.get('token')
     error_message = "No token provided"
@@ -16,9 +18,9 @@ def populate_user_from_request(request: Request) -> GeneralUser:
     if token:
         request.META['HTTP_AUTHORIZATION'] = 'Bearer ' + token
         print(f"HttpOnly Cookie Token:\n{token}")
-        user = JWTAuthentication().authenticate(request)
+        user = JWT.authenticate(request)
         if user: 
-            request.user = user[0]
+            request.user = user
             request.token = token
         else: error_message = "Invalid token"
 
@@ -27,9 +29,9 @@ def populate_user_from_request(request: Request) -> GeneralUser:
         token = request.headers.get('Authorization')
         if not token: raise Exception(error_message)
         print(f"Authorization:\n{token}")    
-        user = JWTAuthentication().authenticate(request)
+        user = JWT.authenticate(request)
         if user: 
-            request.user = user[0]
+            request.user = user
             request.token = token
         else: raise Exception("Invalid token")
 

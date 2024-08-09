@@ -10,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from app.views.views_class import PublicView, ProtectedView
 from django.http import HttpResponseNotAllowed
+from app.auth.jwt import JWT
 
 class Register(PublicView):
     form_class = forms.RegisterForm
@@ -51,11 +52,11 @@ class Login(PublicView):
                 return render(request, self.template_name, {"form": form})
             else:
                 # messages.success(request, 'You have signed in successfully.')
-                refresh = RefreshToken.for_user(user)
+                token = JWT.encode(user)
                 res = redirect('/')
                 res.set_cookie(
                     key = "token", 
-                    value = refresh.access_token,
+                    value = token,
                     expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
                     secure = True,
                     httponly = True,
