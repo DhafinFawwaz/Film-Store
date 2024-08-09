@@ -13,7 +13,7 @@ services:
       - "8000:8000"
     depends_on:
       - database
-    command: sh -c "pip install -r requirements.txt && python film_store/manage.py migrate && python film_store/manage.py createsuperuser --noinput && python film_store/manage.py runserver 0.0.0.0:8000"
+    command: sh -c "pip install -r requirements.txt && python film_store/manage.py makemigrations && python film_store/manage.py migrate && python film_store/manage.py createsuperuser --noinput && python film_store/manage.py runserver 0.0.0.0:8000"
 
   database:
     image: postgres:14-alpine

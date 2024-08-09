@@ -9,6 +9,7 @@ from django.db.utils import IntegrityError
 from rest_framework.serializers import ValidationError
 from app.api.route_decorator import protected, public
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['POST'])
 @public
@@ -35,7 +36,7 @@ def login(request: Request, *args, **kwargs):
         else:
             return APIResponse().error("Wrong password").set_status(status.HTTP_401_UNAUTHORIZED)
     except GeneralUser.DoesNotExist:
-        return APIResponse().error("User with username = "+ username +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
+        return APIResponse().error("Username "+ username +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)

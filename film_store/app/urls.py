@@ -6,14 +6,16 @@ from app.api import seed
 from .views import auth_views, film_views
 from django.http import HttpResponseNotFound, HttpResponseNotAllowed
 from django.shortcuts import render
+from rest_framework.request import Request
+from django.views.decorators.csrf import csrf_exempt
 
-
-def login_url(request):
+@csrf_exempt
+def login_url(request: Request):
     if request.method == 'POST': return auth.login(request)
     elif request.method == 'GET': return auth_views.Login.as_view()(request)
     else: return HttpResponseNotAllowed(['GET', 'POST'])
 
-def register_url(request):
+def register_url(request: Request):
     if request.method == 'POST': return auth.register(request)
     elif request.method == 'GET': return auth_views.Register.as_view()(request)
     else: return HttpResponseNotAllowed(['GET', 'POST'])
