@@ -22,7 +22,7 @@ class Register(PublicView):
    
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST) 
-        if not form.is_valid(): return render(request, 'register.html', {'form': form})
+        if not form.is_valid(): return render(request, self.template_name, {'form': form})
         
         user = form.save(commit=False)
         user.save()

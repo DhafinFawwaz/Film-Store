@@ -23,7 +23,22 @@
   
 </head>
   <body>
+    <div class="relative">
+      <div class="fixed bg-green-500 h-0.5 duration-1000 ease-out" id="loading-bar"></div>
+    </div>
     {% block main %} <h1>Base page</h1>  {% endblock %}
     {% block js %}{% endblock %}
+
   </body>
+
+  <script>
+    const submitButton = document.querySelector('input[type="submit"]');
+    if (submitButton) {
+      loadingDiv = document.getElementById('loading-bar');
+      loadingDiv.style.width = '0%';
+      submitButton.addEventListener('click', () => {
+        loadingDiv.style.width = '100%';
+      });
+    }
+  </script>
 </html>
