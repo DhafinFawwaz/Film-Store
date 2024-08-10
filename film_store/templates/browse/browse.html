@@ -5,19 +5,41 @@
 
 {% block main-content %} 
 <!-- if no search query -->
-<div class="recommendation">
-    <h2>Recommendation</h2>
+<!-- <div class="recommendation">
+    <h2 class="text-3xl font-bold mb-4 tracking-wider">Recommendation</h2>
     <div id="results"></div>
-</div>
+</div> -->
 
 <!-- if has search query -->
 <div class="browse-results">
-    <h2>Results</h2>
-    <ul id="results"> 
+    <h2 class="text-3xl font-bold mb-4 tracking-wider">Explore Films</h2>
+    <div id="results" class="gap-4 xm:flex sm:flex-wrap grid grid-cols-2"> 
     {% for film in films %} 
-        <li>{{ film }}</li> 
+        <a href="/details/{{ film.id }}" class="max-w-56 sm:max-w-64 bg-night-700 rounded-2xl hover:scale-105 ease-out-back-expo duration-150 hover:ring-4 focus:scale-110 hover:ring-indigo-600 drop-shadow-md">
+            <div class="w-full h-36 overflow-hidden">
+                <img src="{{ film.cover_image_url }}" class="object-cover object-center rounded-t-2xl w-full h-full"></img>
+            </div>
+            <div class="px-3 pt-2 pb-2 sm:px-4 sm:pt-3 sm:pb-4 text-white">
+                <div class="flex gap-2">
+                    <div class="font-bold text-lg sm:text-xl tracking-wider">{{ film.title }}</div>
+                    <div class="text-lg sm:text-xl">({{ film.release_year }})</div>
+                </div>
+                <div class="font-light text-xs text-night-100">{{ film.duration }}</div>
+                <div class="flex gap-2 mt-1 sm:mt-2 flex-wrap">
+                    {% for genre in film.genre %} 
+                        <div class="text-xs sm:text-sm rounded-lg px-1 py-0.5 sm:px-2 text-night-100 bg-night-400 font-semibold">{{ genre }}</div>
+                    {% endfor %} 
+                </div>
+
+                <div class="font-light text-xs sm:text-sm text-night-100 mt-1 sm:mt-2">Directed by {{ film.director }}</div>
+                <div class="flex flex-row-reverse font-bold text-sm">
+                    <div>🪙 {{ film.price }}</div>
+                </div>
+            </div>
+        </a>
     {% endfor %} 
-    </ul> 
+    
+    </div> 
 </div>
 {% endblock %}
         
