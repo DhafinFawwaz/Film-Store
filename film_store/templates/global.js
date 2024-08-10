@@ -1,18 +1,23 @@
 // Loading bar & submit button disable
-const submitButton = document.querySelector('input[type="submit"]');
-if (submitButton) {
-  loadingDiv = document.getElementById('loading-bar');
-  loadingDiv.style.width = '0%';
-  submitButton.addEventListener('click', () => {
+loadingDiv = document.getElementById('loading-bar');
+const submitButtom = document.querySelectorAll('input[type="submit"]');
+for (const button of submitButtom) {
+  button.addEventListener('click', () => {
     loadingDiv.style.width = '100%';
-    submitButton.classList.remove('ease-out-back-little');
-    submitButton.classList.add('ease-out');
+    button.classList.remove('ease-out-back-little');
+    button.classList.add('ease-out');
     setTimeout(() => {
-      submitButton.disabled = true;
+      button.disabled = true;
     }, 10);
   });
 }
-
+// a tag loading bar
+const aTag = document.querySelectorAll('a');
+for (const a of aTag) {
+  a.addEventListener('click', () => {
+    loadingDiv.style.width = '100%';
+  });
+}
 
 // Toast
 const toastCloseButton = document.getElementById('toast-close-button');

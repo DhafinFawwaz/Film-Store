@@ -35,7 +35,8 @@ DEBUG = true_str == True or true_str == 'True' or true_str == 'true'
 
 ALLOWED_HOSTS = [
     "filmstore-gokbzfw6.b4a.run",
-    "127.0.0.1"
+    "127.0.0.1",
+    "192.168.100.6",
 ]
 
 

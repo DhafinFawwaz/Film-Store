@@ -25,19 +25,25 @@
   <body>
     <!-- Loading bar -->
     <div class="relative z-50">
-      <div class="fixed bg-indigo-500 h-0.5 duration-1000 ease-out" id="loading-bar"></div>
+      <div class="fixed bg-indigo-500 h-0.5 duration-1000 ease-out" id="loading-bar" style="width: 0%;"></div>
     </div>
 
     <!-- Toast -->
     {% if messages %}
       {% for message in messages %}
         <div class="relative z-50">
-          <div class="fixed right-0 bottom-0 w-full xxs:w-96 p-4" style="transform: translateX(0%) translateY(100%); transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);">
+          <div class="fixed right-0 bottom-0 w-full xxs:w-96 p-4 drop-shadow-lg" style="transform: translateX(0%) translateY(100%); transition: transform 0.25s cubic-bezier(0.19, 1, 0.22, 1);">
             
             <!-- Loading bar -->
             <div class="absolute w-full h-20 pr-8 rounded-xl">
               <div class="w-full h-full rounded-2xl bg-clip-border overflow-hidden">
-                <div class="h-1 bg-indigo-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
+
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="h-1 bg-red-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="h-1 bg-green-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
+                {% endif %}
+
               </div>
             </div>
             
@@ -48,7 +54,14 @@
 
             <!-- Toast content -->
             <div class="bg-night-500 rounded-2xl sm:shadow-lg p-6">
-              <h2 class="font-bold">{{ message }}</h2>
+              
+              {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+              <h2 class="font-bold text-red-400">{{ message }}</h2>
+              {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+              <h2 class="font-bold text-green-400">{{ message }}</h2>
+              {% endif %}
+
+
               <p class="font-light text-justify">{{ message.extra_tags }}</p>
             </div>
           </div>
