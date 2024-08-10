@@ -22,11 +22,13 @@ class Register(PublicView):
    
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST) 
-        if not form.is_valid(): return render(request, self.template_name, {'form': form})
+        if not form.is_valid(): 
+            messages.error(request, "Failed to Register", "Please complete the form properly")
+            return render(request, self.template_name, {'form': form})
         
         user = form.save(commit=False)
         user.save()
-        # messages.success(request, 'You have signed up successfully.')
+        messages.success(request, "Success", "You have signed up successfully")
         return redirect('/login')
         
 
@@ -41,17 +43,18 @@ class Login(PublicView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        if not form.is_valid(): return render(request, self.template_name, {"form": form})
+        if not form.is_valid(): 
+            messages.error(request, "Failed to Login", extra_tags='Please complete the form properly')
+            return render(request, self.template_name, {"form": form})
         try:
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = GeneralUser.objects.get(username = username)
 
             if not user.check_password(password):
-                # messages.error(request, "Wrong password")
+                messages.error(request, "Incorrect password")
                 return render(request, self.template_name, {"form": form})
             else:
-                # messages.success(request, 'You have signed in successfully.')
                 token = JWT.encode(user)
                 res = redirect('/')
                 res.set_cookie(
@@ -62,13 +65,14 @@ class Login(PublicView):
                     httponly = True,
                     samesite = False
                 )
+                messages.success(request, "Welcome "+ username, extra_tags='You have logged in successfully')
                 return res
         except GeneralUser.DoesNotExist:
-            messages.error(request, "Username "+ username +" does not exist")
+            messages.error(request, "Failed to Login", "Username "+ username +" does not exist")
             return render(request, self.template_name, {"form": form})
 
         except Exception as e:
-            messages.error(request, str(e))
+            messages.error(request, "Failed to Login", str(e))
             return render(request, self.template_name, {"form": form})
 
 class Logout(ProtectedView):

@@ -1,6 +1,7 @@
 from django.views import View
 from app.views.views_decorator import protected, public
 
+
 class PublicView(View):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

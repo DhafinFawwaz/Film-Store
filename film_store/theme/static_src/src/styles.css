@@ -50,7 +50,7 @@ div.outline-error > input {
 }
 
 button {
-    @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 drop-shadow-sm;
+    @apply focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 dark:text-slate-50 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed;
 }
 
 ::-webkit-scrollbar {
