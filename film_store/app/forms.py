@@ -2,10 +2,11 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django import forms
 from app.models import GeneralUser
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.translation import gettext_lazy as _
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=65)
-    password = forms.CharField(max_length=65)
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
+    password = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}))
 
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -25,8 +26,20 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
+    first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
+    last_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
+
+    email = forms.EmailField(max_length=254, widget=forms.EmailInput(attrs={'icon_src': 'https://api.iconify.design/mdi/email.svg?color=%2354565c'}))
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
+
+    password1 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}), label="Password")
+    password2 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}), label="Confirm Password")
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+
+
+
     class Meta:
         model = GeneralUser
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
