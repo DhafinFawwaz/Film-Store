@@ -56,14 +56,6 @@ button {
     @apply focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 dark:text-slate-50 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed;
 }
 
-::-webkit-scrollbar {
-    @apply w-2.5
-}
-
-::-webkit-scrollbar-track {
-    @apply bg-night-900;
-}
-
-::-webkit-scrollbar-thumb {
-    @apply bg-night-600 hover:bg-night-300 rounded-full;
+p {
+    @apply truncate
 }

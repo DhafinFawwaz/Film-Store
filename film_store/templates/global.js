@@ -3,11 +3,14 @@ loadingDiv = document.getElementById('loading-bar');
 const submitButtom = document.querySelectorAll('input[type="submit"]');
 for (const button of submitButtom) {
   button.addEventListener('click', () => {
-    loadingDiv.style.width = '100%';
-    button.classList.remove('ease-out-back-little');
-    button.classList.add('ease-out');
+    loadingDiv.style.width = '0%';
     setTimeout(() => {
-      button.disabled = true;
+      loadingDiv.style.width = '100%';
+      button.classList.remove('ease-out-back-little');
+      button.classList.add('ease-out');
+      setTimeout(() => {
+        button.disabled = true;
+      }, 10);
     }, 10);
   });
 }

@@ -24,9 +24,7 @@
 </head>
   <body>
     <!-- Loading bar -->
-    <div class="relative z-50">
-      <div class="fixed bg-indigo-500 h-0.5 duration-1000 ease-out" id="loading-bar" style="width: 0%;"></div>
-    </div>
+    <div class="fixed z-50 bg-indigo-500 h-0.5 duration-1000 ease-out" id="loading-bar" style="width: 0%;"></div>
 
     <!-- Toast -->
     {% if messages %}
@@ -62,7 +60,7 @@
               {% endif %}
 
 
-              <p class="font-light text-justify">{{ message.extra_tags }}</p>
+              <p class="font-light">{{ message.extra_tags }}</p>
             </div>
           </div>
         </div>
