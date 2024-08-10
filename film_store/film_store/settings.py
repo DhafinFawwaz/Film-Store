@@ -213,3 +213,10 @@ if platform.system() == "Linux":
     NPM_BIN_PATH = '/usr/bin/npm'
 else:
     NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://filmstore-gokbzfw6.b4a.run",
+    "http://127.0.0.1:8000",
+    "https://labpro-fe.hmif.dev/"
+]

@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block main %} 
-<section class="xxs:h-screen xxs:bg-night-900 bg-night-800 justify-center">
-    <div class="flex flex-col w-full items-center justify-center p-5 mx-auto xxs:h-screen lg:py-0">
+<section class="h-svh xxs:bg-night-900 bg-night-800 justify-center">
+    <div class="flex flex-col w-full h-full items-center justify-center p-5 mx-auto lg:py-0">
         <div class="w-full rounded-2xl xxs:shadow-lg border md:mt-0 xxs:max-w-2xl xl:p-0 bg-night-800 border-none">
             <div class="space-y-4 md:space-y-6 xxs:p-8 xxs:pt-6">
                 <h1 class="text-xl xxs:text-2xl font-bold leading-tight tracking-tight md:text-2xl text-white justify-center flex">
@@ -30,7 +30,7 @@
                     </div>
                     {% endfor %}
 
-                    <div></div>
+                    <div class="h-2 sm:h-0"></div>
                     <input type="submit" value="Register" class="col-span-2 mt-4 ease-out-back-little"/>
                     
                     <p class="text-sm col-span-2">Already have an account? <a href="/signin" class="ml-1 underline">Login</a></p>
