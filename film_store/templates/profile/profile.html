@@ -1,36 +1,36 @@
 {% extends "authorized.html" %}
-{% load static %}
 
-{% block style %}<link rel="stylesheet" href="{% static './profile/profile.css' %}">{% endblock %}
+{% block main-content %}
+<a href="/" class="text-white font-bold rounded-xl pl-4 pr-8 py-2 flex gap-2 mb-4 bg-night-700 hover:bg-night-500 focus:bg-night-400 hover:scale-105 focus:scale-110 ease-out-back duration-150 w-min cursor-pointer hover:text-white focus:ring-2 focus:text-white">
+    <img src="https://api.iconify.design/weui/back-filled.svg?color=white" alt="" class="h-6 scale-75">
+    <div>Back</div>
+</a> 
 
-{% block content %} 
-    <h1>Profile</h1>
+<h1 class="text-2xl font-bold mb-3 tracking-wider text-center">Hello {{ user.username }} !</h1>
+<div class="gap-2 flex flex-col">
+    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+        Username: {{ user.username }}
+    </div>
     
-    <div class="profile">
-        <div class="profile__field">
-            <label for="username">Username:</label>
-            <span id="username">{{ user.username }}</span>
-        </div>
-        <div class="profile__field">
-            <label for="email">Email:</label>
-            <span id="email">{{ user.email }}</span>
-        </div>
-        <div class="profile__field">
-            <label for="first_name">First Name:</label>
-            <span id="first_name">{{ user.first_name }}</span>
-        </div>
-        <div class="profile__field">
-            <label for="last_name">Last Name:</label>
-            <span id="last_name">{{ user.last_name }}</span>
-        </div>
-        <div class="profile__field">
-            <label for="balance">Balance:</label>
-            <span id="balance">{{ user.balance }}</span>
-        </div>
-        <div class="profile__field">
-            <label for="date_joined">Date Joined:</label>
-            <span id="date_joined">{{ user.date_joined }}</span>
-        </div>
-{% endblock %}
+    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+        Email: {{ user.email }}
+    </div>
+    
+    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+        Balance: {{ user.balance }}
+    </div>
+    
+    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+        First Name: {{ user.first_name }}
+    </div>
+    
+    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+        Last Name: {{ user.last_name }}
+    </div>
 
-{% block js %}<script src="{% static './profile/profile.js' %}"></script>{% endblock %}
+</div>
+
+{% endblock %}
+        
+    
+

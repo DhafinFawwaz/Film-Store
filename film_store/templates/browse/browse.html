@@ -1,7 +1,4 @@
 {% extends "authorized.html" %}
-{% load static %}
-
-{% block style %}<link rel="stylesheet" href="{% static './browse/browse.css' %}">{% endblock %}
 
 {% block main-content %} 
 <!-- if no search query -->
@@ -10,7 +7,6 @@
     <div id="results"></div>
 </div> -->
 
-<!-- if has search query -->
 <div class="browse-results">
     <h2 class="text-3xl font-bold mb-4 tracking-wider">Explore Films</h2>
     <div id="results" class="gap-4 xm:flex sm:flex-wrap grid grid-cols-2"> 
