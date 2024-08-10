@@ -4,32 +4,28 @@
 
 input:-webkit-autofill,
 input:-webkit-autofill:enabled,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:enabled,
+select:-webkit-autofill,
+select:-webkit-autofill:enabled
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 textarea:-webkit-autofill:hover,
 textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:enabled,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-    caret-color: #fff;
-    -webkit-text-fill-color: #fff;
-    -webkit-box-shadow: 0 0 0px 1000px #27272a inset;
-    box-shadow: 0 0 0px 1000px #27272a inset;
-    background-color: #27272a;
-    
-    border: none;
-    outline: none;
-    border-style: none;
-    outline-style: none;
+    caret-color: white !important;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 1000px #2f323b inset !important;
+    box-shadow: 0 0 0px 1000px #2f323b inset !important;
+    background-color: #2f323b !important;
 }
-  
 
 a {
   @apply text-blue-400 hover:text-blue-600 focus:text-blue-800;
 }
+
 
 label {
     @apply block text-sm font-medium text-night-100 mb-1;

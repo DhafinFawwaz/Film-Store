@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block style %} <link rel="stylesheet" href="{% static './login/login.css' %}"> {% endblock %}
-
 {% block main %} 
 <section class="h-screen sm:bg-night-900 bg-night-800 justify-center">
     <div class="flex flex-col w-full items-center justify-center p-5 mx-auto h-screen lg:py-0">
@@ -43,5 +41,3 @@
 </section>
 
 {% endblock %}
-
-{% block js %}<script src="{% static './login/login.js' %}"></script>{% endblock %}
