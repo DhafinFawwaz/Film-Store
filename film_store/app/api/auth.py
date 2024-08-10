@@ -18,6 +18,8 @@ from django.shortcuts import redirect
 from rest_framework.views import APIView
 
 class APILogin(APIView):
+    permission_classes = []
+    authentication_classes = []
 
     # /login
     @public
@@ -55,6 +57,8 @@ class APILogin(APIView):
         
 
 class APIRegister(APIView):
+    permission_classes = []
+    authentication_classes = []
 
     # /register
     @public

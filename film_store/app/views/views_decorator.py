@@ -2,6 +2,7 @@
 from functools import wraps
 from app.auth.auth import populate_user_from_request, extract_request_from_args
 from django.shortcuts import redirect
+from django.contrib import messages
 
 def protected(view_func):
     @wraps(view_func)
@@ -10,7 +11,9 @@ def protected(view_func):
         try: 
             populate_user_from_request(request)
             print(f"User: {request.user}")
-        except Exception as e: return redirect('/signin')
+        except Exception as e: 
+            messages.error(request, "Please Login", "Please Login to gain access to the website")
+            return redirect('/signin')
         return view_func(*args, **kwargs)
     
     return _wrapped_view

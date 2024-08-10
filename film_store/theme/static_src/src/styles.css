@@ -38,8 +38,11 @@ input[type="submit"] {
 
 
 input[type="text"], input[type="password"], input[type="email"] {
-    @apply appearance-none sm:text-sm rounded-xl block w-full p-2.5 bg-night-600 border-2 placeholder-night-400 text-white duration-200 drop-shadow-sm ease-out-back h-12 focus:ring-blue-800 focus:ring-2 hover:ring-blue-800 hover:ring-1 border-none pl-12 placeholder-night-300;
+    @apply appearance-none sm:text-sm rounded-xl block w-full p-2.5 bg-night-600 border-2 placeholder-night-400 text-white duration-200 drop-shadow-sm ease-out-back h-12 focus:ring-blue-800 focus:ring-2 hover:ring-blue-800 hover:ring-1 border-none pl-12;
     box-shadow: inset 0 1px 0 0 #ffffff0d;
+}
+input[type="text"]::placeholder, input[type="password"]::placeholder, input[type="email"]::placeholder {
+    @apply text-night-200;
 }
 
 div.outline-error > input {

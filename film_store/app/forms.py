@@ -5,7 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils.translation import gettext_lazy as _
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Username'}))
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Username', 'class': 'text-night-50'}))
     password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'Password'}))
 
     def clean(self):
