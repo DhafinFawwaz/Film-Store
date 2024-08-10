@@ -33,7 +33,7 @@
                     <div></div>
                     <input type="submit" value="Login" class="ease-out-back-little"/>
                     
-                    <p class="text-sm">Don't have an account? <a href="/register" class="ml-1 underline">Register</a></p>
+                    <p class="text-sm">Don't have an account? <a href="/signup" class="ml-1 underline">Register</a></p>
                 </form>
             </div>
         </div>
@@ -41,3 +41,6 @@
 </section>
 
 {% endblock %}
+
+{% block js %}<script> window.history.replaceState(null, null, '/login');</script>{% endblock %}
+

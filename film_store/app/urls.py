@@ -4,24 +4,9 @@ from app.api import user
 from app.api.films import APIFilm, APIFilmDetail
 from app.api import seed
 from .views import auth_views, film_views
-from django.http import HttpResponseNotFound, HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import render
-from rest_framework.request import Request
-from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def login_url(request: Request):
-    if request.method == 'POST': return auth.login(request)
-    elif request.method == 'GET': return auth_views.Login.as_view()(request)
-    else: return HttpResponseNotAllowed(['GET', 'POST'])
-
-@csrf_exempt
-def register_url(request: Request):
-    if request.method == 'POST': return auth.register(request)
-    elif request.method == 'GET': return auth_views.Register.as_view()(request)
-    else: return HttpResponseNotAllowed(['GET', 'POST'])
-
-@csrf_exempt
 def logout_url(request):
     if request.method == 'POST': return auth.logout(request)
     elif request.method == 'GET': return render(request, '404.html')
@@ -30,9 +15,9 @@ def logout_url(request):
 urlpatterns = [
 
     # Views
-    path('signup', auth_views.Register.as_view()),  # POST from views, return redirect('/login')
-    path('signin', auth_views.Login.as_view()),     # POST from views, return redirect('/')
-    path('signout', auth_views.Logout.as_view()),   # POST from views, return redirect('/login')
+    path('signup', auth_views.Register.as_view()),
+    path('signin', auth_views.Login.as_view()),   
+    path('signout', auth_views.Logout.as_view()), 
     path('profile', auth_views.Profile.as_view()),
     
     path('', film_views.Browse.as_view()),    
@@ -44,9 +29,9 @@ urlpatterns = [
 
 
     # API
-    path('register', register_url), # POST from REST API, return json | GET from views, return views
-    path('login', login_url),       # POST from REST API, return json | GET from views, return views
-    path('logout', logout_url),     # POST from REST API, return json | GET from views, return 404 page manually because django won't automatically return 404 page
+    path('register', auth.APIRegister.as_view()),
+    path('login', auth.APILogin.as_view()),      
+    path('logout', logout_url),    
     path('self', auth.self),
 
     path('users', user.get_all_users),

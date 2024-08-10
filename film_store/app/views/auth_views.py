@@ -1,6 +1,5 @@
 from app.models import GeneralUser
 from app.serializers import GeneralUserSerializer
-from app.api.auth import register
 from django.shortcuts import render
 from django import forms
 from django.contrib import messages
@@ -29,7 +28,7 @@ class Register(PublicView):
         user = form.save(commit=False)
         user.save()
         messages.success(request, "Success", "You have signed up successfully")
-        return redirect('/login')
+        return redirect('/signin')
         
 
 
@@ -78,7 +77,7 @@ class Login(PublicView):
 class Logout(ProtectedView):
 
     def post(self, request, *args, **kwargs):
-        res = redirect('/login')
+        res = redirect('/signin')
         res.delete_cookie('token')
         res.delete_cookie('csrftoken')
         return res

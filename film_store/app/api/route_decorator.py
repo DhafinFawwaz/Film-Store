@@ -29,6 +29,7 @@ def admin_only(view_func):
 def public(view_func):
     @wraps(view_func)
     @authentication_classes([])
+    @permission_classes([])
     def _wrapped_view(*args, **kwargs):
         request = extract_request_from_args(args)
         try: populate_user_from_request(request)

@@ -10,7 +10,7 @@ def protected(view_func):
         try: 
             populate_user_from_request(request)
             print(f"User: {request.user}")
-        except Exception as e: return redirect('/login')
+        except Exception as e: return redirect('/signin')
         return view_func(*args, **kwargs)
     
     return _wrapped_view
