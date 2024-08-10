@@ -8,12 +8,15 @@ from .. import forms
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from app.views.views_class import PublicView, ProtectedView
+from app.utils import duration_to_format
 
 class Browse(ProtectedView):
     template_name = 'browse/browse.html'
 
     def get_recommendations(self, user):
         return Film.objects.all()[:5]
+
+    
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -26,6 +29,9 @@ class Browse(ProtectedView):
 
         films = Film.objects.all()
         films = FilmResponseSerializer(films, many=True).data
+        for film in films:
+            film['duration'] = duration_to_format(film['duration'])
+
         context['films'] = films
         return render(request, self.template_name, context)
 
@@ -39,6 +45,7 @@ class Details(ProtectedView):
         film_id = kwargs['id']
         film = Film.objects.get(id=film_id)
         film = FilmResponseSerializer(film).data
+        film['duration'] = duration_to_format(film['duration'])
         context['film'] = film
         return render(request, self.template_name, context)
         

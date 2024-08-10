@@ -49,6 +49,7 @@ module.exports = {
             },
             scale: {
                 '102': '1.02',
+                '107': '1.07',
             },
             colors: {
                 'night': {
