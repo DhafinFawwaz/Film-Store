@@ -5,8 +5,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils.translation import gettext_lazy as _
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
-    password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}))
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Username'}))
+    password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'Password'}))
 
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -26,14 +26,14 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
-    last_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
+    first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'First Name'}))
+    last_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Last Name'}))
 
-    email = forms.EmailField(max_length=254, widget=forms.EmailInput(attrs={'icon_src': 'https://api.iconify.design/mdi/email.svg?color=%2354565c'}))
-    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
+    email = forms.EmailField(max_length=254, widget=forms.EmailInput(attrs={'icon_src': 'https://api.iconify.design/mdi/email.svg?color=%2354565c', 'placeholder': 'email@email.com'}))
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Username'}))
 
-    password1 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}), label="Password")
-    password2 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}), label="Confirm Password")
+    password1 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'SuperSecret123$$$'}), label="Password")
+    password2 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'SuperSecret123$$$'}), label="Confirm Password")
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
