@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c'}))
-    password = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}))
+    password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c'}))
 
     def clean(self):
         username = self.cleaned_data.get('username')

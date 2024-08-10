@@ -37,6 +37,11 @@
       loadingDiv.style.width = '0%';
       submitButton.addEventListener('click', () => {
         loadingDiv.style.width = '100%';
+        submitButton.classList.remove('ease-out-back-little');
+        submitButton.classList.add('ease-out');
+        setTimeout(() => {
+          submitButton.disabled = true;
+        }, 10);
       });
     }
   </script>
