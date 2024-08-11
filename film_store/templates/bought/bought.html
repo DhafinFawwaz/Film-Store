@@ -1,26 +1,23 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "authorized.html" %}
 
-{% block style %}<link rel="stylesheet" href="{% static './bought/bought.css' %}">{% endblock %}
-
-{% block main %} 
-<main>
-    <h1>Film That I Bought</h1>
-    
-    <div class="film-list">
-        <ul>
-            {% for film in films %}
-            <li>
-                <div class="film">
-                    <div class="film-info">
-                        <h3>{{ film.title }}</h3>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+{% block main-content %} 
+    <div class="flex mb-4 gap-4">
+        <img class="scale-180 ml-2" src="https://api.iconify.design/tabler/brand-minecraft.svg?color=white" alt="">
+        <h1 class="text-2xl xxs:text-3xl font-bold tracking-wider">Films that i Bought</h1>
     </div>
-</main>
+    {% if films|length == 0 %}
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <p class="text-xl w-64 xxs:w-96">You have not bought any films yet</p>
+            <a class="text-md underline" href="/">Browse Film</a>
+        </div>
+    {% else %}
+        <div id="results" class="gap-4 xm:flex sm:flex-wrap grid grid-cols-2">
+        {% for film in films %} 
+            {% include 'components/film-card.html' with film=film %}
+        {% endfor %} 
+        </div> 
+    {% endif %}
 {% endblock %}
+        
+    
 
-{% block js %}<script src="{% static './bought/bought.js' %}"></script>{% endblock %}

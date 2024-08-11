@@ -1,10 +1,9 @@
 {% extends "authorized.html" %}
 
 {% block main-content %}
-<a href="/" class="text-white font-bold rounded-xl pl-4 pr-8 py-2 flex gap-2 mb-4 bg-night-700 hover:bg-night-500 focus:bg-night-400 hover:scale-105 focus:scale-110 ease-out-back duration-150 w-min cursor-pointer hover:text-white focus:ring-2 focus:text-white">
-    <img src="https://api.iconify.design/weui/back-filled.svg?color=white" alt="" class="h-6 scale-75">
-    <div>Back</div>
-</a> 
+
+{% include 'components/back-button.html' with url="/" %}
+
 <div class="grid gap-4 sm:gap-6 sm:grid-cols-2">
     <div class="w-full h-64 sm:h-80 overflow-hidden">
         <img src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full"></img>
@@ -20,7 +19,7 @@
             <div class="font-light text-xs text-night-100 mt-1">{{ film.duration }}</div>
             <div class="flex gap-2 mt-1 sm:mt-2 flex-wrap">
                 {% for genre in film.genre %} 
-                    <div class="text-xs sm:text-sm rounded-lg px-1 py-0.5 sm:px-2 text-night-100 bg-night-400 font-semibold">{{ genre }}</div>
+                    <div class="text-xs sm:text-sm rounded-lg px-1 py-0.5 sm:px-2 text-night-100 bg-night-400 font-semibold shadow-rim-sm drop-shadow-sm">{{ genre }}</div>
                 {% endfor %} 
             </div>
 
@@ -35,7 +34,7 @@
                     <div class="absolute w-full flex justify-center h-full select-none pointer-events-none">
                         <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="z-10 group-hover:invert group-focus:invert select-none h-full scale-50 pr-60">
                     </div>
-                    <input type="submit" value="Purchase" class="ease-out-back-little w-full !text-xl hover:scale-100"/>
+                    <input type="submit" value="Purchase" class="ease-out-back-little w-full !text-xl hover:!scale-100"/>
                 </div>
             </form>
         </div>

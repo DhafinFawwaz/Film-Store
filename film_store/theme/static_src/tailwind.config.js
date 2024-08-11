@@ -43,6 +43,22 @@ module.exports = {
     ],
     theme: {
         extend: {
+            padding: {
+                '1.25': '0.3125rem',
+            },
+            margin: {
+                '13': '3.25rem',
+                '15': '3.75rem',
+                '17': '4.25rem',
+            },
+            height: {
+                '17': '4.25rem',
+                '18': '4.5rem',
+            },
+            boxShadow: {
+                'rim-sm': 'inset 0 1px 0 0 #ffffff0d;',
+                'rim-md': 'inset 0 1px 0 0 #ffffff22;'
+            },
             screens: {
                 'xxs': '576px'
                 // => @media (min-width: 440px) { ... }
@@ -50,6 +66,10 @@ module.exports = {
             scale: {
                 '102': '1.02',
                 '107': '1.07',
+                
+                '180': '1.8',
+                '190': '1.9',
+                '200': '2',
             },
             colors: {
                 'night': {
@@ -79,7 +99,7 @@ module.exports = {
             transitionTimingFunction: {
                 'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
                 'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
-                'out-back-expo': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                'out-back-expo': 'cubic-bezier(0.175, 1.885, 0.32, 1.275)',
                 'out-back': 'cubic-bezier(0.175, 2.885, 0.32, 1.275)',
                 'out-back-little': 'cubic-bezier(0.175, 2.885, 0.32, 1.275)',
             },

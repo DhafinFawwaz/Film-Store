@@ -1,30 +1,27 @@
 {% extends "authorized.html" %}
 
 {% block main-content %}
-<a href="/" class="text-white font-bold rounded-xl pl-4 pr-8 py-2 flex gap-2 mb-4 bg-night-700 hover:bg-night-500 focus:bg-night-400 hover:scale-105 focus:scale-110 ease-out-back duration-150 w-min cursor-pointer hover:text-white focus:ring-2 focus:text-white">
-    <img src="https://api.iconify.design/weui/back-filled.svg?color=white" alt="" class="h-6 scale-75">
-    <div>Back</div>
-</a> 
+{% include 'components/back-button.html' with url="/" %}
 
 <h1 class="text-2xl font-bold mb-3 tracking-wider text-center">Hello {{ user.username }} !</h1>
 <div class="gap-2 flex flex-col">
-    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
         Username: {{ user.username }}
     </div>
     
-    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
         Email: {{ user.email }}
     </div>
     
-    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
         Balance: {{ user.balance }}
     </div>
     
-    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
         First Name: {{ user.first_name }}
     </div>
     
-    <div class="text-lg mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
+    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
         Last Name: {{ user.last_name }}
     </div>
 

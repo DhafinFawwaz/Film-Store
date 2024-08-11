@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
-{% block main %}
-It appears that you have wandered to the shadow realm.
-<a href="/">Go Home</a>
 
+{% block main %} 
+<section class="bg-night-950 justify-center" style="min-height: 100vh; min-height: 100dvh;">
+    <div class="flex flex-col w-full items-center justify-center p-5 mx-auto lg:py-0" style="min-height: 100vh; min-height: 100dvh;">
+        <h1 class="text-8xl xxs:text-9xl font-black mb-4 tracking-wider">404</h1>
+        <h2 class="text-4xl xxs:text-5xl font-bold mb-4 tracking-wider">Not Found</h2>
+        <p>It appears that you have wandered to the shadow realm</p>
+        <a href="/">Go Back</a>
+        <img class="h-48 xxs:h-56 mt-4" src="https://c.tenor.com/_gYD08oGP8MAAAAd/tenor.gif" alt="">
+    </div>
+</section>
 {% endblock %}
+
 

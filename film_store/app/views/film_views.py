@@ -25,7 +25,8 @@ class Browse(ProtectedView):
             films = Film.objects.filter(title__icontains=query)
             films = FilmResponseSerializer(films, many=True).data
             context['films'] = films
-            return context
+            context['query'] = query
+            return render(request, self.template_name, context)
 
         films = Film.objects.all()
         films = FilmResponseSerializer(films, many=True).data
@@ -47,6 +48,8 @@ class Details(ProtectedView):
         film = FilmResponseSerializer(film).data
         film['duration'] = duration_to_format(film['duration'])
         context['film'] = film
+
+        # TODO: Check if purchased. If purchased, show watch button. If not, show purchase button.
         return render(request, self.template_name, context)
         
 
