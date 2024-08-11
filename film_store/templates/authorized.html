@@ -1,109 +1,103 @@
 {% extends "base.html" %}
 
-
-
 {% block main %}
 
-{% block top-content %}
-{% endblock %}
+  {% block top-content %}
+  {% endblock %}
 
-<!-- Navbar -->
-<div class="fixed z-20 drop-shadow-lg py-4 px-4 h-17 bg-night-900 w-full flex justify-center">
-  <div class="h-full border md:mt-0 sm:max-w-4xl xl:p-0 border-none flex gap-4 w-full relative">
+  <!-- Navbar -->
+  <div class="fixed z-20 drop-shadow-lg py-4 px-4 h-17 bg-night-900 w-full flex justify-center">
+    <div class="h-full border md:mt-0 sm:max-w-4xl xl:p-0 border-none flex gap-4 w-full relative">
 
-    <form class="w-full" method="get" action="/">
-      <img src="https://api.iconify.design/mdi/search.svg?color=%2354565c" class="absolute scale-125 mt-2.5 ml-3.5 z-10 pointer-events-none">
-      {% if query %}
-        <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="{{query}}" value="{{query}}">
-      {% else %}
-        <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="Search for a film">
-      {% endif %}
-    </form>
-    <button id="nav-button" class="rounded-lg bg-night-600 w-10 h-full hover:scale-110 ease-out-back group justify-center flex hover:bg-night-400" >
-      <img src="https://api.iconify.design/mi/menu.svg?color=%23555555" alt="" class="z-10 h-full group-hover:invert pointer-events-none">
-    </button>
-    <div class="absolute right-0 mt-13">
-      <div id="nav-menu" class="justify-self-end rounded-lg bg-night-800 p-2 z-50 invisible shadow-rim-sm drop-shadow-lg">
-        <div class="flex flex-col">
-  
-          <a href="/profile" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
-            <img src="https://api.iconify.design/mdi/user.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
-            <div class="text-sm select-none">Profile</div>
-          </a>
-  
-          <a href="/bought" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
-            <img src="https://api.iconify.design/tabler/brand-minecraft.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
-            <div class="text-sm select-none">Bought</div>
-          </a>
-  
-          <a href="/wishlist" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
-            <img src="https://api.iconify.design/ic/baseline-star.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
-            <div class="text-sm select-none">Wishlist</div>
-          </a>
-  
-          <form method="POST" action="/signout" novalidate>
-            {% csrf_token %}
-            <button type="submit" class="rounded-lg bg-night-800 h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus:bg-night-300 w-full hover:shadow-rim-sm hover:drop-shadow-sm shadow-none">
-              <img src="https://api.iconify.design/material-symbols/logout.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert mt-0.5">
-              <div class="text-sm">Logout</div>
-            </button>
-            <!-- <input type="submit" value="Sign Out" class="rounded-lg bg-night-700 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2"/> -->
-          </form>
+      <form class="w-full" method="get" action="/">
+        <img src="https://api.iconify.design/mdi/search.svg?color=%2354565c" class="absolute scale-125 mt-2.5 ml-3.5 z-10 pointer-events-none">
+        {% if query %}
+          <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="{{query}}" value="{{query}}">
+        {% else %}
+          <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="Search for a film">
+        {% endif %}
+      </form>
+      <button id="nav-button" class="rounded-lg bg-night-600 w-10 h-full hover:scale-110 ease-out-back group justify-center flex hover:bg-night-400" >
+        <img src="https://api.iconify.design/mi/menu.svg?color=%23555555" alt="" class="z-10 h-full group-hover:invert pointer-events-none">
+      </button>
+      <div class="absolute right-0 mt-13">
+        <div id="nav-menu" class="justify-self-end rounded-lg bg-night-800 p-2 z-50 invisible shadow-rim-sm drop-shadow-lg">
+          <div class="flex flex-col">
+    
+            <a href="/profile" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
+              <img src="https://api.iconify.design/mdi/user.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
+              <div class="text-sm select-none">Profile</div>
+            </a>
+    
+            <a href="/bought" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
+              <img src="https://api.iconify.design/tabler/brand-minecraft.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
+              <div class="text-sm select-none">Bought</div>
+            </a>
+    
+            <a href="/wishlist" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
+              <img src="https://api.iconify.design/ic/baseline-star.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
+              <div class="text-sm select-none">Wishlist</div>
+            </a>
+    
+            <form method="POST" action="/signout" novalidate>
+              {% csrf_token %}
+              <button type="submit" class="rounded-lg bg-night-800 h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus:bg-night-300 w-full hover:shadow-rim-sm hover:drop-shadow-sm shadow-none">
+                <img src="https://api.iconify.design/material-symbols/logout.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert mt-0.5">
+                <div class="text-sm">Logout</div>
+              </button>
+              <!-- <input type="submit" value="Sign Out" class="rounded-lg bg-night-700 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2"/> -->
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Wallet -->
-<div class="fixed right-0 bottom-0 p-4 z-10">
-  <div class="flex justify-center items-center bg-night-800 drop-shadow-lg shadow-rim-sm rounded-lg px-4 py-2">
-    <div class="flex gap-2 items-center text-white text-sm font-bold">
-      <!-- <img src="https://api.iconify.design/material-symbols/wallet.svg?color=%23eebb00" alt="" class="h-6"> -->
-      <div>Balance:</div>
-      <div>🪙 {{ user.balance }}</div>
+  <!-- Wallet -->
+  <div class="fixed right-0 bottom-0 p-4 z-10">
+    <div class="flex justify-center items-center bg-night-800 drop-shadow-lg shadow-rim-sm rounded-lg px-4 py-2">
+      <div class="flex gap-2 items-center text-white text-sm font-bold">
+        <!-- <img src="https://api.iconify.design/material-symbols/wallet.svg?color=%23eebb00" alt="" class="h-6"> -->
+        <div>Balance:</div>
+        <div>🪙 {{ user.balance }}</div>
+      </div>
     </div>
   </div>
-</div>
 
-{% block content %} 
-<section class="px-4" style="min-height: 100vh; min-height: 100dvh; position: relative;">
-  <div class="m-auto max-w-4xl">
-    <div class="h-[82px]"></div>
-    {% block main-content %} 
-    {% endblock %}
-  </div>
-</section>
+  {% block content %} 
+  <section class="px-4" style="min-height: 100vh; min-height: 100dvh; position: relative;">
+    <div class="m-auto max-w-4xl">
+      <div class="h-[82px]"></div>
+      {% block main-content %} 
+      {% endblock %}
+    </div>
+  </section>
+  {% endblock %}
+
 {% endblock %}
 
 {% block js %}
-<script>
-(() => {
-  navMenuButton = document.getElementById('nav-button');
-  navMenu = document.getElementById('nav-menu');
-  navMenuButton.addEventListener('click', () => {
-    navMenu.classList.remove('invisible');
-    navMenu.classList.add('visible');
-  });
-  navMenuButton.addEventListener('mouseover', () => {
-    navMenu.classList.remove('invisible');
-    navMenu.classList.add('visible');
-  });
+  <script>
+  (() => {
+    navMenuButton = document.getElementById('nav-button');
+    navMenu = document.getElementById('nav-menu');
+    navMenuButton.addEventListener('click', () => {
+      navMenu.classList.remove('invisible');
+      navMenu.classList.add('visible');
+    });
+    navMenuButton.addEventListener('mouseover', () => {
+      navMenu.classList.remove('invisible');
+      navMenu.classList.add('visible');
+    });
 
-  window.onclick = e => {
-    if (e.target !== navMenuButton) {
-      navMenu.classList.remove('visible');
-      navMenu.classList.add('invisible');
+    window.onclick = e => {
+      if (e.target !== navMenuButton) {
+        navMenu.classList.remove('visible');
+        navMenu.classList.add('invisible');
+      }
     }
-  }
-})();
-</script>
-
-{% block authorized-js %}
+  })();
+  </script>
+  {% block authorized-js %}
+  {% endblock %}
 {% endblock %}
-
-{% endblock %}
-
-
-{% endblock %}
-

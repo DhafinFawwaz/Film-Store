@@ -25,6 +25,8 @@ urlpatterns = [
     path('review', film_views.Review.as_view()),
     path('bought', film_views.Bought.as_view()),
     path('details/<int:id>', film_views.Details.as_view()),
+    path('details/<int:id>/buy', film_views.BuyFilm.as_view()),
+    path('details/<int:id>/wish', film_views.WishlistFilm.as_view()),
 
 
 

@@ -1,5 +1,6 @@
 {% load static %}
 {% load static tailwind_tags %}
+{% load custom_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +25,7 @@
 </head>
   <body class="bg-night-900">
     <!-- Loading bar -->
-    <div class="fixed z-50 bg-indigo-500 h-0.5 duration-1000 ease-out" id="loading-bar" style="width: 0%;"></div>
+    <div class="fixed z-50 bg-indigo-500 h-0.5 ease-out" id="loading-bar" style="width: 0%; transition-duration: 1000ms;"></div>
 
     <!-- Toast -->
     {% if messages %}
@@ -54,13 +55,23 @@
             <div class="bg-night-500 rounded-2xl sm:shadow-lg p-6 select-none">
               
               {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-              <h2 class="font-bold text-red-400">{{ message }}</h2>
+                <h2 class="font-bold text-red-400">{{ message }}</h2>
               {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-              <h2 class="font-bold text-green-400">{{ message }}</h2>
+                <h2 class="font-bold text-green-400">{{ message }}</h2>
               {% endif %}
+              
+              <div class="flex gap-3">
+                {% with message.extra_tags|split:"|" as msgs %}
+                <p class="font-light">
+                  {{ msgs.0 }}
+                  {% if msgs|length > 1 %}
+                    <a href="{{msgs.1}}">here</a>
+                  {% endif %}
+                </p>
+                {% endwith %}
+              </div>
 
 
-              <p class="font-light">{{ message.extra_tags }}</p>
             </div>
           </div>
         </div>
@@ -71,9 +82,9 @@
     {% block main %} <h1>Base page</h1>  {% endblock %}
 
 
+    <script src="{% static './global.js' %}"></script>
+    {% block js %}{% endblock %}
   </body>
-  <script src="{% static './global.js' %}"></script>
-  {% block js %}{% endblock %}
 
   <style>
     body {

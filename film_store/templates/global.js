@@ -1,11 +1,11 @@
 (() => {
-
 // Loading bar & submit button disable
 loadingDiv = document.getElementById('loading-bar');
 const submitButtom = document.querySelectorAll('input[type="submit"]');
 for (const button of submitButtom) {
   button.addEventListener('click', () => {
     loadingDiv.style.width = '0%';
+    loadingDiv.style.transitionDuration = '1000ms';
     setTimeout(() => {
       loadingDiv.style.width = '100%';
       button.classList.remove('ease-out-back-little');
@@ -117,5 +117,19 @@ if (toastCloseButton) {
     }
   });
 }
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+  } else {
+    loadingDiv.style.transitionDuration = '0s';
+    loadingDiv.style.width = '0%';
+    setTimeout(() => {
+      loadingDiv.style.width = '0%';
+      setTimeout(() => {
+        loadingDiv.style.transitionDuration = '1000ms';
+      }, 10);
+    }, 50); // Just in case
+  }
+});
 
 })()
