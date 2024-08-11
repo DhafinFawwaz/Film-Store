@@ -2,7 +2,7 @@
 
 
 {% if clickable %}
-<form method="POST" action="/details/{{ film.id }}/rate" class="flex flex-wrap gap-1 flex-col">
+<form method="POST" action="/details/{{ film.id }}/rate" class="flex flex-wrap gap-1 flex-row">
     {% csrf_token %}
     <div class="flex items-center gap-1 mr-1">
         {% for i in "12345" %}
@@ -22,7 +22,7 @@
             </label>
         {% endfor %}
     </div>
-    <p class="text-sm font-medium text-night-100">{{ rate }} out of 5</p>
+    <p class="text-md font-medium text-night-100">{{ rate }} out of 5</p>
 
 
 </form>

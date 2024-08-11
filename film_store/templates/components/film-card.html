@@ -10,6 +10,7 @@
         <div class="font-light text-xs sm:text-sm text-night-100">Directed by {{ film.director }}</div>
         
         <div class="font-light text-xs text-night-100 mt-1">{{ film.duration }}</div>
+        
         <div class="flex gap-2 mt-1 sm:mt-2 flex-wrap">
             {% for genre in film.genre %} 
                 <div class="text-xs sm:text-sm rounded-lg px-1 py-0.5 sm:px-2 text-night-100 bg-night-400 font-semibold shadow-rim-sm drop-shadow-sm">{{ genre }}</div>

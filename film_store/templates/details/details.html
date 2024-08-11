@@ -153,26 +153,48 @@
 <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
     <h2 class="text-2xl font-bold tracking-wider">Review</h2>
     <p class="mt-1 mb-2">Write a review for this film</p>
-    <textarea class="px-4 py-4 mb-4 h-36 text-md" placeholder="Write your review here..."></textarea>
-    <button class="ease-out-back xxs:max-w-56 h-full shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center" id="purchase-button">
-        <img src="https://api.iconify.design/ic/round-rate-review.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
-        <div class="text-lg">Post</div>
-    </button>
+
+    {% if review.review %}
+        <textarea class="px-4 py-4 mb-4 text-md min-h-36 ease-linear" placeholder={{review.review}}></textarea>
+    {% else %}
+        <textarea class="px-4 py-4 mb-4 text-md min-h-36 ease-linear" placeholder="Write your review here..."></textarea>
+    {% endif %}
+
+    <form action="/details/{{film.id}}/review" method="post">
+        <button class="ease-out-back xxs:max-w-48 h-11 shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center">
+            <img src="https://api.iconify.design/ic/round-rate-review.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
+            {% if review.review %}
+                <div class="text-md">Update Review</div>
+            {% else %}
+                <div class="text-md">Post Review</div>
+            {% endif %}
+        </button>
+    </form>
 </div>
 
 <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
     <h2 class="text-2xl font-bold tracking-wider mb-2">Review From Other People</h2>
     
-    <div class="px-4 py-3 text-md bg-night-600 rounded-xl shadow-rim-sm drop-shadow-lg mt-4">
-        <div class="mb-2 font-bold tracking-wide text-lg">
-            Username
-            <div class="font-thin text-xs mb-1">{{ review.created_at }}</div>
-            {% include 'components/star-rating.html' with star=3 %}
+    {% for rev in all_review %}
+        <div class="px-4 py-3 text-md bg-night-600 rounded-xl shadow-rim-sm drop-shadow-lg mt-4">
+            <div class="grid grid-cols-2">
+                <div class="font-bold tracking-wide text-lg">{{ rev.user.username }}</div>
+                <div class="font-thin text-xs mb-1 text-end">{{ rev.updated_at }}</div>
+            </div>
+            {% include 'components/star-rating.html' with star=rev.rating %}
+            <div class="h-1"></div>
+            
+            {{ rev.review }}
         </div>
+    {% endfor %}
+
+    {% if all_review %}
+    {% else %}
+        <div class="text-center text-lg font-semibold text-white">No review yet</div>
+        <div class="text-center text-sm text-white">Be the first to write a review!</div>
+    {% endif %}
 
 
-        Lorem ipsum odor amet, consectetuer adipiscing elit. Ipsum nunc placerat proin; cras venenatis rhoncus feugiat. Et venenatis turpis vulputate praesent, convallis quisque. Primis dignissim mauris mauris cras in rutrum nam parturient nullam. Felis consequat in rhoncus feugiat aliquam sapien primis eros. Volutpat auctor porttitor tempus sollicitudin amet natoque scelerisque donec.
-    </div>
 </div>
 
 

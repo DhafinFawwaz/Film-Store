@@ -55,13 +55,20 @@ class Details(ProtectedView):
         # check if film is in wishlist
         context['in_wishlist'] = user.wishlist_films.filter(id=film.id).exists()
 
-        # find review
+        # my review
         review = Review.objects.filter(film=film, user=user)
         if review.exists():
             review = review.first()
             review = ReviewSerializer(review).data
             review['created_at'] = format_date_from_str(review['created_at'])
             context['review'] = review
+
+        # all reviews
+        reviews = Review.objects.filter(film=film).exclude(review__isnull=True)
+        reviews = ReviewSerializer(reviews, many=True).data
+        for review in reviews:
+            review['updated_at'] = format_date_from_str(review['updated_at'])
+        context['all_review'] = reviews
 
         # Calculate average rating
         reviews = Review.objects.filter(film=film)

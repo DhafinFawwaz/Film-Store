@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ValidationError
-from .models import GeneralUser, Genre, Film
+from .models import GeneralUser, Genre, Film, Review
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import make_password
 import re
@@ -107,10 +107,10 @@ class FilmResponseSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.Serializer):
 
     rating = serializers.IntegerField(required=True)
-    review = serializers.CharField(required=True)
+    review = serializers.CharField(required=False)
     created_at = serializers.DateTimeField()
     updated_at = serializers.DateTimeField()
 
     class Meta:
-        model = Film
+        model = Review
         fields = ["rating", "review", "created_at", "updated_at"]
