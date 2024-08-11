@@ -103,3 +103,14 @@ class FilmResponseSerializer(serializers.ModelSerializer):
         representation.pop('video')
         representation.pop('cover_image')
         return representation
+
+class ReviewSerializer(serializers.Serializer):
+
+    rating = serializers.IntegerField(required=True)
+    review = serializers.CharField(required=True)
+    created_at = serializers.DateTimeField()
+    updated_at = serializers.DateTimeField()
+
+    class Meta:
+        model = Film
+        fields = ["rating", "review", "created_at", "updated_at"]

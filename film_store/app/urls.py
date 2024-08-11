@@ -22,11 +22,12 @@ urlpatterns = [
     
     path('', film_views.Browse.as_view()),    
     path('wishlist', film_views.Wishlist.as_view()),
-    path('review', film_views.Review.as_view()),
+    path('review', film_views.ReviewView.as_view()),
     path('bought', film_views.Bought.as_view()),
     path('details/<int:id>', film_views.Details.as_view()),
     path('details/<int:id>/buy', film_views.BuyFilm.as_view()),
     path('details/<int:id>/wish', film_views.WishlistFilm.as_view()),
+    path('details/<int:id>/rate', film_views.Rate.as_view()),
 
 
 
@@ -37,7 +38,7 @@ urlpatterns = [
     path('self', auth.self),
 
     path('users', user.get_all_users),
-    path('user/<int:id>', user.get_user_by_id),
+    path('users/<int:id>', user.get_user_by_id),
     path('users/<int:id>/balance', user.increment_user_balance_by_id),
     path('users/<int:id>', user.delete_user_by_id),
 

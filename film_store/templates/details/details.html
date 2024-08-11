@@ -55,11 +55,11 @@
 
 {% include 'components/back-button.html' with url="/" %}
 
-<div class="grid gap-4 sm:gap-6 sm:grid-cols-2">
+<div class="grid gap-4 sm:gap-4 sm:grid-cols-2">
     <div class="w-full h-64 sm:h-80 overflow-hidden">
         <img src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full"></img>
     </div>
-    <div class="text-white flex flex-col justify-between">
+    <div class="text-white flex flex-col justify-between bg-night-800 rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
         <div>
             <div class="flex gap-x-2 flex-wrap">
                 <h1 class="text-3xl font-bold mb-1 tracking-wider">{{ film.title }}</h1>
@@ -68,21 +68,24 @@
             <div class="font-light text-xs sm:text-sm text-night-100">Directed by {{ film.director }}</div>
             
             <div class="font-light text-xs text-night-100 mt-1">{{ film.duration }}</div>
-            <div class="flex gap-2 mt-1 sm:mt-2 flex-wrap">
+            <div class="flex gap-2 mt-2 mb-4 sm:mt-2 flex-wrap">
                 {% for genre in film.genre %} 
                     <div class="text-xs sm:text-sm rounded-lg px-1 py-0.5 sm:px-2 text-night-100 bg-night-400 font-semibold shadow-rim-sm drop-shadow-sm">{{ genre }}</div>
                 {% endfor %} 
             </div>
 
+            {% include 'components/star-rating.html' with star=avg_rating %}
+
             <div class="flex font-bold text-sm mt-2 mb-4 flex-col">
                 <div>🪙 {{ film.price }}</div>
             </div>
+
         </div>
 
         <div>
 
             {% if is_purchased %}
-                <a target="_blank" href="{{ film.video_url }}" class="focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 dark:text-slate-50 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed tracking-wider flex justify-center gap-2 shadow-rim-md drop-shadow-sm hover:text-white focus:text-white ease-out-back">
+                <a target="_blank" href="{{ film.video_url }}" class="focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed tracking-wider flex justify-center gap-2 shadow-rim-md drop-shadow-sm hover:text-white focus:text-white ease-out-back">
                     <img src="https://api.iconify.design/bi/play-fill.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150">
                     <div class="text-lg">Watch</div>
                 </a>
@@ -114,7 +117,7 @@
                     {% endif %}
 
 
-                    <button class="ease-out-back h-full shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-green-500 hover:bg-green-600 focus:ring-green-500" id="purchase-button">
+                    <button class="ease-out-back h-full shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center bg-green-500 hover:bg-green-600 focus:ring-green-500" id="purchase-button">
                         <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
                         <div class="text-lg">Purchase</div>
                     </button>
@@ -124,9 +127,54 @@
         </div>
     </div>
 </div>
-<p class="font-normal mt-4">{{ film.description }}</p>
 
-<h1 class="text-2xl font-bold mb-1 mt-4 tracking-wider">Reviews</h1>
+<div class="grid xxs:grid-cols-2 mt-4 gap-4">
+    <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
+        <h2 class="text-2xl font-bold tracking-wider">About</h2>
+        <p class="font-normal">{{ film.description }}</p>
+    </div>
+    <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
+        <h2 class="text-2xl font-bold tracking-wider">Rate</h2>
+        <p class="mb-1">Give this film a rate</p>
+        
+        {% if review %}
+            {% with clickable=1 rate=review.rating %}
+                {% include 'components/star-rating.html' %}
+            {% endwith %}
+        {% else %}
+            {% with clickable=1 rate=0 %}
+                {% include 'components/star-rating.html' %}
+            {% endwith %}
+        {% endif %}
+    </div>
+    
+</div>
+
+<div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
+    <h2 class="text-2xl font-bold tracking-wider">Review</h2>
+    <p class="mt-1 mb-2">Write a review for this film</p>
+    <textarea class="px-4 py-4 mb-4 h-36 text-md" placeholder="Write your review here..."></textarea>
+    <button class="ease-out-back xxs:max-w-56 h-full shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center" id="purchase-button">
+        <img src="https://api.iconify.design/ic/round-rate-review.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
+        <div class="text-lg">Post</div>
+    </button>
+</div>
+
+<div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
+    <h2 class="text-2xl font-bold tracking-wider mb-2">Review From Other People</h2>
+    
+    <div class="px-4 py-3 text-md bg-night-600 rounded-xl shadow-rim-sm drop-shadow-lg mt-4">
+        <div class="mb-2 font-bold tracking-wide text-lg">
+            Username
+            <div class="font-thin text-xs mb-1">{{ review.created_at }}</div>
+            {% include 'components/star-rating.html' with star=3 %}
+        </div>
+
+
+        Lorem ipsum odor amet, consectetuer adipiscing elit. Ipsum nunc placerat proin; cras venenatis rhoncus feugiat. Et venenatis turpis vulputate praesent, convallis quisque. Primis dignissim mauris mauris cras in rutrum nam parturient nullam. Felis consequat in rhoncus feugiat aliquam sapien primis eros. Volutpat auctor porttitor tempus sollicitudin amet natoque scelerisque donec.
+    </div>
+</div>
+
 
 {% endblock %}
         

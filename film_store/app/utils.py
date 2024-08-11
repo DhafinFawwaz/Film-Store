@@ -1,3 +1,5 @@
+import datetime
+
 # seconds to hh:mm:ss
 def duration_to_format(duration):
     hours = duration // 3600
@@ -10,3 +12,7 @@ def duration_to_format(duration):
     if seconds < 10:
         seconds = f'0{seconds}'
     return f'{hours}:{minutes}:{seconds}'
+
+def format_date_from_str(date_str: str):
+    date = datetime.datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
+    return date.strftime('%d %b %Y %I:%M %p')
