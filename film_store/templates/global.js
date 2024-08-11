@@ -1,3 +1,5 @@
+(() => {
+
 // Loading bar & submit button disable
 loadingDiv = document.getElementById('loading-bar');
 const submitButtom = document.querySelectorAll('input[type="submit"]');
@@ -115,3 +117,5 @@ if (toastCloseButton) {
     }
   });
 }
+
+})()

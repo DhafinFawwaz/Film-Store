@@ -48,6 +48,7 @@ class Details(ProtectedView):
         film = FilmResponseSerializer(film).data
         film['duration'] = duration_to_format(film['duration'])
         context['film'] = film
+        context['balance_left_if_purchased'] = request.user.balance - film['price']
 
         # TODO: Check if purchased. If purchased, show watch button. If not, show purchase button.
         return render(request, self.template_name, context)

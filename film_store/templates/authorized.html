@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
+
+
 {% block main %}
+
+{% block top-content %}
+{% endblock %}
+
 <!-- Navbar -->
 <div class="fixed z-20 drop-shadow-lg py-4 px-4 h-17 bg-night-900 w-full flex justify-center">
   <div class="h-full border md:mt-0 sm:max-w-4xl xl:p-0 border-none flex gap-4 w-full relative">
@@ -72,6 +78,7 @@
 
 {% block js %}
 <script>
+(() => {
   navMenuButton = document.getElementById('nav-button');
   navMenu = document.getElementById('nav-menu');
   navMenuButton.addEventListener('click', () => {
@@ -89,7 +96,12 @@
       navMenu.classList.add('invisible');
     }
   }
+})();
 </script>
+
+{% block authorized-js %}
+{% endblock %}
+
 {% endblock %}
 
 

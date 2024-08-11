@@ -41,4 +41,4 @@
 </section>
 {% endblock %}
 
-{% block js %}<script> window.history.replaceState(null, null, '/register');</script>{% endblock %}
+{% block js %}<script> (() => {window.history.replaceState(null, null, '/register');})();</script>{% endblock %}

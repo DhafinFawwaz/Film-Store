@@ -57,7 +57,8 @@ module.exports = {
             },
             boxShadow: {
                 'rim-sm': 'inset 0 1px 0 0 #ffffff0d;',
-                'rim-md': 'inset 0 1px 0 0 #ffffff22;'
+                'rim-md': 'inset 0 1px 0 0 #ffffff22;',
+                'rim-lg': 'inset 0 1px 0 0 #ffffff66;'
             },
             screens: {
                 'xxs': '576px'
