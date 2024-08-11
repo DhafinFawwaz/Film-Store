@@ -36,8 +36,6 @@ class Browse(ProtectedView):
         context['films'] = films
         return render(request, self.template_name, context)
 
-    
-
 class Details(ProtectedView):
     template_name = 'details/details.html'
 

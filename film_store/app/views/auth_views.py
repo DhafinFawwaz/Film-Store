@@ -85,7 +85,6 @@ class Logout(ProtectedView):
 
 class Profile(ProtectedView):
     template_name = 'profile/profile.html'
-
     def get(self, request, *args, **kwargs):
         context = {}
         user = self.request.user

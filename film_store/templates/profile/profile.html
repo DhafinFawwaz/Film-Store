@@ -1,33 +1,53 @@
 {% extends "authorized.html" %}
 
+
 {% block main-content %}
 {% include 'components/back-button.html' with url="/" %}
 
-<h1 class="text-2xl font-bold mb-3 tracking-wider text-center">Hello {{ user.username }} !</h1>
-<div class="gap-2 flex flex-col">
-    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
-        Username: {{ user.username }}
-    </div>
-    
-    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
-        Email: {{ user.email }}
-    </div>
-    
-    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
-        Balance: {{ user.balance }}
-    </div>
-    
-    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
-        First Name: {{ user.first_name }}
-    </div>
-    
-    <div class="text-md mb-1 tracking-wider bg-night-800 px-4 py-2 rounded-xl">
-        Last Name: {{ user.last_name }}
-    </div>
+<section class="xxs:bg-night-900 bg-night-800 justify-center rounded-2xl xxs:shadow-none xxs:drop-shadow-none shadow-rim-sm drop-shadow-md">
+    <div class="flex flex-col w-full h-full items-center justify-center p-5 mx-auto rounded-2xl">
+        <div class="w-full rounded-2xl border xxs:max-w-2xl bg-night-800 border-none shadow-none xxs:shadow-rim-sm xxs:drop-shadow-md">
+            <div class="xxs:p-8 xxs:pt-6">
+                <h1 class="mb-4 text-xl xxs:text-2xl font-bold leading-tight md:text-2xl text-white justify-center flex">
+                    Hello {{ user.username }}
+                </h1>
+                <form class="gap-y-2 xxs:grid xxs:grid-cols-2 gap-x-4 mt-0"  method="POST" novalidate action="/signout">
+                    {% csrf_token %}
+                        
+                    <div class="relative">
+                        <img src="https://api.iconify.design/mdi/user.svg?color=%2354565c" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
+                        <div class="text-night-100">Username</div>                        
+                        <div class="appearance-none sm:text-sm rounded-xl w-full p-2.5 bg-night-600 border-2 placeholder-night-400 duration-200 drop-shadow-sm ease-out-back h-12 border-none pl-12 flex items-center text-night-100">{{user.username}}</div>                        
+                    </div>
+                    <div class="relative">
+                        <img src="https://api.iconify.design/mdi/user.svg?color=%2354565c" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
+                        <div class="text-night-100">Email</div>                        
+                        <div class="appearance-none sm:text-sm rounded-xl w-full p-2.5 bg-night-600 border-2 placeholder-night-400 duration-200 drop-shadow-sm ease-out-back h-12 border-none pl-12 flex items-center text-night-100">{{user.email}}</div>                        
+                    </div>
+                    <div class="relative">
+                        <img src="https://api.iconify.design/mdi/user.svg?color=%2354565c" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
+                        <div class="text-night-100">First Name</div>                        
+                        <div class="appearance-none sm:text-sm rounded-xl w-full p-2.5 bg-night-600 border-2 placeholder-night-400 duration-200 drop-shadow-sm ease-out-back h-12 border-none pl-12 flex items-center text-night-100">{{user.first_name}}</div>                        
+                    </div>
+                    <div class="relative">
+                        <img src="https://api.iconify.design/mdi/user.svg?color=%2354565c" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
+                        <div class="text-night-100">Last Name</div>                        
+                        <div class="appearance-none sm:text-sm rounded-xl w-full p-2.5 bg-night-600 border-2 placeholder-night-400 duration-200 drop-shadow-sm ease-out-back h-12 border-none pl-12 flex items-center text-night-100">{{user.last_name}}</div>                        
+                    </div>
+                    <div class="relative">
+                        <img src="https://api.iconify.design/ion/wallet-sharp.svg?color=%2354565c" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
+                        <div class="text-night-100">Balance</div>                        
+                        <div class="appearance-none sm:text-sm rounded-xl w-full p-2.5 bg-night-600 border-2 placeholder-night-400 duration-200 drop-shadow-sm ease-out-back h-12 border-none pl-12 flex items-center text-night-100">🪙 {{user.balance}}</div>                        
+                    </div>
+                    
 
-</div>
-
+                    <div class="h-2 sm:h-0"></div>
+                    <input type="submit" value="Logout" class="col-span-2 mt-4 ease-out-back-little !bg-red-600 hover:!bg-red-700 focus:!bg-red-800 focus:!ring-red-600"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
-        
     
 
