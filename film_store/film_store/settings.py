@@ -221,3 +221,9 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://labpro-fe.hmif.dev/"
 ]
+
+if os.environ.get('USE_SUPABASE'):
+    DEFAULT_FILE_STORAGE = 'film_store.storage.SupabaseStorage'
+    SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
+    SUPABASE_URL = os.environ.get('SUPABASE_URL')
+    SUPABASE_ROOT_PATH = '/'

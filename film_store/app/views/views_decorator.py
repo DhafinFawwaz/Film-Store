@@ -18,7 +18,7 @@ def protected(view_func):
     
     return _wrapped_view
 
-def public(view_func):
+def unauthorized(view_func):
     @wraps(view_func)
     def _wrapped_view(*args, **kwargs):
         request = extract_request_from_args(args)
@@ -30,3 +30,12 @@ def public(view_func):
     
     return _wrapped_view
 
+def public(view_func):
+    @wraps(view_func)
+    def _wrapped_view(*args, **kwargs):
+        request = extract_request_from_args(args)
+        try: populate_user_from_request(request)
+        except Exception as e: request.user = None
+        return view_func(*args, **kwargs)
+    
+    return _wrapped_view

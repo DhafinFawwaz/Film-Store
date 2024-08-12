@@ -10,6 +10,7 @@ from typing import List
 from app.api.route_decorator import protected
 from rest_framework.decorators import api_view
 from app.models import GeneralUser
+import os
 
 class APIFilm(APIView):
 
@@ -34,6 +35,7 @@ class APIFilm(APIView):
             video = request.data.get("video"),
             cover_image = request.data.get("cover_image"),
         )
+
         new_film.save()
 
         genre_list = request.POST.getlist("genre")
@@ -62,12 +64,12 @@ class APIFilm(APIView):
 
         film_serializer = FilmResponseSerializer(film_list, many=True)
 
-        # prefix host to video_url and cover_image_url
-        # change this if we're going to use cloud storage
-        for film in film_serializer.data:
-            film["video_url"] = request.build_absolute_uri(film["video_url"])
-            if film["cover_image_url"] is not None:
-                film["cover_image_url"] = request.build_absolute_uri(film["cover_image_url"])
+        # prefix host to video_url and cover_image_url if not using Supabase
+        if os.getenv("SUPABASE_KEY") is None:
+            for film in film_serializer.data:
+                film["video_url"] = request.build_absolute_uri(film["video_url"])
+                if film["cover_image_url"] is not None:
+                    film["cover_image_url"] = request.build_absolute_uri(film["cover_image_url"])
 
         return APIResponse(film_serializer.data)
         

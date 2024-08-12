@@ -28,6 +28,8 @@ urlpatterns = [
     path('details/<int:id>/buy', film_views.BuyFilm.as_view()),
     path('details/<int:id>/wish', film_views.WishlistFilm.as_view()),
     path('details/<int:id>/rate', film_views.Rate.as_view()),
+    path('details/<int:id>/review', film_views.ReviewView.as_view()),
+    path('details/<int:id>/watch', film_views.Watch.as_view()),
 
 
 

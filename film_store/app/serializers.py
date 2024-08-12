@@ -105,7 +105,7 @@ class FilmResponseSerializer(serializers.ModelSerializer):
         return representation
 
 class ReviewSerializer(serializers.Serializer):
-
+    user = GeneralUserSerializer(required=True)
     rating = serializers.IntegerField(required=True)
     review = serializers.CharField(required=False)
     created_at = serializers.DateTimeField()
@@ -113,4 +113,4 @@ class ReviewSerializer(serializers.Serializer):
 
     class Meta:
         model = Review
-        fields = ["rating", "review", "created_at", "updated_at"]
+        fields = ["rating", "review", "created_at", "updated_at", "user"]

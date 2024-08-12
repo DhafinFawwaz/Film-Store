@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from .. import forms
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
-from app.views.views_class import PublicView, ProtectedView
+from app.views.views_class import UnauthorizedView, ProtectedView
 from app.utils import duration_to_format, format_date_from_str
 
 class Browse(ProtectedView):
@@ -75,7 +75,7 @@ class Details(ProtectedView):
         if reviews.exists():
             rating = 0
             for review in reviews:
-                rating += review.rating
+                rating += review.rating if review.rating else 0
             rating = rating / reviews.count()
             rating = round(rating, 2)
             context['avg_rating'] = rating
@@ -197,34 +197,15 @@ class Wishlist(ProtectedView):
 class ReviewView(ProtectedView):
     template_name = 'review/review.html'
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        film_id = kwargs['id']
-
-        film = Film.objects.get(id=film_id) # TODO: Handle exception
-        film = FilmResponseSerializer(film).data 
-        context['film'] = film
-
-        user = self.request.user
-        user = GeneralUser.objects.get(id=user.id) # TODO: Handle exception
-        context['user'] = user
-
-        user_review = Review.objects.filter(film=film, user=user) # TODO: Handle case where user has not reviewed the film, or review text is null, or rating is null
-        all_reviews = Review.objects.filter(film=film)
-        context['user_review'] = user_review
-        context['all_reviews'] = all_reviews
-
-        return render(request, self.template_name, context)
-
-class Rate(ProtectedView):
     def post(self, request, *args, **kwargs):
         context = {}
-        rate = request.POST['rating']
-        if rate not in ['1', '2', '3', '4', '5']:
-            messages.error(request, 'Invalid Rating', extra_tags='Rating should be between 1 and 5')
-            return redirect(f'/details/{kwargs["id"]}')
-        
         film_id = kwargs['id']
+        review_text = request.POST['review']
+        if not review_text or review_text == '': 
+            messages.error(request, 'Invalid Review', extra_tags='Review should not be empty')
+            return redirect(f'/details/{film_id}')
+
+        
         film: Film = None
         try: film = Film.objects.get(id=film_id)
         except Film.DoesNotExist:
@@ -235,8 +216,39 @@ class Rate(ProtectedView):
         review = Review.objects.filter(film=film, user=user)
         if review.exists():
             review = review.first()
+            if review.review: messages.success(request, 'Review Updated', extra_tags='Your review was updated')
+            else: messages.success(request, 'Review Added', extra_tags='Your review was added')
+            review.review = review_text
+            review.save()
+        else:
+            review = Review.objects.create(film=film, user=user, review=review_text)
+            messages.success(request, 'Review Added', extra_tags='Your review was added')
+            review.save()
+
+        return redirect(f'/details/{film_id}')
+
+class Rate(ProtectedView):
+    def post(self, request, *args, **kwargs):
+        context = {}
+        film_id = kwargs['id']
+        rate = request.POST['rating']
+        if rate not in ['1', '2', '3', '4', '5']:
+            messages.error(request, 'Invalid Rating', extra_tags='Rating should be between 1 and 5')
+            return redirect(f'/details/{film_id}')
+        
+        film: Film = None
+        try: film = Film.objects.get(id=film_id)
+        except Film.DoesNotExist:
+            messages.error(request, 'Film not found', extra_tags='The film you are looking for does not exist')
+            return redirect('/')
+        
+        user: GeneralUser = self.request.user
+        review = Review.objects.filter(film=film, user=user)
+        if review.exists():
+            review = review.first()
+            if review.rating: messages.success(request, 'Rating Updated', extra_tags='Your rating was updated')
+            else: messages.success(request, 'Rating Added', extra_tags='Your rating was added')
             review.rating = rate
-            messages.success(request, 'Rating Updated', extra_tags='Your rating was updated')
             review.save()
         else:
             review = Review.objects.create(film=film, user=user, rating=rate)
@@ -244,3 +256,26 @@ class Rate(ProtectedView):
             review.save()
 
         return redirect(f'/details/{kwargs["id"]}')
+
+class Watch(ProtectedView):
+    template_name = 'watch/watch.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        film_id = kwargs['id']
+        film: Film = None
+        try: film = Film.objects.get(id=film_id)
+        except Film.DoesNotExist:
+            messages.error(request, 'Film not found', extra_tags='The film you are looking for does not exist')
+            return redirect('/')
+        user: GeneralUser = self.request.user
+
+        # check if film is bought
+        if user.bought_films.filter(id=film.id).exists():
+            context['is_purchased'] = True
+        else:
+            messages.error(request, 'Film not Purchased', extra_tags='You need to purchase the film to watch it')
+            return redirect(f'/details/{film_id}')
+        film = FilmResponseSerializer(film).data
+        context['film'] = film
+        return render(request, self.template_name, context)

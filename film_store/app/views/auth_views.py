@@ -7,11 +7,11 @@ from django.shortcuts import redirect, render
 from .. import forms
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
-from app.views.views_class import PublicView, ProtectedView
+from app.views.views_class import UnauthorizedView, ProtectedView
 from django.http import HttpResponseNotAllowed
 from app.auth.jwt import JWT
 
-class Register(PublicView):
+class Register(UnauthorizedView):
     form_class = forms.RegisterForm
     template_name = "register/register.html"
     
@@ -32,7 +32,7 @@ class Register(PublicView):
         
 
 
-class Login(PublicView):
+class Login(UnauthorizedView):
     form_class = forms.LoginForm
     template_name = "login/login.html"
 
