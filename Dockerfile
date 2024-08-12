@@ -40,6 +40,7 @@ RUN python film_store/manage.py tailwind build
 RUN python film_store/manage.py collectstatic --noinput
 RUN python film_store/manage.py makemigrations && \
     python film_store/manage.py migrate && \
+    python film_store/manage.py seed_if_no_superuser && \
     python film_store/manage.py create_superuser_if_not_exists
 
 # Nginx

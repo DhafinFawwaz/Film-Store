@@ -38,7 +38,6 @@ def clear_db():
 
 def start_seeding():
     dataset = json.load(open("dataset/dataset.json"))
-    clear_db()
 
     print("Seeding genres...")
     for genre in dataset["genre"]:
@@ -52,11 +51,11 @@ def start_seeding():
         director = film['director']
         release_year = film['datePublished']
         release_year = datetime.strptime(release_year, "%Y-%m-%d")
-        release_year  = release_year.year
+        release_year  = release_year.year; release_year = int(release_year) if release_year else None
 
         genre_list = film['genre']
-        price = film['price']
-        duration = film['duration']
+        price = film['price']; price = int(price) if price else None
+        duration = film['duration']; duration = int(duration) if duration else None
         video = open(film['video'], 'rb')
         cover_image = open(film['image'], 'rb')
         
@@ -114,7 +113,7 @@ def start_seeding():
         film = rev['film']
         user = rev['username']
         text = rev['review']
-        rating = rev['rating']
+        rating = rev['rating']; rating = int(rating) if rating else None
         created_at = rev['created_at']
         created_at = datetime.strptime(created_at, "%Y-%m-%d %H:%M:%S")
 
