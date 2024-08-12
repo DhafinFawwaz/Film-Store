@@ -7,6 +7,9 @@ film_store/media/videos/*
 !film_store/media/videos/.gitkeep
 film_store/static
 film_store/theme/static
+output.json
+dataset
+dataset.zip
 
 
 # Created by https://www.gitignore.io

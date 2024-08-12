@@ -2,7 +2,6 @@ from django.urls import path
 from app.api import auth
 from app.api import user
 from app.api.films import APIFilm, APIFilmDetail
-from app.api import seed
 from .views import auth_views, film_views
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render
@@ -46,8 +45,6 @@ urlpatterns = [
 
     path('films/<int:id>', APIFilmDetail.as_view()),
     path('films', APIFilm.as_view()),
-
-    path('seed', seed.seed_db),
 
 
 ]

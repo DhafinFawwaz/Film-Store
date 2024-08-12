@@ -227,3 +227,6 @@ if os.environ.get('USE_SUPABASE'):
     SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
     SUPABASE_URL = os.environ.get('SUPABASE_URL')
     SUPABASE_ROOT_PATH = '/'
+
+
+DATASET_URL = "https://drive.google.com/uc?export=download&id=1CNTrwGeE3EnWGQcF8OYGzmYjPVM3Bv19"
