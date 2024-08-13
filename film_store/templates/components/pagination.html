@@ -1,0 +1,23 @@
+<div class="mb-4 mt-4 flex gap-2 xxs:gap-4 justify-center">
+    {% if prev_page %}
+        <a href="/?page={{ prev_page }}" class="text-white font-bold rounded-xl bg-night-600 hover:bg-night-400 focus:bg-night-400 hover:scale-110 focus:scale-110 ease-out-back duration-150 cursor-pointer hover:text-white focus:ring-2 focus:text-white shadow-rim-sm  flex justify-center items-center w-9 h-9 xxs:w-10 xxs:h-10">
+            <img src="https://api.iconify.design/ooui/previous-ltr.svg?color=white" alt="">
+        </a>
+    {% endif %}
+
+    {% for page in elided_page %}
+        {% if page == current_page %}
+            <div class="font-bold rounded-xl bg-indigo-700 text-white cursor-not-allowed w-9 h-9 xxs:w-10 xxs:h-10 flex justify-center items-center">{{ page }}</div>
+        {% elif page == '…' %}
+            <div class="font-bold rounded-xl bg-night-700 text-night-200 cursor-not-allowed w-9 h-9 xxs:w-10 xxs:h-10 flex justify-center items-center">{{ page }}</div>
+        {% else %}
+            <a href="/?page={{ page }}" class="text-white font-bold rounded-xl bg-night-600 hover:bg-night-400 focus:bg-night-400 hover:scale-110 focus:scale-110 ease-out-back duration-150 cursor-pointer hover:text-white focus:ring-2 focus:text-white shadow-rim-sm w-9 h-9 xxs:w-10 xxs:h-10 flex justify-center items-center">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+    
+    {% if next_page %}
+        <a href="/?page={{ next_page }}" class="text-white font-bold rounded-xl bg-night-600 hover:bg-night-400 focus:bg-night-400 hover:scale-110 focus:scale-110 ease-out-back duration-150 cursor-pointer hover:text-white focus:ring-2 focus:text-white shadow-rim-sm w-9 h-9 xxs:w-10 xxs:h-10 flex justify-center items-center">
+            <img src="https://api.iconify.design/ooui/previous-rtl.svg?color=white" alt="">
+        </a>
+    {% endif %}
+</div>

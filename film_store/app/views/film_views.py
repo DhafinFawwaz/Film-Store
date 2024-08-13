@@ -9,9 +9,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from app.views.views_class import UnauthorizedView, ProtectedView
 from app.utils import duration_to_format, format_date_from_str
+from django.core.paginator import Paginator
 
 class Browse(ProtectedView):
     template_name = 'browse/browse.html'
+    max_genre = 4
 
     def get_recommendations(self, user):
         return Film.objects.all()[:5]
@@ -28,10 +30,28 @@ class Browse(ProtectedView):
             context['query'] = query
             return render(request, self.template_name, context)
 
-        films = Film.objects.all()
+        films = Film.objects.all().order_by('-release_year')
+        
+
+        paginator = Paginator(films, 8)
+        page = 1
+        if 'page' in self.request.GET:
+            page = int(self.request.GET['page'])
+        films = paginator.get_page(page)
+        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
+
+        context['elided_page'] = elided_page
+        context['prev_page'] = page - 1 if page > 1 else None
+        context['next_page'] = page + 1 if page < paginator.num_pages else None
+        context['current_page'] = page
+
+
         films = FilmResponseSerializer(films, many=True).data
         for film in films:
             film['duration'] = duration_to_format(film['duration'])
+            if len(film['genre']) > self.max_genre:
+                film['genre'] = film['genre'][:self.max_genre]
+                film['genre'].append('...')
 
         context['films'] = films
         return render(request, self.template_name, context)

@@ -130,11 +130,17 @@
 
 <div class="grid xxs:grid-cols-2 mt-4 gap-4">
     <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
-        <h2 class="text-2xl font-bold tracking-wider">About</h2>
+        <h2 class="text-2xl font-bold tracking-wider flex gap-3">
+            <img src="https://api.iconify.design/mdi/about.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150">
+            About
+        </h2>
         <p class="font-normal">{{ film.description }}</p>
     </div>
     <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
-        <h2 class="text-2xl font-bold tracking-wider">Rate</h2>
+        <h2 class="text-2xl font-bold tracking-wider flex gap-3">
+            <img src="https://api.iconify.design/fluent/star-edit-20-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150">
+            Rate
+        </h2>
         <p class="mb-1">Give this film a rate</p>
         
         {% if review %}
@@ -151,7 +157,10 @@
 </div>
 
 <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
-    <h2 class="text-2xl font-bold tracking-wider">Review</h2>
+    <h2 class="text-2xl font-bold tracking-wider flex gap-3">
+        <img src="https://api.iconify.design/octicon/code-review-16.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-125">
+        Review
+    </h2>
     <p class="mt-1 mb-2">Write a review for this film</p>
     
 
@@ -176,7 +185,10 @@
 </div>
 
 <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
-    <h2 class="text-2xl font-bold tracking-wider mb-2">Review From Other People</h2>
+    <h2 class="text-xl xxs:text-2xl font-bold tracking-wider mb-2 flex gap-3">
+        <img src="https://api.iconify.design/fluent/people-48-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150 translate-y-[1px]">
+        Review From Other People
+    </h2>
     
     {% for rev in all_review %}
         <div class="px-4 py-3 text-md bg-night-600 rounded-xl shadow-rim-sm drop-shadow-lg mt-4">

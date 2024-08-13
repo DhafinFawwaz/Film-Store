@@ -11,11 +11,15 @@
             <a class="text-md underline" href="/">Browse Film</a>
         </div>
     {% else %}
-        <div id="results" class="gap-4 xm:flex sm:flex-wrap grid grid-cols-2 xxs:grid-cols-3 md:grid-cols-4">
+        <div id="results" class="gap-4 xm:flex sm:flex-wrap grid grid-cols-2 xxs:grid-cols-3 md:grid-cols-4 mb-4">
         {% for film in films %} 
             {% include 'components/film-card.html' with film=film %}
         {% endfor %} 
         </div> 
+
+        {% include 'components/pagination.html' %}
+        <!-- Gotta give some space for the overlay balance -->
+        <div class="h-12"></div> 
     {% endif %}
 {% endblock %}
         

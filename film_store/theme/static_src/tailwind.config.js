@@ -56,6 +56,8 @@ module.exports = {
             height: {
                 '17': '4.25rem',
                 '18': '4.5rem',
+
+                '88': '22rem',
             },
             boxShadow: {
                 'rim-sm': 'inset 0 1px 0 0 #ffffff0d;',

@@ -17,6 +17,7 @@ class APIResponse(Response):
     def error(self, message: str):
         self.data["status"] = "error"
         self.data["message"] = message
+        self.data["data"] = None
         return self
     
     def set_status(self, status_code: status = status.HTTP_400_BAD_REQUEST):
