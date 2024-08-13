@@ -1,6 +1,12 @@
 {% extends "authorized.html" %}
 
 {% block top-content %}
+<!-- blured transparent background -->
+<div class="w-full h-full fixed">
+    <img src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full blur-lg opacity-15"></img>
+</div>
+
+<!-- dialog -->
 <div id="dialog" class="fixed z-20 px-4 w-full h-full flex justify-center items-center invisible opacity-0 duration-150">
     <div id="dialog-dark" class="fixed bg-black w-full h-full opacity-50">
     </div>
@@ -90,7 +96,7 @@
                     <div class="text-lg">Watch</div>
                 </a>
             {% else %}
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-4">
                     
                     {% if in_wishlist %}
                         <form action="/details/{{film.id}}/wish" method="post">
@@ -98,9 +104,9 @@
                             <!-- epic django trick to allow put -->
                             <input type="hidden" name="_method" value="delete">
 
-                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-full">
+                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11 px-1">
                                 <img src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-125">
-                                <div class="text-xs xxs:text-sm leading-3">Remove from Wishlist</div>
+                                <div class="text-xs xxs:text-sm leading-3 tracking-normal sm:text-lg lg:text-sm">Remove from Wishlist</div>
                             </button>
                         </form>
                     {% else %}
@@ -109,7 +115,7 @@
                             <!-- epic django trick to allow delete -->
                             <input type="hidden" name="_method" value="put"> 
 
-                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-full">
+                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11">
                                 <img src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-125">
                                 <div class="text-md">Add to Wishlist</div>
                             </button>
@@ -117,7 +123,7 @@
                     {% endif %}
 
 
-                    <button class="ease-out-back h-full shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center bg-green-500 hover:bg-green-600 focus:ring-green-500" id="purchase-button">
+                    <button class="ease-out-back shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center bg-green-500 hover:bg-green-600 focus:ring-green-500 h-11" id="purchase-button">
                         <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
                         <div class="text-lg">Purchase</div>
                     </button>
