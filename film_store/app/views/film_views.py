@@ -191,6 +191,7 @@ class WishlistFilm(ProtectedView):
 
 class Bought(ProtectedView):
     template_name = 'bought/bought.html'
+    max_genre = 4
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -199,11 +200,15 @@ class Bought(ProtectedView):
         films = FilmResponseSerializer(films, many=True).data
         for film in films:
             film['duration'] = duration_to_format(film['duration'])
+            if len(film['genre']) > self.max_genre:
+                film['genre'] = film['genre'][:self.max_genre]
+                film['genre'].append('...')
         context['films'] = films
         return render(request, self.template_name, context)
 
 class Wishlist(ProtectedView):
     template_name = 'wishlist/wishlist.html'
+    max_genre = 4
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -211,6 +216,11 @@ class Wishlist(ProtectedView):
         user: GeneralUser = self.request.user
         films = user.wishlist_films.all()
         films = FilmResponseSerializer(films, many=True).data
+        for film in films:
+            film['duration'] = duration_to_format(film['duration'])
+            if len(film['genre']) > self.max_genre:
+                film['genre'] = film['genre'][:self.max_genre]
+                film['genre'].append('...')
         context['films'] = films
         return render(request, self.template_name, context)
 
