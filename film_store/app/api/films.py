@@ -11,19 +11,33 @@ from app.api.route_decorator import protected
 from rest_framework.decorators import api_view
 from app.models import GeneralUser
 import os
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 class APIFilm(APIView):
+
+    def create_black_image():
+        img = Image.new('RGB', (1, 1), color='black')
+        buffer = BytesIO()
+        img.save(buffer, format='PNG')
+        return ContentFile(buffer.getvalue(), 'black.png')
 
     # /films
     @protected
     def post(self, request: Request, *args, **kwargs):
-
         film = FilmRequestSerializer(data=request.data)
         if not film.is_valid():
             return APIResponse().error(film.errors).set_status(status.HTTP_400_BAD_REQUEST)
         
         if request.data.get("video") is None:
             return APIResponse().error("video is required").set_status(status.HTTP_400_BAD_REQUEST)
+
+        cover_image = request.FILES.get("cover_image", None)
+        if not cover_image:
+            cover_image = APIFilm.create_black_image()
+            cover_image.name = f'{request.data.get("title")}-{cover_image.name}'
+
 
         new_film = Film(
             title = request.data.get("title"),
@@ -33,8 +47,9 @@ class APIFilm(APIView):
             price = request.data.get("price"),
             duration = request.data.get("duration"),
             video = request.data.get("video"),
-            cover_image = request.data.get("cover_image"),
+            cover_image = cover_image,
         )
+            
 
         new_film.save()
 
@@ -61,7 +76,6 @@ class APIFilm(APIView):
             film_list = Film.objects.filter(title__icontains=q)
         else:
             film_list = Film.objects.all()
-
         film_serializer = FilmResponseSerializer(film_list, many=True)
 
         # prefix host to video_url and cover_image_url if not using Supabase

@@ -70,7 +70,7 @@ class FilmRequestSerializer(serializers.ModelSerializer):
     price = serializers.DecimalField(max_digits=12, decimal_places=2)
     duration = serializers.IntegerField(required=True)
     video = serializers.FileField(required=True)
-    cover_image = serializers.ImageField()
+    cover_image = serializers.ImageField(required=False)
 
     class Meta:
         model = Film
