@@ -225,6 +225,7 @@
             const dialog = document.getElementById('dialog');
             const dialogBg = document.getElementById('dialog-bg');
             const dialogCancelButton = document.getElementById('dialog-cancel-button');
+            const dialogDark = document.getElementById('dialog-dark');
             purchaseButton.addEventListener('click', () => {
                 dialog.classList.remove('invisible');
                 dialog.classList.add('visible');
@@ -233,14 +234,17 @@
                 dialogBg.classList.remove('scale-75');
                 dialogBg.classList.add('scale-100');
 
-                dialogCancelButton.addEventListener('click', () => {
-                    dialog.classList.remove('visible');
-                    dialog.classList.add('invisible');
-                    dialog.classList.remove('opacity-100');
-                    dialog.classList.add('opacity-0');
-                    dialogBg.classList.remove('scale-100');
-                    dialogBg.classList.add('scale-75');
-                });
+            });
+            dialogCancelButton.addEventListener('click', () => {
+                dialog.classList.remove('visible');
+                dialog.classList.add('invisible');
+                dialog.classList.remove('opacity-100');
+                dialog.classList.add('opacity-0');
+                dialogBg.classList.remove('scale-100');
+                dialogBg.classList.add('scale-75');
+            });
+            dialogDark.addEventListener('click', () => {
+                dialogCancelButton.click();
             });
         }
     })()

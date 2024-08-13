@@ -8,6 +8,20 @@
 </div> -->
 
 <div>
+    {% if recommendations %} 
+        <div class="flex mb-4 gap-4">
+            <img class="scale-150 ml-2" src="https://api.iconify.design/mdi/film-open-star.svg?color=white" alt="">
+            <h1 class="text-3xl font-bold tracking-wider">Recommendations</h1>
+        </div>
+        <div id="results" class="gap-4 xm:flex sm:flex-wrap grid grid-cols-2 xxs:grid-cols-3 md:grid-cols-4"> 
+            {% for film in recommendations %} 
+                {% include 'components/film-card.html' with film=film %}
+            {% endfor %} 
+        </div> 
+        <hr class="h-px mt-8 mb-6 bg-night-500 border-0">
+    {% endif %} 
+
+    
     <div class="flex mb-4 gap-4">
         <img class="scale-150 ml-2" src="https://api.iconify.design/ion/telescope-sharp.svg?color=white" alt="">
         <h1 class="text-3xl font-bold tracking-wider">Explore Films</h1>
@@ -18,7 +32,14 @@
         {% endfor %} 
     </div> 
 
-    {% include 'components/pagination.html' %}
+    {% if films %}
+        {% include 'components/pagination.html' %}
+    {% else %}
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <p class="text-4xl font-bold w-64 xxs:w-96 tracking-wider">No film found</p>
+        </div>
+    {% endif %}
+
     <!-- Gotta give some space for the overlay balance -->
     <div class="h-12"></div> 
 </div>

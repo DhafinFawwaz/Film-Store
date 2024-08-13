@@ -15,7 +15,7 @@ services:
       - database
     volumes:
       - ./:/app
-    command: sh -c "python film_store/manage.py tailwind build && python film_store/manage.py collectstatic --noinput && python film_store/manage.py makemigrations && python film_store/manage.py migrate && python film_store/manage.py create_superuser_if_not_exists && python film_store/manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python film_store/manage.py tailwind build && python film_store/manage.py collectstatic --noinput && python film_store/manage.py makemigrations && python film_store/manage.py migrate && python film_store/manage.py seed_if_no_superuser && python film_store/manage.py create_superuser_if_not_exists && python film_store/manage.py runserver 0.0.0.0:8000"
 
       
   database:

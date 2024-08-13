@@ -10,29 +10,89 @@ from django.conf import settings
 from app.views.views_class import UnauthorizedView, ProtectedView
 from app.utils import duration_to_format, format_date_from_str, clamp
 from django.core.paginator import Paginator
-import math
+from django.db.models import Q, Count
 
 class Browse(ProtectedView):
     template_name = 'browse/browse.html'
     max_genre = 4
 
-    def get_recommendations(self, user):
-        return Film.objects.all()[:5]
+    def get_recommendations(self, user: GeneralUser):
+        # in bought, find the director with most films
+        # find other films by that director. This is a
 
-    
+        # in wishlist, find the director with most films
+        # find other films by that director and that film is not a. This is b
+
+        # in bought, find the genre with most films
+        # find other films by that genre and that film neither a not b. This is c
+
+        # in wishlist, find the genre with most films
+        # find other films by that genre and that film neither a not b not c. This is d
+
+        # combine a, b, c, d
+
+        # if the total is less than 4, then add random films to make it 4
+        # ensure that the films are not already in a, b, c, d
+        # also ensure that the films are not already bought by the user and not in the wishlist
+
+
+        recommendations = []
+        # a, bought - director
+        a_director = user.bought_films.values('director').annotate(count=Count('director')).order_by('-count').first()
+        if a_director:
+            a_films = Film.objects.filter(director=a_director['director']).exclude(id__in=user.bought_films.all()).exclude(id__in=user.wishlist_films.all())
+            recommendations.extend(a_films[:1])
+
+        # b, wishlist - director
+        b_director = user.wishlist_films.values('director').annotate(count=Count('director')).order_by('-count').first()
+        if b_director:
+            b_films = Film.objects.filter(director=b_director['director']).exclude(id__in=user.bought_films.all()).exclude(id__in=user.wishlist_films.all()).exclude(id__in=[film.id for film in recommendations])
+            recommendations.extend(b_films[:1])
+
+        # c, bought - genre
+        c_genre = user.bought_films.values('genre__id', 'genre__name').annotate(count=Count('genre')).order_by('-count').first()
+        if c_genre:
+            c_films = Film.objects.filter(genre__id=c_genre['genre__id']).exclude(id__in=user.bought_films.all()).exclude(id__in=user.wishlist_films.all()).exclude(id__in=[film.id for film in recommendations])
+            recommendations.extend(c_films[:1])
+
+        # d, wishlist - genre
+        d_genre = user.wishlist_films.values('genre__id', 'genre__name').annotate(count=Count('genre')).order_by('-count').first()
+        if d_genre:
+            d_films = Film.objects.filter(genre__id=d_genre['genre__id']).exclude(id__in=user.bought_films.all()).exclude(id__in=user.wishlist_films.all()).exclude(id__in=[film.id for film in recommendations])
+            recommendations.extend(d_films[:1])
+
+        # combine
+        if len(recommendations) < 4:
+            additional_films = Film.objects.exclude(id__in=user.bought_films.all()).exclude(id__in=user.wishlist_films.all()).exclude(id__in=[film.id for film in recommendations]).order_by('?')
+            slice_len = 4 - len(recommendations)
+            recommendations.extend(additional_films[:slice_len])
+
+        return recommendations
+
 
     def get(self, request, *args, **kwargs):
         context = {}
-        if 'q' in self.request.GET:
+        films = []
+        if 'q' in self.request.GET and self.request.GET['q'] != '':
             query = self.request.GET['q']
-            films = Film.objects.filter(title__icontains=query)
-            films = FilmResponseSerializer(films, many=True).data
-            context['films'] = films
+            films = Film.objects.filter(
+                Q(title__icontains=query) | Q(director__icontains=query)
+            ).order_by('-release_year')
             context['query'] = query
-            return render(request, self.template_name, context)
+        else:
+            films = Film.objects.all().order_by('-release_year')
 
-        films = Film.objects.all().order_by('-release_year')
-        
+        if 'q' not in self.request.GET :
+            page = self.request.GET.get('page')
+            if not page or page == '1':
+                recommendations = self.get_recommendations(self.request.user)
+                recommendations = FilmResponseSerializer(recommendations, many=True).data
+                for film in recommendations:
+                    film['duration'] = duration_to_format(film['duration'])
+                    if len(film['genre']) > self.max_genre:
+                        film['genre'] = film['genre'][:self.max_genre]
+                        film['genre'].append('...')
+                context['recommendations'] = recommendations
 
         paginator = Paginator(films, 8)
         page = 1
@@ -71,10 +131,7 @@ class Details(ProtectedView):
             return redirect('/')
         user: GeneralUser = self.request.user
 
-        # check if film is bought
         context['is_purchased'] = user.bought_films.filter(id=film.id).exists()
-
-        # check if film is in wishlist
         context['in_wishlist'] = user.wishlist_films.filter(id=film.id).exists()
 
         # my review

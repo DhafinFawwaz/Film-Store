@@ -1,6 +1,6 @@
 <div class="px-4 py-3 text-md bg-night-600 rounded-xl shadow-rim-sm drop-shadow-lg mt-4">
     <div class="grid grid-cols-2">
-        <div class="font-bold tracking-wide text-lg -translate-y-0.5">{{ review.user.username }}</div>
+        <div class="font-bold tracking-wide text-lg -translate-y-0.5">{{ review.user.first_name }} {{ review.user.last_name }}</div>
         <div class="font-thin text-xs mb-1 text-end">{{ review.updated_at }}</div>
     </div>
     {% if review.rating %}
