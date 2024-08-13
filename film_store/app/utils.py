@@ -16,3 +16,6 @@ def duration_to_format(duration):
 def format_date_from_str(date_str: str):
     date = datetime.datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
     return date.strftime('%d %b %Y %I:%M %p')
+
+def clamp(value, min_value, max_value):
+    return max(min(value, max_value), min_value)

@@ -38,7 +38,7 @@ class APILogin(APIView):
                     key = "token", 
                     value = token,
                     expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    secure = True,
+                    secure = False,
                     httponly = True,
                     samesite = False
                 )

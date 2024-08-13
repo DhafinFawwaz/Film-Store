@@ -1,12 +1,43 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "authorized.html" %}
 
-{% block style %}<link rel="stylesheet" href="{% static './review/review.css' %}">{% endblock %}
+{% block main-content %} 
 
-{% block main %} 
-<main>
-    <h1>Page</h1>  
-</main>
+{% with "/details/"|add:film.id as url %}
+    {% include 'components/back-button.html' %}
+{% endwith %}
+    
+<div>
+    <div class="flex mb-4 gap-4">
+        <img class="scale-150 ml-2 translate-y-0.5" src="https://api.iconify.design/ic/round-rate-review.svg?color=white" alt="">
+        <h1 class="text-3xl font-bold tracking-wider">Reviews</h1>
+    </div>
+
+    
+
+    {% if all_review %}
+        <div id="results"> 
+            {% for rev in all_review %} 
+                {% include 'components/review-card.html' with review=rev %}
+            {% endfor %} 
+        </div> 
+        {% with "details/"|add:film.id|add:"/review" as path %}
+            {% include 'components/pagination.html' with path=path %}
+        {% endwith %}
+    {% else %}
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <p class="text-2xl font-bold w-64 xxs:w-96">No review yet</p>
+            <p class="text-center text-sm text-white mt-2">Be the first to write a review!</p>
+        </div>
+    {% endif %}
+    
+    <!-- Gotta give some space for the overlay balance -->
+    <div class="h-12"></div> 
+</div>
+
+<!-- Gotta give some space for the overlay balance -->
+<div class="h-12"></div> 
+
 {% endblock %}
+        
+    
 
-{% block js %}<script src="{% static './review/review.js' %}"></script>{% endblock %}

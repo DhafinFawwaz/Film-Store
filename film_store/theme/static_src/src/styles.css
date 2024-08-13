@@ -68,3 +68,19 @@ h1 {
 h2 {
     @apply tracking-wider
 }
+
+::-webkit-scrollbar {
+    @apply w-3
+}
+
+::-webkit-scrollbar-track {
+  @apply rounded-xl bg-night-950
+}
+ 
+::-webkit-scrollbar-thumb {
+  @apply rounded-xl bg-night-400
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply rounded-xl bg-night-300
+}

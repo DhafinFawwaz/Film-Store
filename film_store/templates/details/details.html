@@ -22,13 +22,13 @@
 
             <div class="flex gap-4 mt-4">
                 <button id="dialog-cancel-button" class="bg-red-500 hover:bg-red-600 focus:ring-red-500 ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-1 justify-center">
-                    <img src="https://api.iconify.design/mdi/cancel-bold.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 ">
+                    <img src="https://api.iconify.design/mdi/cancel-bold.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-110 ">
                     Cancel
                 </button>
                 <form action="{{ film.id }}/buy" method="post" class="w-full">
                     {% csrf_token %}
                     <button type="submit" class="bg-green-500 hover:bg-green-600 focus:ring-green-500 ease-out-back shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center">
-                        <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
+                        <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-110 translate-y-[1px]">
                         Purchase
                     </button>
                 </form>
@@ -41,12 +41,12 @@
 
             <div class="flex gap-4 mt-4">
                 <button id="dialog-cancel-button" class="bg-red-500 hover:bg-red-600 focus:ring-red-500 ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-1 justify-center">
-                    <img src="https://api.iconify.design/mdi/cancel-bold.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 ">
+                    <img src="https://api.iconify.design/mdi/cancel-bold.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-110 ">
                     Cancel
                 </button>
                 {% csrf_token %}
                 <button disabled type="submit" class="ease-out-back shadow-rim-sm drop-shadow-sm flex items-center gap-2 justify-center">
-                    <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
+                    <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-110 translate-y-[1px]">
                     Purchase
                 </button>
             </div>
@@ -92,7 +92,7 @@
 
             {% if is_purchased %}
                 <a href="/details/{{film.id}}/watch" class="focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed tracking-wider flex justify-center gap-2 shadow-rim-md drop-shadow-sm hover:text-white focus:text-white ease-out-back">
-                    <img src="https://api.iconify.design/bi/play-fill.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150">
+                    <img src="https://api.iconify.design/bi/play-fill.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-150">
                     <div class="text-lg">Watch</div>
                 </a>
             {% else %}
@@ -105,7 +105,7 @@
                             <input type="hidden" name="_method" value="delete">
 
                             <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11 px-1">
-                                <img src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-125">
+                                <img src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-125">
                                 <div class="text-xs xxs:text-sm leading-3 tracking-normal sm:text-lg lg:text-sm">Remove from Wishlist</div>
                             </button>
                         </form>
@@ -115,16 +115,16 @@
                             <!-- epic django trick to allow delete -->
                             <input type="hidden" name="_method" value="put"> 
 
-                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11">
-                                <img src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-125">
-                                <div class="text-md">Add to Wishlist</div>
+                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 h-11 focus:scale-107 hover:scale-105">
+                                <img src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-125">
+                                <div class="text-sm xxs:text-md leading-4">Add to Wishlist</div>
                             </button>
                         </form>
                     {% endif %}
 
 
-                    <button class="ease-out-back shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center bg-green-500 hover:bg-green-600 focus:ring-green-500 h-11" id="purchase-button">
-                        <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
+                    <button class="ease-out-back shadow-rim-lg drop-shadow-sm flex items-center gap-2 justify-center bg-green-500 hover:bg-green-600 focus:bg-green-600 focus:ring-green-500 h-11 focus:scale-107 hover:scale-105" id="purchase-button">
+                        <img src="https://api.iconify.design/bxs/purchase-tag.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-110 translate-y-[1px]">
                         <div class="text-lg">Purchase</div>
                     </button>
 
@@ -137,14 +137,14 @@
 <div class="grid xxs:grid-cols-2 mt-4 gap-4">
     <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
         <h2 class="text-2xl font-bold tracking-wider flex gap-3">
-            <img src="https://api.iconify.design/mdi/about.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150">
+            <img src="https://api.iconify.design/mdi/about.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-150">
             About
         </h2>
         <p class="font-normal">{{ film.description }}</p>
     </div>
     <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
         <h2 class="text-2xl font-bold tracking-wider flex gap-3">
-            <img src="https://api.iconify.design/fluent/star-edit-20-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150">
+            <img src="https://api.iconify.design/fluent/star-edit-20-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-150">
             Rate
         </h2>
         <p class="mb-1">Give this film a rate</p>
@@ -164,7 +164,7 @@
 
 <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
     <h2 class="text-2xl font-bold tracking-wider flex gap-3">
-        <img src="https://api.iconify.design/octicon/code-review-16.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-125">
+        <img src="https://api.iconify.design/octicon/code-review-16.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-125">
         Review
     </h2>
     <p class="mt-1 mb-2">Write a review for this film</p>
@@ -179,8 +179,8 @@
     <form id="review-form" action="/details/{{film.id}}/review" method="post">
 
         {% csrf_token %}
-        <button class="ease-out-back xxs:max-w-48 h-11 shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center">
-            <img src="https://api.iconify.design/ic/round-rate-review.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-110 translate-y-[1px]">
+        <button class="ease-out-back xxs:max-w-48 h-11 shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center hover:scale-105 focus:scale-107">
+            <img src="https://api.iconify.design/ic/round-rate-review.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-110 translate-y-[1px]">
             {% if review.review %}
                 <div class="text-md">Update Review</div>
             {% else %}
@@ -192,31 +192,25 @@
 
 <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
     <h2 class="text-xl xxs:text-2xl font-bold tracking-wider mb-2 flex gap-3">
-        <img src="https://api.iconify.design/fluent/people-48-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-nonescale-50 scale-150 translate-y-[1px]">
+        <img src="https://api.iconify.design/fluent/people-48-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-150 translate-y-[1px]">
         Review From Other People
     </h2>
     
     {% for rev in all_review %}
-        <div class="px-4 py-3 text-md bg-night-600 rounded-xl shadow-rim-sm drop-shadow-lg mt-4">
-            <div class="grid grid-cols-2">
-                <div class="font-bold tracking-wide text-lg">{{ rev.user.username }}</div>
-                <div class="font-thin text-xs mb-1 text-end">{{ rev.updated_at }}</div>
-            </div>
-            {% if rev.rating %}
-                {% include 'components/star-rating.html' with star=rev.rating %}
-                <div class="h-1"></div>
-            {% endif %}
-            
-            {{ rev.review }}
-        </div>
+        {% include 'components/review-card.html' with review=rev %}
     {% endfor %}
 
     {% if all_review %}
+        <div class="w-full flex justify-end mb-8 mt-4">
+            <a href="/details/{{film.id}}/review" class="text-white font-bold rounded-xl px-4 h-11 bg-indigo-600 hover:bg-indigo-700 focus:bg-indigo-700 focus:ring-indigo-600 hover:scale-105 focus:scale-110 ease-out-back duration-150 cursor-pointer hover:text-white focus:ring-2 focus:text-white shadow-rim-sm flex gap-3 items-center">
+                <img src="https://api.iconify.design/ic/round-read-more.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-none scale-150">
+                <div class="text-md tracking-wide">See More Review</div>
+            </a>
+        </div>
     {% else %}
-        <div class="text-center text-lg font-semibold text-white">No review yet!</div>
-        <div class="text-center text-sm text-white">Be the first to write a review!</div>
+        <div class="text-center text-lg font-semibold text-white mt-4">No review yet!</div>
+        <div class="text-center text-sm text-white mb-4">Be the first to write a review!</div>
     {% endif %}
-
 
 </div>
 

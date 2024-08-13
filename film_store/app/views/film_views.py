@@ -8,8 +8,9 @@ from .. import forms
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from app.views.views_class import UnauthorizedView, ProtectedView
-from app.utils import duration_to_format, format_date_from_str
+from app.utils import duration_to_format, format_date_from_str, clamp
 from django.core.paginator import Paginator
+import math
 
 class Browse(ProtectedView):
     template_name = 'browse/browse.html'
@@ -37,6 +38,7 @@ class Browse(ProtectedView):
         page = 1
         if 'page' in self.request.GET:
             page = int(self.request.GET['page'])
+            page = clamp(page, 1, paginator.num_pages)
         films = paginator.get_page(page)
         elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
 
@@ -84,7 +86,7 @@ class Details(ProtectedView):
             context['review'] = review
 
         # all reviews
-        reviews = Review.objects.filter(film=film).exclude(review__isnull=True)
+        reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')[:3]
         reviews = ReviewSerializer(reviews, many=True).data
         for review in reviews:
             review['updated_at'] = format_date_from_str(review['updated_at'])
@@ -196,8 +198,24 @@ class Bought(ProtectedView):
     def get(self, request, *args, **kwargs):
         context = {}
         user: GeneralUser = self.request.user
-        films = user.bought_films.all()
+        films = user.bought_films.all().order_by('-release_year')
         films = FilmResponseSerializer(films, many=True).data
+
+
+        paginator = Paginator(films, 8)
+        page = 1
+        if 'page' in self.request.GET:
+            page = int(self.request.GET['page'])
+            page = clamp(page, 1, paginator.num_pages)
+        films = paginator.get_page(page)
+        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
+
+        context['elided_page'] = elided_page
+        context['prev_page'] = page - 1 if page > 1 else None
+        context['next_page'] = page + 1 if page < paginator.num_pages else None
+        context['current_page'] = page
+
+
         for film in films:
             film['duration'] = duration_to_format(film['duration'])
             if len(film['genre']) > self.max_genre:
@@ -214,8 +232,24 @@ class Wishlist(ProtectedView):
         context = {}
         user = self.request.user
         user: GeneralUser = self.request.user
-        films = user.wishlist_films.all()
+        films = user.wishlist_films.all().order_by('-release_year')
         films = FilmResponseSerializer(films, many=True).data
+
+
+        paginator = Paginator(films, 8)
+        page = 1
+        if 'page' in self.request.GET:
+            page = int(self.request.GET['page'])
+            page = clamp(page, 1, paginator.num_pages)
+        films = paginator.get_page(page)
+        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
+
+        context['elided_page'] = elided_page
+        context['prev_page'] = page - 1 if page > 1 else None
+        context['next_page'] = page + 1 if page < paginator.num_pages else None
+        context['current_page'] = page
+
+
         for film in films:
             film['duration'] = duration_to_format(film['duration'])
             if len(film['genre']) > self.max_genre:
@@ -226,6 +260,38 @@ class Wishlist(ProtectedView):
 
 class ReviewView(ProtectedView):
     template_name = 'review/review.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        film_id = kwargs['id']
+        film: Film = None
+        try: film = Film.objects.get(id=film_id)
+        except Film.DoesNotExist:
+            messages.error(request, 'Film not found', extra_tags='The film you are looking for does not exist')
+            return redirect('/')
+        
+        context['film'] = FilmResponseSerializer(film).data
+
+        reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')
+        paginator = Paginator(reviews, 4)
+        page = 1
+        if 'page' in self.request.GET:
+            page = int(self.request.GET['page'])
+            page = clamp(page, 1, paginator.num_pages)
+        reviews = paginator.get_page(page)
+        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
+
+        context['elided_page'] = elided_page
+        context['prev_page'] = page - 1 if page > 1 else None
+        context['next_page'] = page + 1 if page < paginator.num_pages else None
+        context['current_page'] = page
+
+        reviews = ReviewSerializer(reviews, many=True).data
+        for review in reviews:
+            review['updated_at'] = format_date_from_str(review['updated_at'])
+        context['all_review'] = reviews
+
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         context = {}

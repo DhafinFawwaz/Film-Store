@@ -51,17 +51,23 @@ def get_random_film_titles():
     return [arr[i]["name"] for i in unique_idx]
 
 f = faker.Faker()
-dataset["user"] = [
-    {
-        "username": f.user_name(),
-        "first_name": f.first_name(),
-        "last_name": f.last_name(),
+user_amount = 30
+
+def generate_user():
+    fn = f.first_name()
+    ln = f.last_name()
+    return {
+        "username": (fn+ln).lower(),
+        "first_name": fn,
+        "last_name": ln,
         "email": f.email(),
         "balance": random.choice(range(1000, 30001, 100)),
         "bought": get_random_film_titles(),
         "wishlist": get_random_film_titles()
     }
-    for i in range(20)
+dataset["user"] = [
+    generate_user()
+    for i in range(user_amount)
 ]
 
 def get_random_review():
@@ -92,18 +98,23 @@ def get_random_date(year_start, year_end):
     second = random.randint(0, 59)
     return f"{year}-{month}-{day} {hour}:{minute}:{second}"
 
-max_review = 5
+max_review_per_film = user_amount
 dataset["review"] = []
+review_count = {}
 for film in dataset["films"]:
+    if random.random() < 0.5: continue # try to make atleast 50% of film has no review
+
     username_list = []
-    username_list = random.sample([user["username"] for user in dataset["user"]], max_review)
+    username_list = random.sample([user["username"] for user in dataset["user"]], max_review_per_film)
     
+    count = 0
     for username in username_list:
         r = random.random()
         if r < 0.25: # no review
             continue
         elif r < 0.5:
             # only rating
+            count += 1
             review = {
                 "username": username,
                 "film": film["name"],
@@ -114,6 +125,7 @@ for film in dataset["films"]:
             dataset["review"].append(review)
         elif r < 0.75:
             # only review
+            count += 1
             review = {
                 "username": username,
                 "film": film["name"],
@@ -124,6 +136,7 @@ for film in dataset["films"]:
             dataset["review"].append(review)
         else:
             # rating and review
+            count += 1
             review = {
                 "username": username,
                 "film": film["name"],
@@ -132,7 +145,6 @@ for film in dataset["films"]:
                 "created_at": get_random_date(2022, 2024),
             }
             dataset["review"].append(review)
-
 
 
 json.dump(dataset, open('dataset.json', 'w'))
