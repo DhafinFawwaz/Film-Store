@@ -10,7 +10,6 @@ def protected(view_func):
         request = extract_request_from_args(args)
         try: 
             populate_user_from_request(request)
-            print(f"User: {request.user}")
         except Exception as e: 
             messages.error(request, "Please Login", "Please Login to gain access to the website")
             return redirect('/signin')

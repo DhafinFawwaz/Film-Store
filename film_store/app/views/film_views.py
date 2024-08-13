@@ -199,7 +199,6 @@ class BuyFilm(ProtectedView):
     
 class WishlistFilm(ProtectedView):
     def post(self, request, *args, **kwargs):
-        print(request.POST['_method'])
         if request.POST['_method'] == 'delete':
             return self.delete(request, *args, **kwargs)
         elif request.POST['_method'] == 'put':

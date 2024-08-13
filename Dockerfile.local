@@ -1,24 +1,40 @@
 FROM python:3.12.4
 
-ARG PYTHONUNBUFFERED=1
-ARG DB_HOST=localhost
-ARG DEBUG=True
+ARG SECRET_KEY
+ARG DB_HOST
+ARG DB_NAME
+ARG DB_USER
+ARG DB_PORT
+ARG DB_PASS
 
-ENV PYTHONUNBUFFERED=$PYTHONUNBUFFERED
+ENV SECRET_KEY=$SECRET_KEY
 ENV DB_HOST=$DB_HOST
-ENV DEBUG=$DEBUG
+ENV DB_NAME=$DB_NAME
+ENV DB_USER=$DB_USER
+ENV DB_PORT=$DB_PORT
+ENV DB_PASS=$DB_PASS
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV DJANGO_SUPERUSER_USERNAME=admin
+ENV DJANGO_SUPERUSER_PASSWORD=admin123
+ENV DJANGO_SUPERUSER_EMAIL=admin@email.com
 
 WORKDIR /app
 
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements.txt
+
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+COPY . .
 
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g tailwindcss
+    apt-get install -y nodejs
+RUN npm install -g tailwindcss
 
-COPY . /app/
-
-RUN python film_store/manage.py tailwind install
+# Nginx
+RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8000

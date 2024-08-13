@@ -33,8 +33,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
 RUN npm install -g tailwindcss
 
-COPY . .
-
 RUN python film_store/manage.py tailwind install
 RUN python film_store/manage.py tailwind build
 RUN python film_store/manage.py collectstatic --noinput
