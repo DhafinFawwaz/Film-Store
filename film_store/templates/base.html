@@ -8,12 +8,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Website to find and purchase your favorite films.">
     
     {% block title %} <title>Film Store</title> {% endblock %}
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" 
+      rel="stylesheet"
+      type="text/css"
+      media="print"
+      onload="this.media='all'"
+    >
     {% tailwind_css %}
 
     {% block style %}{% endblock %}
@@ -21,6 +28,9 @@
     <!-- {% block icon %}<link rel="icon" href="./favicon.ico" type="image/x-icon">{% endblock %} -->
 
     <link rel="preload" href="{% static 'global.js' %}" as="script">
+
+    {% block extra_header %}{% endblock %}
+
 
 </head>
   <body class="bg-night-900">
@@ -38,9 +48,11 @@
               <div class="w-full h-full rounded-2xl bg-clip-border overflow-hidden">
 
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                <div class="h-1 bg-red-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
+                  <div class="h-1 bg-red-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                <div class="h-1 bg-green-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
+                  <div class="h-1 bg-green-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                  <div class="h-1 bg-yellow-600 ease-linear" style="transition-duration: 5s;" id="toast-progress"></div>
                 {% endif %}
 
               </div>
@@ -48,7 +60,7 @@
             
             <!-- Close button -->
             <button class="right-0 absolute mr-6 mt-2 p-2 rounded-lg bg-night-400 w-auto hover:scale-110 ease-out-back-little" id="toast-close-button">
-              <img src="https://api.iconify.design/iconamoon/close-bold.svg?color=white" alt="" class="z-10 w-4 h-4">
+              <img alt="close-icon" src="https://api.iconify.design/iconamoon/close-bold.svg?color=white" alt="" class="z-10 w-4 h-4">
             </button>
 
             <!-- Toast content -->
@@ -58,6 +70,8 @@
                 <h2 class="font-bold text-red-400">{{ message }}</h2>
               {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                 <h2 class="font-bold text-green-400">{{ message }}</h2>
+              {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <h2 class="font-bold text-yellow-400">{{ message }}</h2>
               {% endif %}
               
               <div class="flex gap-3">

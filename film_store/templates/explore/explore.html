@@ -1,12 +1,5 @@
 {% extends "authorized.html" %}
 
-{% block extra_header %}
-    {% for film in recommendations %} 
-        <link rel="preload" href="{{ film.cover_image_url }}">
-    {% endfor %} 
-{% endblock %}
-
-
 {% block main-content %} 
 <div>
     {% if recommendations %} 

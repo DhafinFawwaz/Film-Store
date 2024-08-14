@@ -7,12 +7,12 @@ from django.shortcuts import redirect, render
 from .. import forms
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
-from app.views.views_class import UnauthorizedView, ProtectedView
+from app.views.views_class import UnauthorizedView, ProtectedView, PublicView
 from app.utils import duration_to_format, format_date_from_str, clamp
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 
-class Browse(ProtectedView):
+class Home(ProtectedView):
     template_name = 'browse/browse.html'
     max_genre = 4
 
@@ -69,6 +69,61 @@ class Browse(ProtectedView):
 
         return recommendations
 
+    def get_4_random_films(self):
+        return Film.objects.order_by('?')[:4]
+
+    def get(self, request, *args, **kwargs):
+
+        context = {}
+        films = []
+        if 'q' in self.request.GET and self.request.GET['q'] != '':
+            query = self.request.GET['q']
+            films = Film.objects.filter(
+                Q(title__icontains=query) | Q(director__icontains=query)
+            ).order_by('-release_year')
+            context['query'] = query
+        else:
+            films = Film.objects.all().order_by('-release_year')
+
+        # recommendations
+        recommendations = self.get_recommendations(self.request.user) if self.request.user else self.get_4_random_films()
+        recommendations = FilmResponseSerializer(recommendations, many=True).data
+        for film in recommendations:
+            film['duration'] = duration_to_format(film['duration'])
+            if len(film['genre']) > self.max_genre:
+                film['genre'] = film['genre'][:self.max_genre]
+                film['genre'].append('...')
+        context['recommendations'] = recommendations
+
+        # pagination
+        paginator = Paginator(films, 8)
+        page = 1
+        if 'page' in self.request.GET:
+            page = int(self.request.GET['page'])
+            page = clamp(page, 1, paginator.num_pages)
+        films = paginator.get_page(page)
+        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
+
+        context['elided_page'] = elided_page
+        context['prev_page'] = page - 1 if page > 1 else None
+        context['next_page'] = page + 1 if page < paginator.num_pages else None
+        context['current_page'] = page
+
+
+        films = FilmResponseSerializer(films, many=True).data
+        for film in films:
+            film['duration'] = duration_to_format(film['duration'])
+            if len(film['genre']) > self.max_genre:
+                film['genre'] = film['genre'][:self.max_genre]
+                film['genre'].append('...')
+
+        context['films'] = films
+        return render(request, self.template_name, context)
+
+
+class Explore(ProtectedView):
+    template_name = 'explore/explore.html'
+    max_genre = 4
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -81,18 +136,6 @@ class Browse(ProtectedView):
             context['query'] = query
         else:
             films = Film.objects.all().order_by('-release_year')
-
-        if 'q' not in self.request.GET :
-            page = self.request.GET.get('page')
-            if not page or page == '1':
-                recommendations = self.get_recommendations(self.request.user)
-                recommendations = FilmResponseSerializer(recommendations, many=True).data
-                for film in recommendations:
-                    film['duration'] = duration_to_format(film['duration'])
-                    if len(film['genre']) > self.max_genre:
-                        film['genre'] = film['genre'][:self.max_genre]
-                        film['genre'].append('...')
-                context['recommendations'] = recommendations
 
         paginator = Paginator(films, 8)
         page = 1
@@ -117,6 +160,8 @@ class Browse(ProtectedView):
 
         context['films'] = films
         return render(request, self.template_name, context)
+
+
 
 class Details(ProtectedView):
     template_name = 'details/details.html'

@@ -11,7 +11,7 @@ def protected(view_func):
         try: 
             populate_user_from_request(request)
         except Exception as e: 
-            messages.error(request, "Please Login", "Please Login to gain access to the website")
+            messages.info(request, "Please Login", "Please Login to gain full access to the website")
             return redirect('/signin')
         return view_func(*args, **kwargs)
     

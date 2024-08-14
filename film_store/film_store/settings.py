@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig', # Automatically delete media files when update or delete
     'tailwind',
     'theme',
-    'django_browser_reload'
+    'django_browser_reload',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -174,8 +175,10 @@ REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False, # Change DecimalField to json number instead of string
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-     )
+     ),
+     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=100),
@@ -230,3 +233,14 @@ if os.environ.get('USE_SUPABASE'):
 
 
 DATASET_URL = "https://drive.google.com/uc?export=download&id=1nfRkHVPdgSPeBlRYe6dcsFT5MWe4DC-C"
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+   }
+}
+

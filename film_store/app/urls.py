@@ -19,7 +19,8 @@ urlpatterns = [
     path('signout', auth_views.Logout.as_view()), 
     path('profile', auth_views.Profile.as_view()),
     
-    path('', film_views.Browse.as_view()),    
+    path('', film_views.Home.as_view()),    
+    path('explore', film_views.Explore.as_view()),    
     path('wishlist', film_views.Wishlist.as_view()),
     path('review', film_views.ReviewView.as_view()),
     path('bought', film_views.Bought.as_view()),

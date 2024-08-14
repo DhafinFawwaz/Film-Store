@@ -99,6 +99,9 @@ module.exports = {
                     600: '#408dff',
                     700: '#6c83fe',
                 },
+                'green': {
+                    650: '#15883d',
+                }
             },
             
             transitionTimingFunction: {

@@ -17,7 +17,7 @@
                         {% if field.errors %}
                             <div class="text-red-500 mt-2 text-xs absolute right-0 bottom-0 z-10 mx-2 my-1 select-none pointer-events-none font-light ml-12 line-clamp-1">{{ field.errors.0 }}</div>
                         {% endif %}
-                        <img src="{{ field.field.widget.attrs.icon_src }}" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
+                        <img alt="field-icon" src="{{ field.field.widget.attrs.icon_src }}" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
                         {{ field.label_tag }} 
                             {% if field.errors %} 
                                 <div class="relative outline-error">
@@ -41,4 +41,3 @@
 </section>
 {% endblock %}
 
-{% block js %}<script> (() => {window.history.replaceState(null, null, '/register');})();</script>{% endblock %}
