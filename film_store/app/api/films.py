@@ -7,7 +7,7 @@ from app.api.api_response import APIResponse, APIResponseMissingIDError
 from app.models import Film, Genre
 from app.serializers import FilmRequestSerializer, GenreSerializer, FilmResponseSerializer
 from typing import List
-from app.api.route_decorator import protected
+from app.api.route_decorator import protected, admin_only
 from rest_framework.decorators import api_view
 from app.models import GeneralUser
 import os
@@ -24,7 +24,7 @@ class APIFilm(APIView):
         return ContentFile(buffer.getvalue(), 'black.png')
 
     # /films
-    @protected
+    @admin_only
     def post(self, request: Request, *args, **kwargs):
         film = FilmRequestSerializer(data=request.data)
         if not film.is_valid():
@@ -105,7 +105,7 @@ class APIFilmDetail(APIView):
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # /films/:id
-    @protected
+    @admin_only
     def put(self, request: Request, id: int = None, *args, **kwargs):
         try:
             film = Film.objects.get(id=id)
@@ -146,7 +146,7 @@ class APIFilmDetail(APIView):
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     # /films/:id
-    @protected
+    @admin_only
     def delete(self, request: Request, id: int = None, *args, **kwargs):
         try:
             film = Film.objects.get(id=id)

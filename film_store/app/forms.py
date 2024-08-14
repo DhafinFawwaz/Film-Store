@@ -35,6 +35,8 @@ class RegisterForm(UserCreationForm):
     password1 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'SuperSecret123$$$'}), label="Password")
     password2 = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'SuperSecret123$$$'}), label="Confirm Password")
 
+    usable_password = None
+
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
 
