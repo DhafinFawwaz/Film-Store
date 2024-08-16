@@ -7,7 +7,25 @@ from app.api.api_response import APIResponse, APIResponseMissingIDError
 from app.models import GeneralUser
 from app.serializers import GeneralUserSerializer
 from app.api.route_decorator import protected, admin_only
+from drf_yasg.utils import swagger_auto_schema
+from app.api.swagger.auth_schemas import UsersResponse, UserDetailResponse, UserBalanceResponse, UserDeleteResponse
+from drf_yasg import openapi
+from app.api.swagger.api_response_schema import APIErrorResponse
 
+
+@swagger_auto_schema(
+    operation_summary="Get all users",
+    operation_description="Get all users in the database",
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, description="Search for a user by username", type=openapi.TYPE_STRING),
+    ],
+    responses={
+        200: UsersResponse,
+        400: APIErrorResponse,
+        401: APIErrorResponse,
+    },
+    method="GET"
+)
 @api_view(['GET']) # /users?q, admin only
 @admin_only
 def get_all_users(request: Request, *args, **kwargs):
@@ -27,6 +45,16 @@ def get_all_users(request: Request, *args, **kwargs):
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
+@swagger_auto_schema(
+    operation_summary="Get user by ID",
+    operation_description="Get user by ID",
+    responses={
+        200: UserDetailResponse,
+        400: APIErrorResponse,
+        401: APIErrorResponse,
+    },
+    method="GET"
+)
 @api_view(['GET']) # /user/:id
 @admin_only
 def get_user_by_id(request: Request, id: int = None, *args, **kwargs):
@@ -43,6 +71,16 @@ def get_user_by_id(request: Request, id: int = None, *args, **kwargs):
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@swagger_auto_schema(
+    operation_summary="Modify a user's balance",
+    operation_description="Change a user's balance by ID",
+    responses={
+        200: UserBalanceResponse,
+        400: APIErrorResponse,
+        401: APIErrorResponse,
+    },
+    method="POST"
+)
 @api_view(['POST']) # /users/:id/balance
 @admin_only
 def increment_user_balance_by_id(request: Request, id: int = None, *args, **kwargs):

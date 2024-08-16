@@ -8,14 +8,22 @@ from app.models import Film, Genre
 from app.serializers import FilmRequestSerializer, GenreSerializer, FilmResponseSerializer
 from typing import List
 from app.api.route_decorator import protected, admin_only
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser
 from app.models import GeneralUser
 import os
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from app.api.swagger.film_schemas import FilmResponse, FilmFormParameters, FilmDetailResponse, FilmFormPutParameters
+from app.api.swagger.api_response_schema import APIErrorResponse
+
+
 class APIFilm(APIView):
+    parser_classes = [MultiPartParser]
 
     def create_black_image():
         img = Image.new('RGB', (1, 1), color='black')
@@ -24,6 +32,18 @@ class APIFilm(APIView):
         return ContentFile(buffer.getvalue(), 'black.png')
 
     # /films
+    @swagger_auto_schema(
+        operation_summary="Upload a new film",
+        operation_description="A new film will be uploaded to the database and the response will contain the films url instead of the binary file",
+
+        manual_parameters=FilmFormParameters,
+        responses={
+            201: FilmDetailResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+        
+    )
     @admin_only
     def post(self, request: Request, *args, **kwargs):
         film = FilmRequestSerializer(data=request.data)
@@ -66,6 +86,17 @@ class APIFilm(APIView):
         return APIResponse(res.data).set_status(status.HTTP_201_CREATED)
 
     # /films
+    @swagger_auto_schema(
+        operation_summary="Get all films",
+        operation_description="Query parameter 'q' can be used to search for films by title (case-insensitive)",
+        manual_parameters=[openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for films by title and director")],
+        responses={
+            200: FilmResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+        
+    )
     @protected
     def get(self, request: Request, *args, **kwargs):
 
@@ -89,8 +120,19 @@ class APIFilm(APIView):
         
 
 class APIFilmDetail(APIView):
+    parser_classes = [MultiPartParser]
     
     # /films/:id 
+    @swagger_auto_schema(
+        operation_summary="Get a film details by ID",
+        operation_description="the id in the url is the film's ID primary key",
+        responses={
+            200: FilmDetailResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+        
+    )
     @protected
     def get(self, request: Request, id: int = None, *args, **kwargs):
         if id is None: return APIResponseMissingIDError()
@@ -105,6 +147,17 @@ class APIFilmDetail(APIView):
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # /films/:id
+    @swagger_auto_schema(
+        operation_summary="Update a film",
+        operation_description="The film data will be updated in the database and the response will contain the films url instead of the binary file",
+
+        manual_parameters=FilmFormPutParameters,
+        responses={
+            201: FilmDetailResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+    )
     @admin_only
     def put(self, request: Request, id: int = None, *args, **kwargs):
         try:
@@ -146,6 +199,17 @@ class APIFilmDetail(APIView):
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     # /films/:id
+    @swagger_auto_schema(
+        operation_summary="Delete a film",
+        operation_description="A new film will be uploaded to the database and the response will contain the films url instead of the binary file",
+
+        manual_parameters=FilmFormPutParameters,
+        responses={
+            201: FilmDetailResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+    )
     @admin_only
     def delete(self, request: Request, id: int = None, *args, **kwargs):
         try:
@@ -160,39 +224,3 @@ class APIFilmDetail(APIView):
         
         except Exception as e:
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    
-# /films/:id/buy
-@api_view(['POST'])
-@protected
-def buy_film(request: Request, id: int = None, *args, **kwargs):
-    try:
-        film = Film.objects.get(id=id)
-        user: GeneralUser = request.user
-        if user.balance < film.price:
-            return APIResponse().error("Insufficient balance").set_status(status.HTTP_400_BAD_REQUEST)
-        
-        user.balance -= film.price
-        user.save()
-
-        return APIResponse(film)
-    
-    except Film.DoesNotExist:
-        return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
-    
-    except Exception as e:
-        return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-
-# /films/bought
-@api_view(['GET'])
-@protected
-def get_bought_films(request: Request, *args, **kwargs):
-    try:
-        user: GeneralUser = request.user
-        film_list = user.bought_films.all()
-        film_serializer = FilmResponseSerializer(film_list, many=True)
-        return APIResponse(film_serializer.data)
-    
-    except Exception as e:
-        return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
