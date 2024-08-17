@@ -142,6 +142,7 @@ def find_and_populate_paginated_wishlist_film(request: APIRequest, context: dict
 
 
 
+@timeit("Get Film Details")
 def populate_film_details(request: APIRequest, context: dict, film: Film):
     cached_films = None
     cache_key = f"film_{film.id}"

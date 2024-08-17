@@ -18,14 +18,15 @@ from django.shortcuts import redirect
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 from app.api.swagger.auth_schemas import LoginFormBody, RegisterFormBody, LoginResponse, RegisterResponse, LogoutResponseSchema, SelfResponse, UsersResponse
-from app.api.swagger.film_schemas import FilmResponse
+from app.api.swagger.film_schemas import FilmResponse, FilmDetailResponse
 from app.api.swagger.api_response_schema import APIErrorResponse
 from time import sleep
 from django.core.cache import cache
 from datetime import datetime
-from app.queries.film import find_and_populate_paginated_all_film, find_and_populate_paginated_bought_film, find_and_populate_paginated_wishlist_film
+from app.queries.film import find_and_populate_paginated_all_film, find_and_populate_paginated_bought_film, find_and_populate_paginated_wishlist_film, populate_film_details
 import json
 from typing import Callable
+from app.models import Film
 
 
 def process_polling(request: APIRequest, cache_key: str, find_film_func: Callable):
@@ -121,8 +122,8 @@ def bought_film_polling(request: APIRequest, *args, **kwargs):
 
 
 @swagger_auto_schema(
-    operation_summary="Search Bought Film",
-    operation_description="Find Bought film by search query or page. Will response when new data is available.",
+    operation_summary="Search Wishlist Film",
+    operation_description="Find Wishlist film by search query or page. Will response when new data is available.",
     request_body=LogoutResponseSchema,
     responses={
         200: FilmResponse,
@@ -132,13 +133,13 @@ def bought_film_polling(request: APIRequest, *args, **kwargs):
 )
 @api_view(['GET'])
 @protected
-def bought_film_polling(request: APIRequest, *args, **kwargs):
+def wishlist_film_polling(request: APIRequest, *args, **kwargs):
     page = int(request.GET.get('page', 1))
     query = request.GET.get('q', None)
     return process_polling(
         request=request,
         cache_key=f"user_{request.user.id}_wishlist_films_page_{page}_query_{query}" if query else f"user_{request.user.id}_wishlist_films_page_{page}",
-        find_film_func=find_and_populate_paginated_bought_film
+        find_film_func=find_and_populate_paginated_wishlist_film
     )
 
 
@@ -146,17 +147,56 @@ def bought_film_polling(request: APIRequest, *args, **kwargs):
 
 
 @swagger_auto_schema(
-    operation_summary="Search Film",
-    operation_description="Find film by search query or page. Will response when new data is available.",
+    operation_summary="Get Film Details",
+    operation_description="Will response when new data is available.",
     request_body=LogoutResponseSchema,
     responses={
-        200: FilmResponse,
-        204: FilmResponse,
+        200: FilmDetailResponse,
+        204: FilmDetailResponse,
     },
     method="GET"
 )
 @api_view(['GET'])
 @public
-def film_details(request: APIRequest, *args, **kwargs):
-    print("film_details")
-    return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
+def film_details(request: APIRequest, id: int, *args, **kwargs):
+    cache_key = f"film_{id}"
+
+    try:
+        data = cache.get(cache_key)
+        while not data: # wait for data to be available. This should be really rare to happen.
+            sleep(3)
+            data = cache.get(cache_key)        
+        data = json.loads(data)
+        iat = datetime.fromisoformat(data['iat'])
+
+        might_be_new_data = None
+
+        max_wait = 30
+        waited = 0
+        sleep_time = 3
+
+        data = {}
+        while True:
+            print(f"{waited} s | Waiting for new data.")
+            might_be_new_data = cache.get(cache_key)
+            if not might_be_new_data: # case cache invalidated when saving models
+                film = Film.objects.get(id=id)
+                populate_film_details(request, data, film)
+                break
+
+            else: # case another request updated the cache
+                might_be_new_data = json.loads(might_be_new_data)
+                might_be_new_datetime = datetime.fromisoformat(might_be_new_data['iat'])
+                if might_be_new_datetime != iat: # if this equals, then cache is still the same. Not modified by other request
+                    data = might_be_new_data
+                    break 
+        
+            sleep(sleep_time)
+            waited += sleep_time
+            if waited >= max_wait: 
+                return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
+        
+        return APIResponse(data=data, status=status.HTTP_200_OK)
+    except Exception as e:
+        print(e)
+        return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)

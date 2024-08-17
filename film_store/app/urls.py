@@ -49,8 +49,8 @@ urlpatterns = [
     
     
     # Polling API
-    path('polling/wishlist', film.film_polling),
     path('polling/film', film.film_polling),
-    path('polling/bought', film.film_polling),
-    path('polling/details', film.film_details),
+    path('polling/wishlist', film.wishlist_film_polling),
+    path('polling/bought', film.bought_film_polling),
+    path('polling/details/<int:id>', film.film_details),
 ]

@@ -32,7 +32,9 @@ if(purchaseButton) {
 
 // Polling
 const origin = window.location.origin;
-let url = origin + "/polling/details";
+const urlParts = window.location.href.split('/');
+const id = urlParts[urlParts.length - 1];
+let url = origin + "/polling/details/" + id;
 
 async function refresh() {
     while(true) {
@@ -41,7 +43,9 @@ async function refresh() {
             const res = await fetch(url); // might wait a long time
             const json = await res.json();
             if (json.data) updateFilmList(json.data);
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 
@@ -66,6 +70,8 @@ const allReview = document.getElementById('all-review');
 function updateFilmList(data) {
     const film = data.film;
     const user = data.user;
+    const reviews = data.all_review;
+
     blurBgCoverImageUrl.src = film.cover_image_url;
     dialogFilmTitle.textContent = `Buy ${film.title}`;
     dialogUserBalance.textContent = `Balance:🪙 ${user}`;
@@ -77,7 +83,7 @@ function updateFilmList(data) {
 
     filmCoverImageUrl.src = film.cover_image_url;
     filmTitle.textContent = film.title;
-    filmReleaseYear.textContent = film.release_year;
+    filmReleaseYear.textContent = `(${film.release_year})`;
     filmDirector.textContent = film.director;
     filmDuration.textContent = film.duration;
 
@@ -86,10 +92,9 @@ function updateFilmList(data) {
 
     filmPrice.textContent = `🪙 ${film.price}`;
     filmDescription.textContent = film.description;
-    reviewReview.textContent = film.review;
+    if(reviewReview) reviewReview.placeholder = film.review;
 
-
-    allReviewDivStr = film.reviews.reduce((res, review) => {
+    allReviewDivStr = reviews.reduce((res, review) => {
         let star = review.rating !== null ? review.rating : 0;
         
         let starSvg = '';
@@ -128,7 +133,6 @@ function updateFilmList(data) {
                     </div>
                     ${ratingDisplay}
                 </div>
-                ${review.rating}
                 <div class="h-1"></div>
             ` : ''}
             ${review.review}
@@ -136,6 +140,8 @@ function updateFilmList(data) {
         
         return res;
     }, '');
+
+    allReview.innerHTML = allReviewDivStr;
     
 }
 
