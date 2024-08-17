@@ -13,6 +13,7 @@ from app.views.views_decorator import timeit
 from datetime import datetime
 from typing import Callable
 from app.utils import duration_to_format
+from decimal import Decimal
 
 
 def find_and_populate_paginated_film(request: APIRequest, context: dict, cache_key: str, find_film_func: Callable, page: int):
@@ -98,8 +99,10 @@ def find_user_wishlist_film(request: APIRequest) -> BaseManager[Film]:
 
 
 @timeit("Get Paginated Films")
-def find_and_populate_paginated_all_film(request: APIRequest, context: dict, query: str = None):
+def find_and_populate_paginated_all_film(request: APIRequest, context: dict):
     page = int(request.GET.get('page', 1))
+    query = request.GET.get('q', None)
+    if query and query != '': context['query'] = query
     find_and_populate_paginated_film(
         request=request,
         context=context,
@@ -109,7 +112,10 @@ def find_and_populate_paginated_all_film(request: APIRequest, context: dict, que
     )
 
 @timeit("Get Paginated Bought Films")
-def find_and_populate_paginated_bought_film(request: APIRequest, context: dict, query: str = None):
+def find_and_populate_paginated_bought_film(request: APIRequest, context: dict):
+    page = int(request.GET.get('page', 1))
+    query = request.GET.get('q', None)
+    if query and query != '': context['query'] = query
     page = int(request.GET.get('page', 1))
     find_and_populate_paginated_film(
         request=request,
@@ -120,7 +126,10 @@ def find_and_populate_paginated_bought_film(request: APIRequest, context: dict, 
     )
 
 @timeit("Get Paginated Wishlist Films")
-def find_and_populate_paginated_wishlist_film(request: APIRequest, context: dict, query: str = None):
+def find_and_populate_paginated_wishlist_film(request: APIRequest, context: dict):
+    page = int(request.GET.get('page', 1))
+    query = request.GET.get('q', None)
+    if query and query != '': context['query'] = query
     page = int(request.GET.get('page', 1))
     find_and_populate_paginated_film(
         request=request,
@@ -150,18 +159,6 @@ def populate_film_details(request: APIRequest, context: dict, film: Film):
     else:
         print("\033[93mCache miss\033[0m")
 
-        user = request.user
-        context['is_purchased'] = user.bought_films.filter(id=film.id).exists()
-        context['in_wishlist'] = user.wishlist_films.filter(id=film.id).exists()
-
-
-        # my review
-        review = Review.objects.filter(film=film, user=user)
-        if review.exists():
-            review = review.first()
-            review = ReviewViewContextSerializer(review).data
-            context['review'] = review
-
         # all reviews
         reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')[:3]
         reviews = ReviewViewContextSerializer(reviews, many=True).data
@@ -180,14 +177,30 @@ def populate_film_details(request: APIRequest, context: dict, film: Film):
             context['avg_rating'] = 0
         
 
-        film = FilmResponseSerializer(film).data
-        film['duration'] = duration_to_format(film['duration'])
-        context['film'] = film
-        context['balance_left_if_purchased'] = request.user.balance - film['price']
-        context['is_balance_sufficient'] = request.user.balance >= film['price']
+        film_ctx = FilmResponseSerializer(film).data
+        film_ctx['duration'] = duration_to_format(film_ctx['duration'])
+        context['film'] = film_ctx
         context['iat'] = datetime.now()
 
         try: cache.set(cache_key, json.dumps(context, cls=DjangoJSONEncoder))
         except Exception as e:
             print(f"\033[91mError: Setting cache failed. {e}\033[0m")
     
+    user = request.user
+    if user:
+        context['is_purchased'] = user.bought_films.filter(id=film.id).exists()
+        context['in_wishlist'] = user.wishlist_films.filter(id=film.id).exists()
+
+        # my review
+        review = Review.objects.filter(film=film, user=user)
+        if review.exists():
+            review = review.first()
+            review = ReviewViewContextSerializer(review).data
+            context['review'] = review
+            
+        price = Decimal(context['film']['price'])
+        balance = Decimal(request.user.balance)
+        context['balance_left_if_purchased'] = balance - price
+        context['is_balance_sufficient'] = balance >= price
+    else:
+        context['not_authenticated'] = True

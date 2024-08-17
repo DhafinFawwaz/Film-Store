@@ -89,6 +89,7 @@
     </div>
   </div>
 
+{% if request.user %}
   <!-- Wallet -->
   <div class="fixed right-0 bottom-0 p-4 z-40">
     <div class="flex justify-center items-center bg-night-800 drop-shadow-lg shadow-rim-sm rounded-lg px-4 py-2">
@@ -99,6 +100,7 @@
       </div>
     </div>
   </div>
+{% endif %}
 
   {% block content %} 
   <section class="px-4" style="min-height: 100vh; min-height: 100dvh; position: relative;">

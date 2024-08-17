@@ -32,10 +32,6 @@ urlpatterns = [
     path('details/<int:id>/review', film_views.ReviewView.as_view()),
     path('details/<int:id>/watch', film_views.Watch.as_view()),
 
-    
-    # Long Polling
-    path('polling', film.home),
-    path('pollingtrigger', film.test2),
 
     # API
     path('register', auth.APIRegister.as_view()),
@@ -50,4 +46,11 @@ urlpatterns = [
 
     path('films/<int:id>', APIFilmDetail.as_view()),
     path('films', APIFilm.as_view()),
+    
+    
+    # Polling API
+    path('polling/wishlist', film.film_polling),
+    path('polling/film', film.film_polling),
+    path('polling/bought', film.film_polling),
+    path('polling/details', film.film_details),
 ]

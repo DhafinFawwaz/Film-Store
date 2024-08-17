@@ -21,6 +21,7 @@ from drf_yasg import openapi
 from app.api.swagger.film_schemas import FilmResponse, FilmFormParameters, FilmDetailResponse, FilmFormPutParameters
 from app.api.swagger.api_response_schema import APIErrorResponse
 from django.db.models import Q
+from app.queries.film import find_and_populate_paginated_all_film
 
 
 class APIFilm(APIView):

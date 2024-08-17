@@ -79,13 +79,8 @@ class Home(PublicView):
         return Film.objects.order_by('?')[:4]
 
     def get(self, request, *args, **kwargs):
-        # cache.clear()
         context = {}
-        query = request.GET.get('q', None)
-        if query and query != '': context['query'] = query
-        
-        # pagination cache
-        find_and_populate_paginated_all_film(self.request, context, query)
+        find_and_populate_paginated_all_film(self.request, context)
         print('\033[0m')
 
         
@@ -106,17 +101,13 @@ class Explore(PublicView):
     def get(self, request, *args, **kwargs):
         
         context = {}
-        query = request.GET.get('q', None)
-        if query and query != '': context['query'] = query
-        
-        # pagination cache
-        find_and_populate_paginated_all_film(self.request, context, query)
+        find_and_populate_paginated_all_film(self.request, context)
 
         return render(request, self.template_name, context)
 
 
 
-class Details(ProtectedView):
+class Details(PublicView):
     template_name = 'details/details.html'
 
     def get(self, request, *args, **kwargs):
@@ -216,11 +207,7 @@ class Bought(ProtectedView):
     def get(self, request, *args, **kwargs):
 
         context = {}
-        query = request.GET.get('q', None)
-        if query and query != '': context['query'] = query
-        
-        # pagination cache
-        find_and_populate_paginated_bought_film(self.request, context, query)
+        find_and_populate_paginated_bought_film(self.request, context)
 
         return render(request, self.template_name, context)
 
@@ -232,11 +219,7 @@ class Wishlist(ProtectedView):
 
     def get(self, request, *args, **kwargs):
         context = {}
-        query = request.GET.get('q', None)
-        if query and query != '': context['query'] = query
-        
-        # pagination cache
-        find_and_populate_paginated_wishlist_film(self.request, context, query)
+        find_and_populate_paginated_wishlist_film(self.request, context)
 
         return render(request, self.template_name, context)
 

@@ -1,9 +1,10 @@
 {% extends "authorized.html" %}
+{% load static %}
 
 {% block top-content %}
 <!-- blured transparent background -->
 <div class="w-full h-full fixed">
-    <img alt="thumbnail-icon" src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full blur-lg opacity-15"></img>
+    <img id="blur-bg-cover-image-url" alt="thumbnail-icon" src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full blur-lg opacity-15"></img>
 </div>
 
 <!-- dialog -->
@@ -11,14 +12,14 @@
     <div id="dialog-dark" class="fixed bg-black w-full h-full opacity-50">
     </div>
     <div id="dialog-bg" class="w-96 p-6 rounded-xl bg-night-800 shadow-rim-sm drop-shadow-lg scale-75 duration-200">
-        <h2 class="text-2xl mb-2 font-bold text-center">Buy {{film.title}}</h2>
+        <h2 id="dialog-film-title" class="text-2xl mb-2 font-bold text-center">Buy {{film.title}}</h2>
 
         
         {% if is_balance_sufficient %}
-            <div class="text-left">Balance:🪙 {{ user.balance }}</div>
-            <div class="text-left">Price:🪙 {{ film.price }}</div>
+            <div id="dialog-user-balance" class="text-left">Balance:🪙 {{ user.balance }}</div>
+            <div id="dialog-film-price" class="text-left">Price:🪙 {{ film.price }}</div>
             <hr class="h-px my-2 bg-night-400 border-0">
-            <div class="text-left">Balance Left:🪙 {{ balance_left_if_purchased }}</div>
+            <div id="dialog-balance-left-if-purchased" class="text-left">Balance Left:🪙 {{ balance_left_if_purchased }}</div>
 
             <div class="flex gap-4 mt-4">
                 <button id="dialog-cancel-button" class="bg-red-500 hover:bg-red-600 focus:ring-red-500 ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-1 justify-center">
@@ -34,8 +35,8 @@
                 </form>
             </div>
         {% else %}
-            <div class="text-left">Balance:🪙 {{ user.balance }}</div>
-            <div class="text-left">Price:🪙 {{ film.price }}</div>
+            <div id="dialog-user-balance" class="text-left">Balance:🪙 {{ user.balance }}</div>
+            <div id="dialog-film-price" class="text-left">Price:🪙 {{ film.price }}</div>
             <hr class="h-px my-2 bg-night-400 border-0">
             <div class="text-left">Your balance is insufficient</div>
 
@@ -65,18 +66,18 @@
 
 <div class="grid gap-4 sm:gap-4 sm:grid-cols-2 xxs:h-96">
     <div class="w-full overflow-hidden h-80 xxs:h-auto">
-        <img alt="film-thumbnail" src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full"></img>
+        <img id="film-cover-image-url" alt="film-thumbnail" src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full"></img>
     </div>
     <div class="text-white flex flex-col justify-between bg-night-800 rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
         <div>
             <div class="flex gap-x-2 flex-wrap">
-                <h1 class="text-3xl font-bold mb-1 tracking-wider">{{ film.title }}</h1>
-                <div class="text-3xl tracking-wider">({{ film.release_year }})</div>
+                <h1 id="film-title" class="text-3xl font-bold mb-1 tracking-wider">{{ film.title }}</h1>
+                <div id="film-release-year" class="text-3xl tracking-wider">({{ film.release_year }})</div>
             </div>
-            <div class="font-light text-xs sm:text-sm text-night-100">Directed by {{ film.director }}</div>
+            <div id="film-director" class="font-light text-xs sm:text-sm text-night-100">Directed by {{ film.director }}</div>
             
-            <div class="font-light text-xs text-night-100 mt-1">{{ film.duration }}</div>
-            <div class="flex gap-2 mt-2 mb-4 sm:mt-2 flex-wrap">
+            <div id="film-duration" class="font-light text-xs text-night-100 mt-1">{{ film.duration }}</div>
+            <div id="film-genre" class="flex gap-2 mt-2 mb-4 sm:mt-2 flex-wrap">
                 {% for genre in film.genre %} 
                     <div class="text-xs sm:text-sm rounded-lg px-1 py-0.5 sm:px-2 text-zinc-400 bg-night-600 font-semibold shadow-rim-sm drop-shadow-sm">{{ genre }}</div>
                 {% endfor %} 
@@ -85,12 +86,18 @@
             {% include 'components/star-rating.html' with star=avg_rating %}
 
             <div class="flex font-bold text-sm mt-2 mb-4 flex-col">
-                <div>🪙 {{ film.price }}</div>
+                <div id="film-price">🪙 {{ film.price }}</div>
             </div>
 
         </div>
 
         <div>
+        {% if not_authenticated %}
+            <a href="/signin" class="focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed tracking-wider flex justify-center gap-2 shadow-rim-md drop-shadow-sm hover:text-white focus:text-white ease-out-back">
+                <img alt="watch-icon" src="https://api.iconify.design/mdi/user.svg?color=%23ffffff" alt="" class="group-hover:invert group-focus:invert scale-125">
+                <div class="text-lg">Login To Buy</div>
+            </a>
+        {% else %}
 
             {% if is_purchased %}
                 <a href="/details/{{film.id}}/watch" class="focus:ring focus:ring-indigo-800 bg-indigo-600 rounded-xl font-bold text-slate-50 text-base hover:bg-indigo-700 hover:scale-102 duration-200 w-full p-2 cursor-pointer disabled:bg-night-500 disabled:text-night-200 disabled:cursor-not-allowed tracking-wider flex justify-center gap-2 shadow-rim-md drop-shadow-sm hover:text-white focus:text-white ease-out-back">
@@ -99,6 +106,7 @@
                 </a>
             {% else %}
                 <div class="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-4">
+                    
                     
                     {% if in_wishlist %}
                         <form action="/details/{{film.id}}/wish" method="post">
@@ -132,6 +140,9 @@
 
                 </div>
             {% endif %}
+
+        {% endif %}
+
         </div>
     </div>
 </div>
@@ -142,7 +153,7 @@
             <img alt="about-icon" src="https://api.iconify.design/mdi/about.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-150">
             About
         </h2>
-        <p class="font-normal">{{ film.description }}</p>
+        <p id="film-description" class="font-normal">{{ film.description }}</p>
     </div>
     <div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
         <h2 class="text-2xl font-bold tracking-wider flex gap-3">
@@ -173,7 +184,7 @@
     
 
     {% if review.review %}
-        <textarea name="review"  form="review-form" class="px-4 py-4 mb-4 text-md min-h-36 ease-linear" placeholder="{{review.review}}"></textarea>
+        <textarea name="review"  form="review-form" class="px-4 py-4 mb-4 text-md min-h-36 ease-linear" id="review-review" placeholder="{{review.review}}"></textarea>
     {% else %}
         <textarea name="review" form="review-form" class="px-4 py-4 mb-4 text-md min-h-36 ease-linear" placeholder="Write your review here..."></textarea>
     {% endif %}
@@ -192,18 +203,20 @@
     </form>
 </div>
 
-<div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md my-4">
+<div class="bg-night-800 w-full h-full rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md mt-4 mb-12">
     <h2 class="text-xl xxs:text-2xl font-bold tracking-wider mb-2 flex gap-3">
         <img alt="review-icon" src="https://api.iconify.design/fluent/people-48-filled.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-150 translate-y-[1px]">
         Review From Other People
     </h2>
     
-    {% for rev in all_review %}
-        {% include 'components/review-card.html' with review=rev %}
-    {% endfor %}
+    <div id="all-review">
+        {% for rev in all_review %}
+            {% include 'components/review-card.html' with review=rev %}
+        {% endfor %}
+    </div>
 
     {% if all_review %}
-        <div class="w-full flex justify-end mb-8 mt-4">
+        <div class="w-full flex justify-end mt-4">
             <a href="/details/{{film.id}}/review" class="text-white font-bold rounded-xl px-4 h-11 bg-indigo-600 hover:bg-indigo-700 focus:bg-indigo-700 focus:ring-indigo-600 hover:scale-105 focus:scale-110 ease-out-back duration-150 cursor-pointer hover:text-white focus:ring-2 focus:text-white shadow-rim-sm flex gap-3 items-center">
                 <img alt="more-icon" src="https://api.iconify.design/ic/round-read-more.svg?color=white" alt="" class="group-hover:invert group-focus:invert select-none scale-150">
                 <div class="text-md tracking-wide">See More Review</div>
@@ -220,37 +233,7 @@
 {% endblock %}
         
 {% block authorized-js %}
-<script>
-    (() => {
-        const purchaseButton = document.getElementById('purchase-button');
-        if(purchaseButton) {
-            const dialog = document.getElementById('dialog');
-            const dialogBg = document.getElementById('dialog-bg');
-            const dialogCancelButton = document.getElementById('dialog-cancel-button');
-            const dialogDark = document.getElementById('dialog-dark');
-            purchaseButton.addEventListener('click', () => {
-                dialog.classList.remove('invisible');
-                dialog.classList.add('visible');
-                dialog.classList.remove('opacity-0');
-                dialog.classList.add('opacity-100');
-                dialogBg.classList.remove('scale-75');
-                dialogBg.classList.add('scale-100');
-
-            });
-            dialogCancelButton.addEventListener('click', () => {
-                dialog.classList.remove('visible');
-                dialog.classList.add('invisible');
-                dialog.classList.remove('opacity-100');
-                dialog.classList.add('opacity-0');
-                dialogBg.classList.remove('scale-100');
-                dialogBg.classList.add('scale-75');
-            });
-            dialogDark.addEventListener('click', () => {
-                dialogCancelButton.click();
-            });
-        }
-    })()
-</script>
+    <script src="{% static 'details/details.js' %}"></script>
 {% endblock %}
     
 

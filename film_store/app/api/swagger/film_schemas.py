@@ -28,7 +28,7 @@ FilmFormPutParameters = [
 ]
 
 FilmResponseSchema = APIResponseSchema.copy()
-FilmResponseSchema['data'] = openapi.Schema(type=openapi.TYPE_OBJECT, properties={
+FilmResponseSchema['data'] = openapi.Schema(type=openapi.TYPE_ARRAY, items={
     'id': openapi.Schema(type=openapi.TYPE_STRING, description="The ID of the film"),
     'title': openapi.Schema(type=openapi.TYPE_STRING, description="The title of the film"),
     # 'description': openapi.Schema(type=openapi.TYPE_STRING, description="A brief description of the film"),
@@ -41,7 +41,6 @@ FilmResponseSchema['data'] = openapi.Schema(type=openapi.TYPE_OBJECT, properties
     'cover_image_url': openapi.Schema(type=openapi.TYPE_STRING, description="The URL to the cover image of the film"),
     'created_at': openapi.Schema(type=openapi.TYPE_STRING, description="The date the film was created"),
     'updated_at': openapi.Schema(type=openapi.TYPE_STRING, description="The date the film was last updated"),
-    
 })
 
 FilmResponse = openapi.Schema(
