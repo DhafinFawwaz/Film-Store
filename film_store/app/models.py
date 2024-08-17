@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -21,6 +22,9 @@ class Film(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # TODO: denormalize
+    # avg_rating = models.IntegerField()
+
 class GeneralUser(AbstractUser):
     balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     email = models.EmailField(unique=True)
@@ -34,3 +38,13 @@ class Review(models.Model):
     review = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # TODO: denormalize
+    # def save(self, force_insert: bool = ..., force_update: bool = ..., using: str | None = ..., update_fields: Iterable[str] | None = ...) -> None:
+    #     return super().save(force_insert, force_update, using, update_fields)
+    #     # case insert
+    #     avg_rating = (current_avg_rating * current_total_rating + new_rating) / (current_total_rating + 1)
+    #     # case update
+    #     avg_rating = (current_avg_rating * current_total_rating - old_rating + new_rating) / current_total_rating
+    #     # case delete
+    #     avg_rating = (current_avg_rating * current_total_rating - old_rating) / (current_total_rating - 1)

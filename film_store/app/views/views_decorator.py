@@ -3,6 +3,7 @@ from functools import wraps
 from app.auth.auth import populate_user_from_request, extract_request_from_args
 from django.shortcuts import redirect
 from django.contrib import messages
+import time
 
 def protected(view_func):
     @wraps(view_func)
@@ -38,3 +39,18 @@ def public(view_func):
         return view_func(*args, **kwargs)
     
     return _wrapped_view
+
+
+def timeit(message=None):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.perf_counter()
+            result = func(*args, **kwargs)
+            end_time = time.perf_counter()
+            total_time = end_time - start_time
+            if message: print(f"{message} took {total_time:.4f} seconds")
+            else: print(f"{func.__name__} took {total_time:.4f} seconds")
+            return result
+        return wrapper
+    return decorator

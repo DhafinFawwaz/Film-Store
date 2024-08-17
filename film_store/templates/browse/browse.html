@@ -1,4 +1,5 @@
 {% extends "authorized.html" %}
+{% load static %}
 
 {% block extra_header %}
     {% for film in recommendations %} 
@@ -9,6 +10,8 @@
 
 {% block main-content %} 
 <div>
+
+
     {% if recommendations %} 
         <div class="flex mb-4 gap-4">
             <img alt="recommendations-icon" class="scale-150 ml-2" src="https://api.iconify.design/mdi/film-open-star.svg?color=white" alt="">
@@ -21,7 +24,6 @@
         </div> 
         <hr class="h-px mt-8 mb-6 bg-night-500 border-0">
     {% endif %} 
-
     
     <div class="flex mb-4 gap-4">
         <img alt="explore-icon" class="scale-150 ml-2" src="https://api.iconify.design/ion/telescope-sharp.svg?color=white" alt="">
@@ -56,5 +58,7 @@
 </div>
 {% endblock %}
         
-    
+{% block authorized-js %}
+    <!-- <script src="{% static 'browse/browse.js' %}"></script> -->
+{% endblock %}
 

@@ -234,6 +234,7 @@ if os.environ.get('USE_SUPABASE'):
 
 DATASET_URL = "https://drive.google.com/uc?export=download&id=1nfRkHVPdgSPeBlRYe6dcsFT5MWe4DC-C"
 
+# API Documentation
 SWAGGER_SETTINGS = {
    'SECURITY_DEFINITIONS': {
       'Bearer': {
@@ -244,3 +245,11 @@ SWAGGER_SETTINGS = {
    }
 }
 
+
+# Redis
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.environ.get('REDIS_HOST'),
+    }
+}

@@ -13,7 +13,13 @@
             {% endfor %} 
         </div> 
         <hr class="h-px mt-8 mb-6 bg-night-500 border-0">
+    {% else %} 
+        <a href="/" class="text-white font-bold rounded-xl pl-2.5 pr-6 py-1.25 flex gap-2 mb-4 bg-night-600 hover:bg-night-400 focus:bg-night-400 hover:scale-105 focus:scale-110 ease-out-back duration-150 w-min cursor-pointer hover:text-white focus:ring-2 focus:text-white shadow-rim-sm drop-shadow-md">
+            <img alt="back-icon" src="https://api.iconify.design/weui/back-filled.svg?color=white" alt="" class="h-6 scale-75">
+            <div class="text-md">Back</div>
+        </a> 
     {% endif %} 
+
 
     
     <div class="flex mb-4 gap-4">

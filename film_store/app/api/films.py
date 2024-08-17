@@ -7,7 +7,7 @@ from app.api.api_response import APIResponse, APIResponseMissingIDError
 from app.models import Film, Genre
 from app.serializers import FilmRequestSerializer, GenreSerializer, FilmResponseSerializer
 from typing import List
-from app.api.route_decorator import protected, admin_only
+from app.api.route_decorator import protected, admin_only, public
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser
 from app.models import GeneralUser
@@ -20,6 +20,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from app.api.swagger.film_schemas import FilmResponse, FilmFormParameters, FilmDetailResponse, FilmFormPutParameters
 from app.api.swagger.api_response_schema import APIErrorResponse
+from django.db.models import Q
 
 
 class APIFilm(APIView):
@@ -97,17 +98,20 @@ class APIFilm(APIView):
         },
         
     )
-    @protected
+    @public
     def get(self, request: Request, *args, **kwargs):
 
         q = request.GET.get("q")
-        film_list = []
         
-        if q is not None:
-            film_list = Film.objects.filter(title__icontains=q)
+        films = []
+        if 'q' in self.request.GET and self.request.GET['q'] != '':
+            query = self.request.GET['q']
+            films = Film.objects.filter(
+                Q(title__icontains=query) | Q(director__icontains=query)
+            ).order_by('-release_year')
         else:
-            film_list = Film.objects.all()
-        film_serializer = FilmResponseSerializer(film_list, many=True)
+            films = Film.objects.all().order_by('-release_year')
+        film_serializer = FilmResponseSerializer(films, many=True)
 
         # prefix host to video_url and cover_image_url if not using Supabase
         if os.getenv("SUPABASE_KEY") is None:

@@ -4,6 +4,7 @@ from .models import GeneralUser, Genre, Film, Review
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import make_password
 import re
+from app.utils import duration_to_format
 
 class PasswordValidator:
     def __call__(self, value):
@@ -102,6 +103,22 @@ class FilmResponseSerializer(serializers.ModelSerializer):
         representation['genre'] = [genre.name for genre in genre_list]
         representation.pop('video')
         representation.pop('cover_image')
+        return representation
+    
+class FilmViewContextSerializer(FilmResponseSerializer):
+    def to_representation(self, val):
+        representation = super().to_representation(val)
+
+        max_genre = 4
+        representation['duration'] = duration_to_format(representation['duration'])
+        
+        arr = []
+        genre_list = val.genre.all()
+        for genre in genre_list:
+            if len(arr) >= max_genre: break
+            arr.append(genre.name)
+        representation['genre'] = arr
+
         return representation
 
 class ReviewSerializer(serializers.Serializer):

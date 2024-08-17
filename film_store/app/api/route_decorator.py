@@ -20,10 +20,11 @@ def protected(view_func):
 def admin_only(view_func):
     @wraps(view_func)
     @protected
-    def _wrapped_view(request, *args, **kwargs):
+    def _wrapped_view(*args, **kwargs):
+        request = extract_request_from_args(args)
         if request.user.username != 'admin':
             return APIResponse().error("Unauthorized").set_status(status.HTTP_403_FORBIDDEN)
-        return view_func(request, *args, **kwargs)
+        return view_func(*args, **kwargs)
     return _wrapped_view
 
 

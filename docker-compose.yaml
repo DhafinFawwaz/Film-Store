@@ -19,9 +19,10 @@ services:
       - "8000:8000"
     depends_on:
       - database
+      - redis
     volumes:
       - ./:/app
-    command: sh -c "python film_store/manage.py tailwind install && python film_store/manage.py tailwind build && python film_store/manage.py collectstatic --noinput && python film_store/manage.py makemigrations && python film_store/manage.py migrate && python film_store/manage.py seed_if_no_superuser && python film_store/manage.py create_superuser_if_not_exists && cd film_store && gunicorn film_store.wsgi:application --bind 0.0.0.0:8001 --workers 3 & nginx -g 'daemon off;'"
+    command: sh -c "pip install -r requirements.txt && python film_store/manage.py tailwind install && python film_store/manage.py tailwind build && python film_store/manage.py collectstatic --noinput && python film_store/manage.py makemigrations && python film_store/manage.py migrate && python film_store/manage.py seed_if_no_superuser && python film_store/manage.py create_superuser_if_not_exists && cd film_store && gunicorn film_store.wsgi:application --bind 0.0.0.0:8001 --workers 3 & nginx -g 'daemon off;'"
     
 
       
@@ -35,6 +36,17 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
