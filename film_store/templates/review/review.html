@@ -1,4 +1,5 @@
 {% extends "authorized.html" %}
+{% load static %}
 
 {% block main-content %} 
 
@@ -15,7 +16,7 @@
     
 
     {% if all_review %}
-        <div id="results"> 
+        <div id="all-review"> 
             {% for rev in all_review %} 
                 {% include 'components/review-card.html' with review=rev %}
             {% endfor %} 
@@ -39,5 +40,8 @@
 
 {% endblock %}
         
-    
+{% block authorized-js %}
+    <script src="{% static 'review/review.js' %}"></script>
+{% endblock %}
+
 

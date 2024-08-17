@@ -24,6 +24,7 @@ from time import sleep
 from django.core.cache import cache
 from datetime import datetime
 from app.queries.film import find_and_populate_paginated_all_film, find_and_populate_paginated_bought_film, find_and_populate_paginated_wishlist_film, populate_film_details
+from app.queries.review import find_and_populate_paginated_film_review
 import json
 from typing import Callable
 from app.models import Film
@@ -159,44 +160,32 @@ def wishlist_film_polling(request: APIRequest, *args, **kwargs):
 @api_view(['GET'])
 @public
 def film_details(request: APIRequest, id: int, *args, **kwargs):
-    cache_key = f"film_{id}"
+    film = Film.objects.get(id=id)
+    return process_polling(
+        request=request,
+        cache_key = f"film_{id}",
+        find_film_func=lambda req, data: populate_film_details(req, data, film)
+    )
 
-    try:
-        data = cache.get(cache_key)
-        while not data: # wait for data to be available. This should be really rare to happen.
-            sleep(3)
-            data = cache.get(cache_key)        
-        data = json.loads(data)
-        iat = datetime.fromisoformat(data['iat'])
 
-        might_be_new_data = None
 
-        max_wait = 30
-        waited = 0
-        sleep_time = 3
-
-        data = {}
-        while True:
-            print(f"{waited} s | Waiting for new data.")
-            might_be_new_data = cache.get(cache_key)
-            if not might_be_new_data: # case cache invalidated when saving models
-                film = Film.objects.get(id=id)
-                populate_film_details(request, data, film)
-                break
-
-            else: # case another request updated the cache
-                might_be_new_data = json.loads(might_be_new_data)
-                might_be_new_datetime = datetime.fromisoformat(might_be_new_data['iat'])
-                if might_be_new_datetime != iat: # if this equals, then cache is still the same. Not modified by other request
-                    data = might_be_new_data
-                    break 
-        
-            sleep(sleep_time)
-            waited += sleep_time
-            if waited >= max_wait: 
-                return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
-        
-        return APIResponse(data=data, status=status.HTTP_200_OK)
-    except Exception as e:
-        print(e)
-        return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
+@swagger_auto_schema(
+    operation_summary="Film Reviews",
+    operation_description="Find film reviews by page. Will response when new data is available.",
+    request_body=LogoutResponseSchema,
+    responses={
+        # 200: FilmResponse,
+        # 204: FilmResponse,
+    },
+    method="GET"
+)
+@api_view(['GET'])
+@protected
+def reviews(request: APIRequest, id: int, *args, **kwargs):
+    page = int(request.GET.get('page', 1))
+    film = Film.objects.get(id=id)
+    return process_polling(
+        request=request,
+        cache_key = f"reviews_film_{id}_page_{page}",
+        find_film_func=lambda req, data: find_and_populate_paginated_film_review(req, data, film)
+    )

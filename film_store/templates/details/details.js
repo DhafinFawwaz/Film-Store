@@ -38,14 +38,17 @@ let url = origin + "/polling/details/" + id;
 
 async function refresh() {
     while(true) {
-        await wait(5000);
         try {
             const res = await fetch(url); // might wait a long time
             const json = await res.json();
-            if (json.data) updateFilmList(json.data);
+            if (json.data) {
+                updateFilmDetails(json.data);
+                continue;
+            }
         } catch (e) {
-            console.error(e);
+            // console.error(e);
         }
+        await wait(5000);
     }
 }
 
@@ -67,7 +70,7 @@ const filmDescription = document.getElementById('film-description');
 const reviewReview = document.getElementById('review-review');
 const allReview = document.getElementById('all-review');
 
-function updateFilmList(data) {
+function updateFilmDetails(data) {
     const film = data.film;
     const user = data.user;
     const reviews = data.all_review;
