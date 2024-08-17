@@ -59,7 +59,9 @@
 
 {% block main-content %}
 
-{% include 'components/back-button.html' with url="/" %}
+{% with "/explore" as back_url %}
+    {% include 'components/back-button.html' %}
+{% endwith %}
 
 <div class="grid gap-4 sm:gap-4 sm:grid-cols-2 xxs:h-96">
     <div class="w-full overflow-hidden h-80 xxs:h-auto">
@@ -104,7 +106,7 @@
                             <!-- epic django trick to allow put -->
                             <input type="hidden" name="_method" value="delete">
 
-                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11 px-1">
+                            <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11 px-1 focus:scale-107 hover:scale-105">
                                 <img alt="remove-icon" src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-125">
                                 <div class="text-xs xxs:text-sm leading-3 tracking-normal sm:text-lg lg:text-sm">Remove from Wishlist</div>
                             </button>

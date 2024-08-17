@@ -5,6 +5,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import make_password
 import re
 from app.utils import duration_to_format
+from app.utils import format_date_from_str
 
 class PasswordValidator:
     def __call__(self, value):
@@ -131,3 +132,9 @@ class ReviewSerializer(serializers.Serializer):
     class Meta:
         model = Review
         fields = ["rating", "review", "created_at", "updated_at", "user"]
+
+class ReviewViewContextSerializer(ReviewSerializer):
+    def to_representation(self, val):
+        representation = super().to_representation(val)
+        representation['updated_at'] = format_date_from_str(representation['updated_at'])
+        return representation

@@ -96,7 +96,12 @@
     </div>
     {% endif %}
 
-    <p class="text-sm ml-26 mt-0 -translate-y-0.5 font-medium text-night-100">{{ star }} out of 5</p>
+    {% if star == 0 %}
+        <p class="text-sm ml-26 mt-0 -translate-y-0.5 font-medium text-night-100">Unrated</p>
+    {% else %}
+        <p class="text-sm ml-26 mt-0 -translate-y-0.5 font-medium text-night-100">{{ star }} out of 5</p>
+    {% endif %}
+
 </div>
 
 {% endif %}

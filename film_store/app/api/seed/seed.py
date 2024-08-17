@@ -87,13 +87,15 @@ def start_seeding():
         last_name = user['last_name']
         bought = user['bought']
         wishlist = user['wishlist']
+        balance = user['balance']; balance = int(balance) if balance else None
 
         u = GeneralUser.objects.create_user(
             username=username,
             email=email,
             password=password,
             first_name=first_name,
-            last_name=last_name
+            last_name=last_name,
+            balance=balance
         )
         u.save()
 

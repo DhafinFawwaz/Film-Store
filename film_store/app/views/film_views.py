@@ -1,5 +1,5 @@
 from app.models import GeneralUser, Film, Review
-from app.serializers import GeneralUserSerializer, FilmResponseSerializer, ReviewSerializer, FilmViewContextSerializer
+from app.serializers import GeneralUserSerializer, FilmResponseSerializer, ReviewSerializer, FilmViewContextSerializer, ReviewViewContextSerializer
 from django.shortcuts import render
 from django import forms
 from django.contrib import messages
@@ -11,11 +11,13 @@ from app.views.views_class import UnauthorizedView, ProtectedView, PublicView
 from app.utils import duration_to_format, format_date_from_str, clamp
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
-from app.queries.film import find_film, find_and_populate_paginated_all_film, find_and_populate_paginated_bought_film, find_and_populate_paginated_wishlist_film
+from app.queries.film import find_film, find_and_populate_paginated_all_film, find_and_populate_paginated_bought_film, find_and_populate_paginated_wishlist_film, populate_film_details
+from app.queries.review import find_and_populate_paginated_film_review
 from django.core.cache import cache
 import time
 from app.views.views_decorator import timeit
 
+# GET Cached
 class Home(PublicView):
     template_name = 'browse/browse.html'
     max_genre = 4
@@ -96,6 +98,7 @@ class Home(PublicView):
         return render(request, self.template_name, context)
 
 
+# GET Cached
 class Explore(PublicView):
     template_name = 'explore/explore.html'
     max_genre = 4
@@ -124,45 +127,8 @@ class Details(ProtectedView):
         except Film.DoesNotExist:
             messages.error(request, 'Film not found', extra_tags='The film you are looking for does not exist')
             return redirect('/')
-        user: GeneralUser = self.request.user
-
-        context['is_purchased'] = user.bought_films.filter(id=film.id).exists()
-        context['in_wishlist'] = user.wishlist_films.filter(id=film.id).exists()
-
-        # my review
-        review = Review.objects.filter(film=film, user=user)
-        if review.exists():
-            review = review.first()
-            review = ReviewSerializer(review).data
-            review['created_at'] = format_date_from_str(review['created_at'])
-            context['review'] = review
-
-        # all reviews
-        reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')[:3]
-        reviews = ReviewSerializer(reviews, many=True).data
-        for review in reviews:
-            review['updated_at'] = format_date_from_str(review['updated_at'])
-        context['all_review'] = reviews
-
-        # Calculate average rating
-        reviews = Review.objects.filter(film=film)
-        if reviews.exists():
-            rating = 0
-            for review in reviews:
-                rating += review.rating if review.rating else 0
-            rating = rating / reviews.count()
-            rating = round(rating, 2)
-            context['avg_rating'] = rating
-        else:
-            context['avg_rating'] = 0
         
-
-        film = FilmResponseSerializer(film).data
-        film['duration'] = duration_to_format(film['duration'])
-        context['film'] = film
-        context['balance_left_if_purchased'] = request.user.balance - film['price']
-        context['is_balance_sufficient'] = request.user.balance >= film['price']
-
+        populate_film_details(request, context, film)
         return render(request, self.template_name, context)
         
 class BuyFilm(ProtectedView):
@@ -242,6 +208,7 @@ class WishlistFilm(ProtectedView):
         messages.success(request, 'Film Removed from Wishlist', extra_tags='The film was removed from your wishlist', )
         return redirect(f'/details/{film_id}')
 
+# GET Cached
 class Bought(ProtectedView):
     template_name = 'bought/bought.html'
     max_genre = 4
@@ -258,7 +225,7 @@ class Bought(ProtectedView):
         return render(request, self.template_name, context)
 
 
-
+# GET Cached
 class Wishlist(ProtectedView):
     template_name = 'wishlist/wishlist.html'
     max_genre = 4
@@ -273,6 +240,7 @@ class Wishlist(ProtectedView):
 
         return render(request, self.template_name, context)
 
+# GET Cached
 class ReviewView(ProtectedView):
     template_name = 'review/review.html'
 
@@ -285,27 +253,8 @@ class ReviewView(ProtectedView):
             messages.error(request, 'Film not found', extra_tags='The film you are looking for does not exist')
             return redirect('/')
         
+        find_and_populate_paginated_film_review(self.request, context, film)
         context['film'] = FilmResponseSerializer(film).data
-
-        reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')
-        paginator = Paginator(reviews, 4)
-        page = 1
-        if 'page' in self.request.GET:
-            page = int(self.request.GET['page'])
-            page = clamp(page, 1, paginator.num_pages)
-        reviews = paginator.get_page(page)
-        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
-
-        context['elided_page'] = elided_page
-        context['prev_page'] = page - 1 if page > 1 else None
-        context['next_page'] = page + 1 if page < paginator.num_pages else None
-        context['current_page'] = page
-
-        reviews = ReviewSerializer(reviews, many=True).data
-        for review in reviews:
-            review['updated_at'] = format_date_from_str(review['updated_at'])
-        context['all_review'] = reviews
-
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):

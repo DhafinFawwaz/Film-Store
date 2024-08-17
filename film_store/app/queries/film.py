@@ -1,5 +1,6 @@
 from app.api.api_request import APIRequest
-from app.models import Film
+from app.models import Film, Review
+from app.serializers import FilmResponseSerializer, ReviewSerializer, ReviewViewContextSerializer
 from django.db.models import Q
 from django.db.models.manager import BaseManager
 from django.core.cache import cache
@@ -11,6 +12,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from app.views.views_decorator import timeit
 from datetime import datetime
 from typing import Callable
+from app.utils import duration_to_format
 
 
 def find_and_populate_paginated_film(request: APIRequest, context: dict, cache_key: str, find_film_func: Callable, page: int):
@@ -128,3 +130,64 @@ def find_and_populate_paginated_wishlist_film(request: APIRequest, context: dict
         find_film_func=find_user_wishlist_film
     )
 
+
+
+
+def populate_film_details(request: APIRequest, context: dict, film: Film):
+    cached_films = None
+    cache_key = f"film_{film.id}"
+    print(f"cache_key: {cache_key}")
+    try: cached_films = cache.get(cache_key)
+    except Exception as e:
+        print(f"\033[91mError: Getting cache failed. {e}\033[0m")
+        cached_films = None
+
+    if cached_films:
+        print("\033[92mCache hit\033[0m")
+        data = json.loads(cached_films)
+        context.update(data)
+        context['iat'] = datetime.fromisoformat(data['iat'])
+    else:
+        print("\033[93mCache miss\033[0m")
+
+        user = request.user
+        context['is_purchased'] = user.bought_films.filter(id=film.id).exists()
+        context['in_wishlist'] = user.wishlist_films.filter(id=film.id).exists()
+
+
+        # my review
+        review = Review.objects.filter(film=film, user=user)
+        if review.exists():
+            review = review.first()
+            review = ReviewViewContextSerializer(review).data
+            context['review'] = review
+
+        # all reviews
+        reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')[:3]
+        reviews = ReviewViewContextSerializer(reviews, many=True).data
+        context['all_review'] = reviews
+
+        # Calculate average rating
+        reviews = Review.objects.filter(film=film)
+        if reviews.exists():
+            rating = 0
+            for review in reviews:
+                rating += review.rating if review.rating else 0
+            rating = rating / reviews.count()
+            rating = round(rating, 2)
+            context['avg_rating'] = rating
+        else:
+            context['avg_rating'] = 0
+        
+
+        film = FilmResponseSerializer(film).data
+        film['duration'] = duration_to_format(film['duration'])
+        context['film'] = film
+        context['balance_left_if_purchased'] = request.user.balance - film['price']
+        context['is_balance_sufficient'] = request.user.balance >= film['price']
+        context['iat'] = datetime.now()
+
+        try: cache.set(cache_key, json.dumps(context, cls=DjangoJSONEncoder))
+        except Exception as e:
+            print(f"\033[91mError: Setting cache failed. {e}\033[0m")
+    
