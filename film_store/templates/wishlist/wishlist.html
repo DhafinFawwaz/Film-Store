@@ -18,7 +18,8 @@
         {% endfor %} 
         </div> 
 
-        {% include 'components/pagination.html' %}
+        {% include 'components/pagination.html' with path='wishlist' %}
+
         <!-- Gotta give some space for the overlay balance -->
         <div class="h-12"></div> 
     {% endif %}

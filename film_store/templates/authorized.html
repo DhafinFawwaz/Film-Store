@@ -8,15 +8,23 @@
   <!-- Navbar -->
   <div class="fixed z-20 drop-shadow-lg py-4 px-4 h-17 bg-night-900 w-full flex justify-center">
     <div class="h-full border md:mt-0 sm:max-w-4xl xl:p-0 border-none flex gap-4 w-full relative">
+      
+      {% if 'bought' in request.path %}
+        <form class="w-full" method="get" action="/bought">
+      {% elif 'wishlist' in request.path %}
+        <form class="w-full" method="get" action="/wishlist">
+      {% else %}
+        <form class="w-full" method="get" action="/explore">
+      {% endif %}
+          <img alt="search-icon" src="https://api.iconify.design/mdi/search.svg?color=%2354565c" class="absolute scale-125 mt-2.5 ml-3.5 z-10 pointer-events-none">
+          {% if query %}
+            <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="{{query}}" value="{{query}}">
+          {% else %}
+            <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="Search for a film">
+          {% endif %}
+        </form>
 
-      <form class="w-full" method="get" action="/explore">
-        <img alt="search-icon" src="https://api.iconify.design/mdi/search.svg?color=%2354565c" class="absolute scale-125 mt-2.5 ml-3.5 z-10 pointer-events-none">
-        {% if query %}
-          <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="{{query}}" value="{{query}}">
-        {% else %}
-          <input class="!h-full w-full !pl-10" type="text" name="q" id="search" placeholder="Search for a film">
-        {% endif %}
-      </form>
+
       <button id="nav-button" class="rounded-lg bg-night-600 w-10 h-full hover:scale-110 ease-out-back group justify-center flex hover:bg-night-400" aria-label="menu">
         <img alt="menu-icon" src="https://api.iconify.design/mi/menu.svg?color=%23555555" alt="" class="z-10 h-full group-hover:invert pointer-events-none">
       </button>
@@ -37,6 +45,11 @@
               <a href="/wishlist" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
                 <img alt="wishlist-icon" src="https://api.iconify.design/ic/baseline-star.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
                 <div class="text-sm select-none">Wishlist</div>
+              </a>
+
+              <a href="/" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
+                <img alt="home-icon" src="https://api.iconify.design/ion/home-sharp.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
+                <div class="text-sm select-none">Home</div>
               </a>
       
               <form method="POST" action="/signout" novalidate>
@@ -61,6 +74,11 @@
               <a href="/wishlist" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
                 <img alt="wishlist-icon" src="https://api.iconify.design/ic/baseline-star.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
                 <div class="text-sm select-none">Wishlist</div>
+              </a>
+
+              <a href="/" class="rounded-lg bg-night-800 w-auto h-full hover:scale-100 hover:bg-night-400 duration-0 ease-out group flex gap-2 hover:ring-0 focus:ring-0 focus-within:bg-night-200 p-2 cursor-pointer font-bold text-white focus:text-white hover:text-white hover:shadow-rim-sm hover:drop-shadow-sm">
+                <img alt="home-icon" src="https://api.iconify.design/ion/home-sharp.svg?color=%23555555" alt="" class="z-10 group-hover:invert group-focus:invert select-none">
+                <div class="text-sm select-none">Home</div>
               </a>
 
             {% endif %}

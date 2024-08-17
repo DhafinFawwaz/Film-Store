@@ -7,3 +7,4 @@ class AppConfig(AppConfig):
 
     def ready(self) -> None:
         import app.signals.film_signals
+        import app.signals.user_signals

@@ -11,7 +11,7 @@ from app.views.views_class import UnauthorizedView, ProtectedView, PublicView
 from app.utils import duration_to_format, format_date_from_str, clamp
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
-from app.queries.film import find_film, find_and_populate_paginated_film
+from app.queries.film import find_film, find_and_populate_paginated_all_film, find_and_populate_paginated_bought_film, find_and_populate_paginated_wishlist_film
 from django.core.cache import cache
 import time
 from app.views.views_decorator import timeit
@@ -77,13 +77,13 @@ class Home(PublicView):
         return Film.objects.order_by('?')[:4]
 
     def get(self, request, *args, **kwargs):
-
+        # cache.clear()
         context = {}
         query = request.GET.get('q', None)
         if query and query != '': context['query'] = query
         
         # pagination cache
-        find_and_populate_paginated_film(self.request, context, query)
+        find_and_populate_paginated_all_film(self.request, context, query)
         print('\033[0m')
 
         
@@ -107,7 +107,7 @@ class Explore(PublicView):
         if query and query != '': context['query'] = query
         
         # pagination cache
-        find_and_populate_paginated_film(self.request, context, query)
+        find_and_populate_paginated_all_film(self.request, context, query)
 
         return render(request, self.template_name, context)
 
@@ -247,33 +247,17 @@ class Bought(ProtectedView):
     max_genre = 4
 
     def get(self, request, *args, **kwargs):
+
         context = {}
-        user: GeneralUser = self.request.user
-        films = user.bought_films.all().order_by('-release_year')
-        films = FilmResponseSerializer(films, many=True).data
+        query = request.GET.get('q', None)
+        if query and query != '': context['query'] = query
+        
+        # pagination cache
+        find_and_populate_paginated_bought_film(self.request, context, query)
 
-
-        paginator = Paginator(films, 8)
-        page = 1
-        if 'page' in self.request.GET:
-            page = int(self.request.GET['page'])
-            page = clamp(page, 1, paginator.num_pages)
-        films = paginator.get_page(page)
-        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
-
-        context['elided_page'] = elided_page
-        context['prev_page'] = page - 1 if page > 1 else None
-        context['next_page'] = page + 1 if page < paginator.num_pages else None
-        context['current_page'] = page
-
-
-        for film in films:
-            film['duration'] = duration_to_format(film['duration'])
-            if len(film['genre']) > self.max_genre:
-                film['genre'] = film['genre'][:self.max_genre]
-                film['genre'].append('...')
-        context['films'] = films
         return render(request, self.template_name, context)
+
+
 
 class Wishlist(ProtectedView):
     template_name = 'wishlist/wishlist.html'
@@ -281,32 +265,12 @@ class Wishlist(ProtectedView):
 
     def get(self, request, *args, **kwargs):
         context = {}
-        user = self.request.user
-        user: GeneralUser = self.request.user
-        films = user.wishlist_films.all().order_by('-release_year')
-        films = FilmResponseSerializer(films, many=True).data
+        query = request.GET.get('q', None)
+        if query and query != '': context['query'] = query
+        
+        # pagination cache
+        find_and_populate_paginated_wishlist_film(self.request, context, query)
 
-
-        paginator = Paginator(films, 8)
-        page = 1
-        if 'page' in self.request.GET:
-            page = int(self.request.GET['page'])
-            page = clamp(page, 1, paginator.num_pages)
-        films = paginator.get_page(page)
-        elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
-
-        context['elided_page'] = elided_page
-        context['prev_page'] = page - 1 if page > 1 else None
-        context['next_page'] = page + 1 if page < paginator.num_pages else None
-        context['current_page'] = page
-
-
-        for film in films:
-            film['duration'] = duration_to_format(film['duration'])
-            if len(film['genre']) > self.max_genre:
-                film['genre'] = film['genre'][:self.max_genre]
-                film['genre'].append('...')
-        context['films'] = films
         return render(request, self.template_name, context)
 
 class ReviewView(ProtectedView):
