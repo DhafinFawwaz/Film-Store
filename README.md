@@ -8,7 +8,7 @@
 | ------------------------- | ------------- |
 | Dhafin Fawwaz Ikramullah  |    13522084   |
 
-# Deploy URL
+# 🌐 Deploy URL
 [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
 
 # 🏃🏻‍♂️ How to Run
@@ -41,14 +41,14 @@ docker-compose up web
 ```
 
 
-# Used Design Patterns
+# 📍 Used Design Patterns
 <!-- Design pattern yang digunakan dan alasannya,  -->
 
 APIResponse Builder Pattern
 APIView, protected, swagger Decorator
 
 
-# Technology Stack
+# 💻 Technology Stack
 
 ## Development
 - Monolith Website: Django 5.1
@@ -63,7 +63,7 @@ APIView, protected, swagger Decorator
 - Caching Host: Redis Cloud (Redis)
 
 
-# API Endpoints
+# 🌐 API Endpoints
 API Documentation for Film Store
 
 ## Version: v1
@@ -473,7 +473,7 @@ Change a user's balance by ID
 | 401 |  | object |
 
 
-# Bonus
+# ✨ Bonus
 | Nomor |          Bonus            | Dikerjakan |
 | ----- | ------------------------- | ---------- |
 | B01   | OWASP                     |     ✅     |
@@ -489,6 +489,9 @@ Change a user's balance by ID
 | B11   | Ember                     |     ✅     |
 
 ## B01 OWASP
+TBD
+
+
 ## B02 Deployment
 Everything is deployed with a free service. Here are the services used:
 - Database: PostgreSQL 14
@@ -522,12 +525,11 @@ The caching is done for the following pages:
 You can test this by looking at the print in the terminal. It will print `CACHE HIT` if the data is fetched from the cache, and `CACHE MISS` if the data is fetched from the database. There is also a print of the cache key that is used and the execution time.
 Here is an example of the print:
 
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-  <img src="./images/cache_hit.png" alt="Cache Hit">
-  <img src="./images/cache_miss.png" alt="Cache Miss">
-</div>
+<img src="./images/cache_hit.png" alt="Cache Hit">
+<img src="./images/cache_miss.png" alt="Cache Miss">
 
 ## B05 Lighthouse
+TBD
 
 ## B06 Responsive Layout
 Website styling is created with Tailwind CSS. It is responsive and can be viewed on any device. Here are some screenshots of the website on different devices:
@@ -601,10 +603,65 @@ Website styling is created with Tailwind CSS. It is responsive and can be viewed
   <img src="./images/profile_lg.png" width=57%>
 </div>
 
-
-
 ## B07 Dokumentasi API
+API Documentation is created with Swagger. You can access the documentation on 
+
+[https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+
+
 ## B08 SOLID
+### Single Responsibility Principle
+TBD
+
+### Open/Closed Principle
+TBD
+
+### Liskov Substitution Principle
+TBD
+
+### Interface Segregation Principle
+TBD
+
+### Dependency Inversion Principle
+TBD
+
+
+
 ## B09 Automated Testing
+Automated Unit Test is done with Django's built-in testing framework. The tests are located in the `tests.py` file in each app. The tests are run with the following command:
+```
+docker-compose run web python manage.py test
+```
+TBD (screenshots)
+
 ## B10 Fitur Tambahan
+The additional features done are:
+#### 1. Film Recommendation
+<div>
+  <img src="./images/home_sm.png" width=12.5%>
+  <img src="./images/home_md.png" width=26%>
+  <img src="./images/home_lg.png" width=57%>
+</div>
+
+#### 2. Rating & Review
+<div>
+  <img src="./images/details_sm.png" width=12.5%>
+  <img src="./images/details_md.png" width=26%>
+  <img src="./images/details_lg.png" width=57%>
+</div>
+<div>
+  <img src="./images/review_sm.png" width=12.5%>
+  <img src="./images/review_md.png" width=26%>
+  <img src="./images/review_lg.png" width=57%>
+</div>
+
+#### 3. Wishlist
+<div>
+  <img src="./images/wishlist_sm.png" width=12.5%>
+  <img src="./images/wishlist_md.png" width=26%>
+  <img src="./images/wishlist_lg.png" width=57%>
+</div>
+
+
 ## B11 Ember
+Ember/Bucket is used for the deployment to store image and video files. The bucket used is supabase.
