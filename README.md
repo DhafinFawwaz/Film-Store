@@ -9,7 +9,10 @@
 | Dhafin Fawwaz Ikramullah  |    13522084   |
 
 # 🌐 Deploy URL
-[https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
+Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
+
+Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 40 seconds. Please wait.
+If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
 
 # 🏃🏻‍♂️ How to Run
 ## Quick Start
@@ -100,8 +103,204 @@ As we can see, the models (database in general) don't need to know how to implem
 - Caching Host: Redis Cloud (Redis)
 
 
+# ✨ Bonus
+| Nomor |          Bonus            | Dikerjakan |
+| ----- | ------------------------- | ---------- |
+| B01   | OWASP                     |     ✅     |
+| B02   | Deployment                |     ✅     |
+| B03   | Polling                   |     ✅     |
+| B04   | Caching                   |     ✅     |
+| B05   | Lighthouse                |     ✅     |
+| B06   | Responsive Layout         |     ✅     |
+| B07   | Dokumentasi API           |     ✅     |
+| B08   | SOLID                     |     ✅     |
+| B09   | Automated Testing         |     ✅     |
+| B10   | Fitur Tambahan            |     ✅     |
+| B11   | Ember                     |     ✅     |
+
+## B01 OWASP
+TBD
+
+
+## B02 Deployment
+Everything is deployed with a free service. Here are the services used:
+- Database: PostgreSQL 14
+- Caching: Redis 7.4.0
+- REST API: Django Rest Framework 3.15.2
+
+Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
+Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 40 seconds. Please wait.
+If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
+
+## B03 Polling
+It's done by making the client do a request. Then the Backend Server will wait until there is new data available. If there is, it will return the data. If until around 30 seconds there is no new data, it will return an empty data and with 204 status code. The client will then wait for a few seconds and do the request again.
+Pages that use polling:
+- / (Excluding the recommendation)
+- /explore (including its search and paginated pages)
+- /details/{id}
+- /details/{id}/review (including its paginated pages)
+- /wishlist (including its search and paginated pages)
+- /bought (including its search and paginated pages)
+
+## B04 Caching
+This is done with Redis. Result of some database queries that is frequently called will be cached. When the data is updated, the cache will be invalidated.
+The caching is done for the following pages:
+- / (Excluding the recommendation)
+- /explore (including its search and paginated pages)
+- /details/{id}
+- /details/{id}/review (including its paginated pages)
+- /wishlist (including its search and paginated pages)
+- /bought (including its search and paginated pages)
+
+You can test this by looking at the print in the terminal. It will print `CACHE HIT` if the data is fetched from the cache, and `CACHE MISS` if the data is fetched from the database. There is also a print of the cache key that is used and the execution time.
+Here is an example of the print:
+
+<img src="./images/cache_hit.png" alt="Cache Hit">
+<img src="./images/cache_miss.png" alt="Cache Miss">
+
+## B05 Lighthouse
+TBD
+
+## B06 Responsive Layout
+Website styling is created with Tailwind CSS. It is responsive and can be viewed on any device. Here are some screenshots of the website on different devices:
+#### Login
+<div>
+  <img src="./images/login_sm.png" width=12.5%>
+  <img src="./images/login_md.png" width=26%>
+  <img src="./images/login_lg.png" width=57%>
+</div>
+
+#### Register
+<div>
+  <img src="./images/register_sm.png" width=12.5%>
+  <img src="./images/register_md.png" width=26%>
+  <img src="./images/register_lg.png" width=57%>
+</div>
+
+#### Home
+<div>
+  <img src="./images/home_sm.png" width=12.5%>
+  <img src="./images/home_md.png" width=26%>
+  <img src="./images/home_lg.png" width=57%>
+</div>
+
+#### Explore
+<div>
+  <img src="./images/explore_sm.png" width=12.5%>
+  <img src="./images/explore_md.png" width=26%>
+  <img src="./images/explore_lg.png" width=57%>
+</div>
+
+#### Details
+<div>
+  <img src="./images/details_sm.png" width=12.5%>
+  <img src="./images/details_md.png" width=26%>
+  <img src="./images/details_lg.png" width=57%>
+</div>
+
+#### Details 2
+<div>
+  <img src="./images/details2_sm.png" width=12.5%>
+  <img src="./images/details2_md.png" width=26%>
+  <img src="./images/details2_lg.png" width=57%>
+</div>
+
+#### Review
+<div>
+  <img src="./images/review_sm.png" width=12.5%>
+  <img src="./images/review_md.png" width=26%>
+  <img src="./images/review_lg.png" width=57%>
+</div>
+
+#### Wishlist
+<div>
+  <img src="./images/wishlist_sm.png" width=12.5%>
+  <img src="./images/wishlist_md.png" width=26%>
+  <img src="./images/wishlist_lg.png" width=57%>
+</div>
+
+#### Bought
+<div>
+  <img src="./images/bought_sm.png" width=12.5%>
+  <img src="./images/bought_md.png" width=26%>
+  <img src="./images/bought_lg.png" width=57%>
+</div>
+
+#### Profile
+<div>
+  <img src="./images/profile_sm.png" width=12.5%>
+  <img src="./images/profile_md.png" width=26%>
+  <img src="./images/profile_lg.png" width=57%>
+</div>
+
+## B07 Dokumentasi API
+API Documentation is created with Swagger. You can access the documentation on 
+
+[https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+
+
+## B08 SOLID
+### Single Responsibility Principle
+TBD
+
+### Open/Closed Principle
+TBD
+
+### Liskov Substitution Principle
+TBD
+
+### Interface Segregation Principle
+TBD
+
+### Dependency Inversion Principle
+TBD
+
+
+
+## B09 Automated Testing
+Automated Unit Test is done with Django's built-in testing framework. The tests are located in the `tests.py` file in each app. The tests are run with the following command:
+```
+docker-compose run web python manage.py test
+```
+TBD (screenshots)
+
+## B10 Fitur Tambahan
+The additional features done are:
+#### 1. Film Recommendation
+<div>
+  <img src="./images/home_sm.png" width=12.5%>
+  <img src="./images/home_md.png" width=26%>
+  <img src="./images/home_lg.png" width=57%>
+</div>
+
+#### 2. Rating & Review
+<div>
+  <img src="./images/details_sm.png" width=12.5%>
+  <img src="./images/details_md.png" width=26%>
+  <img src="./images/details_lg.png" width=57%>
+</div>
+<div>
+  <img src="./images/review_sm.png" width=12.5%>
+  <img src="./images/review_md.png" width=26%>
+  <img src="./images/review_lg.png" width=57%>
+</div>
+
+#### 3. Wishlist
+<div>
+  <img src="./images/wishlist_sm.png" width=12.5%>
+  <img src="./images/wishlist_md.png" width=26%>
+  <img src="./images/wishlist_lg.png" width=57%>
+</div>
+
+
+## B11 Ember
+Ember/Bucket is used for the deployment to store image and video files. The bucket used is supabase.
+
+
+
 # 🌐 API Endpoints
 API Documentation for Film Store
+Detailed API documentation can be accessed on [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
 ## Version: v1
 
@@ -509,196 +708,3 @@ Change a user's balance by ID
 | 400 |  | object |
 | 401 |  | object |
 
-
-# ✨ Bonus
-| Nomor |          Bonus            | Dikerjakan |
-| ----- | ------------------------- | ---------- |
-| B01   | OWASP                     |     ✅     |
-| B02   | Deployment                |     ✅     |
-| B03   | Polling                   |     ✅     |
-| B04   | Caching                   |     ✅     |
-| B05   | Lighthouse                |     ✅     |
-| B06   | Responsive Layout         |     ✅     |
-| B07   | Dokumentasi API           |     ✅     |
-| B08   | SOLID                     |     ✅     |
-| B09   | Automated Testing         |     ✅     |
-| B10   | Fitur Tambahan            |     ✅     |
-| B11   | Ember                     |     ✅     |
-
-## B01 OWASP
-TBD
-
-
-## B02 Deployment
-Everything is deployed with a free service. Here are the services used:
-- Database: PostgreSQL 14
-- Caching: Redis 7.4.0
-- REST API: Django Rest Framework 3.15.2
-
-Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
-Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 40 seconds. Please wait.
-If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
-
-## B03 Polling
-It's done by making the client do a request. Then the Backend Server will wait until there is new data available. If there is, it will return the data. If until around 30 seconds there is no new data, it will return an empty data and with 204 status code. The client will then wait for a few seconds and do the request again.
-Pages that use polling:
-- / (Excluding the recommendation)
-- /explore (including its search and paginated pages)
-- /details/{id}
-- /details/{id}/review (including its paginated pages)
-- /wishlist (including its search and paginated pages)
-- /bought (including its search and paginated pages)
-
-## B04 Caching
-This is done with Redis. Result of some database queries that is frequently called will be cached. When the data is updated, the cache will be invalidated.
-The caching is done for the following pages:
-- / (Excluding the recommendation)
-- /explore (including its search and paginated pages)
-- /details/{id}
-- /details/{id}/review (including its paginated pages)
-- /wishlist (including its search and paginated pages)
-- /bought (including its search and paginated pages)
-
-You can test this by looking at the print in the terminal. It will print `CACHE HIT` if the data is fetched from the cache, and `CACHE MISS` if the data is fetched from the database. There is also a print of the cache key that is used and the execution time.
-Here is an example of the print:
-
-<img src="./images/cache_hit.png" alt="Cache Hit">
-<img src="./images/cache_miss.png" alt="Cache Miss">
-
-## B05 Lighthouse
-TBD
-
-## B06 Responsive Layout
-Website styling is created with Tailwind CSS. It is responsive and can be viewed on any device. Here are some screenshots of the website on different devices:
-#### Login
-<div>
-  <img src="./images/login_sm.png" width=12.5%>
-  <img src="./images/login_md.png" width=26%>
-  <img src="./images/login_lg.png" width=57%>
-</div>
-
-#### Register
-<div>
-  <img src="./images/register_sm.png" width=12.5%>
-  <img src="./images/register_md.png" width=26%>
-  <img src="./images/register_lg.png" width=57%>
-</div>
-
-#### Home
-<div>
-  <img src="./images/home_sm.png" width=12.5%>
-  <img src="./images/home_md.png" width=26%>
-  <img src="./images/home_lg.png" width=57%>
-</div>
-
-#### Explore
-<div>
-  <img src="./images/explore_sm.png" width=12.5%>
-  <img src="./images/explore_md.png" width=26%>
-  <img src="./images/explore_lg.png" width=57%>
-</div>
-
-#### Details
-<div>
-  <img src="./images/details_sm.png" width=12.5%>
-  <img src="./images/details_md.png" width=26%>
-  <img src="./images/details_lg.png" width=57%>
-</div>
-
-#### Details 2
-<div>
-  <img src="./images/details2_sm.png" width=12.5%>
-  <img src="./images/details2_md.png" width=26%>
-  <img src="./images/details2_lg.png" width=57%>
-</div>
-
-#### Review
-<div>
-  <img src="./images/review_sm.png" width=12.5%>
-  <img src="./images/review_md.png" width=26%>
-  <img src="./images/review_lg.png" width=57%>
-</div>
-
-#### Wishlist
-<div>
-  <img src="./images/wishlist_sm.png" width=12.5%>
-  <img src="./images/wishlist_md.png" width=26%>
-  <img src="./images/wishlist_lg.png" width=57%>
-</div>
-
-#### Bought
-<div>
-  <img src="./images/bought_sm.png" width=12.5%>
-  <img src="./images/bought_md.png" width=26%>
-  <img src="./images/bought_lg.png" width=57%>
-</div>
-
-#### Profile
-<div>
-  <img src="./images/profile_sm.png" width=12.5%>
-  <img src="./images/profile_md.png" width=26%>
-  <img src="./images/profile_lg.png" width=57%>
-</div>
-
-## B07 Dokumentasi API
-API Documentation is created with Swagger. You can access the documentation on 
-
-[https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
-
-
-## B08 SOLID
-### Single Responsibility Principle
-TBD
-
-### Open/Closed Principle
-TBD
-
-### Liskov Substitution Principle
-TBD
-
-### Interface Segregation Principle
-TBD
-
-### Dependency Inversion Principle
-TBD
-
-
-
-## B09 Automated Testing
-Automated Unit Test is done with Django's built-in testing framework. The tests are located in the `tests.py` file in each app. The tests are run with the following command:
-```
-docker-compose run web python manage.py test
-```
-TBD (screenshots)
-
-## B10 Fitur Tambahan
-The additional features done are:
-#### 1. Film Recommendation
-<div>
-  <img src="./images/home_sm.png" width=12.5%>
-  <img src="./images/home_md.png" width=26%>
-  <img src="./images/home_lg.png" width=57%>
-</div>
-
-#### 2. Rating & Review
-<div>
-  <img src="./images/details_sm.png" width=12.5%>
-  <img src="./images/details_md.png" width=26%>
-  <img src="./images/details_lg.png" width=57%>
-</div>
-<div>
-  <img src="./images/review_sm.png" width=12.5%>
-  <img src="./images/review_md.png" width=26%>
-  <img src="./images/review_lg.png" width=57%>
-</div>
-
-#### 3. Wishlist
-<div>
-  <img src="./images/wishlist_sm.png" width=12.5%>
-  <img src="./images/wishlist_md.png" width=26%>
-  <img src="./images/wishlist_lg.png" width=57%>
-</div>
-
-
-## B11 Ember
-Ember/Bucket is used for the deployment to store image and video files. The bucket used is supabase.
