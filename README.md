@@ -522,15 +522,85 @@ The caching is done for the following pages:
 You can test this by looking at the print in the terminal. It will print `CACHE HIT` if the data is fetched from the cache, and `CACHE MISS` if the data is fetched from the database. There is also a print of the cache key that is used and the execution time.
 Here is an example of the print:
 
-<p style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
   <img src="./images/cache_hit.png" alt="Cache Hit">
   <img src="./images/cache_miss.png" alt="Cache Miss">
-</p>
+</div>
 
 ## B05 Lighthouse
 
-
 ## B06 Responsive Layout
+Website styling is created with Tailwind CSS. It is responsive and can be viewed on any device. Here are some screenshots of the website on different devices:
+#### Login
+<div>
+  <img src="./images/login_sm.png" width=12.5%>
+  <img src="./images/login_md.png" width=26%>
+  <img src="./images/login_lg.png" width=57%>
+</div>
+
+#### Register
+<div>
+  <img src="./images/register_sm.png" width=12.5%>
+  <img src="./images/register_md.png" width=26%>
+  <img src="./images/register_lg.png" width=57%>
+</div>
+
+#### Home
+<div>
+  <img src="./images/home_sm.png" width=12.5%>
+  <img src="./images/home_md.png" width=26%>
+  <img src="./images/home_lg.png" width=57%>
+</div>
+
+#### Explore
+<div>
+  <img src="./images/explore_sm.png" width=12.5%>
+  <img src="./images/explore_md.png" width=26%>
+  <img src="./images/explore_lg.png" width=57%>
+</div>
+
+#### Details
+<div>
+  <img src="./images/details_sm.png" width=12.5%>
+  <img src="./images/details_md.png" width=26%>
+  <img src="./images/details_lg.png" width=57%>
+</div>
+
+#### Details 2
+<div>
+  <img src="./images/details2_sm.png" width=12.5%>
+  <img src="./images/details2_md.png" width=26%>
+  <img src="./images/details2_lg.png" width=57%>
+</div>
+
+#### Review
+<div>
+  <img src="./images/review_sm.png" width=12.5%>
+  <img src="./images/review_md.png" width=26%>
+  <img src="./images/review_lg.png" width=57%>
+</div>
+
+#### Wishlist
+<div>
+  <img src="./images/wishlist_sm.png" width=12.5%>
+  <img src="./images/wishlist_md.png" width=26%>
+  <img src="./images/wishlist_lg.png" width=57%>
+</div>
+
+#### Bought
+<div>
+  <img src="./images/bought_sm.png" width=12.5%>
+  <img src="./images/bought_md.png" width=26%>
+  <img src="./images/bought_lg.png" width=57%>
+</div>
+
+#### Profile
+<div>
+  <img src="./images/profile_sm.png" width=12.5%>
+  <img src="./images/profile_md.png" width=26%>
+  <img src="./images/profile_lg.png" width=57%>
+</div>
+
 
 
 ## B07 Dokumentasi API

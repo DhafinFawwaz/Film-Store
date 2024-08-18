@@ -27,7 +27,7 @@ class Register(UnauthorizedView):
         
         user = form.save(commit=False)
         user.save()
-        messages.success(request, "Success", "You have signed up successfully")
+        messages.success(request, "Success", "You have registered successfully")
         return redirect('/signin')
         
 

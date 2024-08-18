@@ -19,14 +19,13 @@
                         {% endif %}
                         <img alt="field-icon" src="{{ field.field.widget.attrs.icon_src }}" class="absolute scale-125 mt-10 ml-4 z-10 pointer-events-none">
                         {{ field.label_tag }} 
-                            {% if field.errors %} 
-                                <div class="relative outline-error">
-                                    <div></div>
-                                    {{ field }} 
-                                </div>
-                            {% else %} 
-                                {{ field }}
-                            {% endif %}
+                        {% if field.errors %} 
+                            <div class="outline-error">
+                                {{ field }} 
+                            </div>
+                        {% else %} 
+                            {{ field }}
+                        {% endif %}
                     </div>
                     {% endfor %}
 

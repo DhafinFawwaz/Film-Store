@@ -24,6 +24,7 @@ def unauthorized(view_func):
         request = extract_request_from_args(args)
         try: 
             populate_user_from_request(request)
+            messages.info(request, "You are already logged in", "Logout if you want to login with another account")
             return redirect('/')
         except Exception as e: request.user = None
         return view_func(*args, **kwargs)
