@@ -64,10 +64,16 @@
     {% include 'components/back-button.html' %}
 {% endwith %}
 
-<div class="grid gap-4 sm:gap-4 sm:grid-cols-2 xxs:h-96">
-    <div class="w-full overflow-hidden h-80 xxs:h-auto">
-        <img id="film-cover-image-url" alt="film-thumbnail" src="{{ film.cover_image_url }}" class="object-cover object-center rounded-2xl w-full h-full"></img>
+<div class="grid gap-4 sm:gap-4 sm:grid-cols-2 min-h-96">
+    
+    <div class="relative overflow-hidden sm:h-auto h-96 sm:block hidden">
+        <div class="absolute inset-0">
+            <img id="film-cover-image-url" alt="film-thumbnail" src="{{ film.cover_image_url }}" class="rounded-2xl w-full h-full object-cover">
+        </div>
     </div>
+
+    <img id="film-cover-image-url" alt="film-thumbnail" src="{{ film.cover_image_url }}" class="rounded-2xl sm:hidden block w-full h-full object-cover">
+
     <div class="text-white flex flex-col justify-between bg-night-800 rounded-xl px-4 pt-3 pb-4 shadow-rim-sm drop-shadow-md">
         <div>
             <div class="flex gap-x-2 flex-wrap">
@@ -116,7 +122,7 @@
 
                             <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-500 focus:bg-blue-700 h-11 px-1 focus:scale-107 hover:scale-105">
                                 <img alt="remove-icon" src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-125">
-                                <div class="text-xs xxs:text-sm leading-3 tracking-normal sm:text-lg lg:text-sm">Remove from Wishlist</div>
+                                <div class="text-lg xxs:text-md line-clamp-1">Unwishlist</div>
                             </button>
                         </form>
                     {% else %}
@@ -127,7 +133,7 @@
 
                             <button class="ease-out-back shadow-rim-md drop-shadow-sm flex items-center gap-2 justify-center bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 h-11 focus:scale-107 hover:scale-105">
                                 <img alt="add-icon" src="https://api.iconify.design/ic/baseline-star.svg?color=white" alt="" class="group-hover:invert group-focus:invert scale-125">
-                                <div class="text-sm xxs:text-md leading-4">Add to Wishlist</div>
+                                <div class="text-lg xxs:text-md line-clamp-1">Wishlist</div>
                             </button>
                         </form>
                     {% endif %}

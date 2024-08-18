@@ -8,6 +8,9 @@
 | ------------------------- | ------------- |
 | Dhafin Fawwaz Ikramullah  |    13522084   |
 
+# Deploy URL
+[https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
+
 # 🏃🏻‍♂️ How to Run
 ## Quick Start
 Rename `.env.example` to `.env` and fill the environment variables as needed. It should already work with the default values, but you can change them if you want to.
@@ -248,27 +251,20 @@ The user will be logged in and a token will be returned
 ### /polling/bought
 
 #### GET
-##### Summary:
-
-Polling search bought film
-
 ##### Description:
 
-Find Bought film by search query or page. Will response when new data is available.
+
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
-| q | query | Search for bought films by title and director | No | string |
-| Page | query | Get bought films in certain page | No | string |
 
 ##### Responses
 
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 |  | object |
-| 204 |  | object |
+| Code | Description |
+| ---- | ----------- |
+| 200 |  |
 
 ### /polling/details/{id}
 
@@ -320,52 +316,38 @@ Find film reviews by page. Will response when new data is available.
 ### /polling/film
 
 #### GET
-##### Summary:
-
-Polling search film
-
 ##### Description:
 
-Find film by search query or page. Will response when new data is available.
+
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
-| q | query | Search for films by title and director | No | string |
-| Page | query | Get films in certain page | No | string |
 
 ##### Responses
 
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 |  | object |
-| 204 |  | object |
+| Code | Description |
+| ---- | ----------- |
+| 200 |  |
 
 ### /polling/wishlist
 
 #### GET
-##### Summary:
-
-Polling search wishlist film
-
 ##### Description:
 
-Find Wishlist film by search query or page. Will response when new data is available.
+
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
-| q | query | Search for wishlisted films by title and director | No | string |
-| Page | query | Get wishlisted films in certain page | No | string |
 
 ##### Responses
 
-| Code | Description | Schema |
-| ---- | ----------- | ------ |
-| 200 |  | object |
-| 204 |  | object |
+| Code | Description |
+| ---- | ----------- |
+| 200 |  |
 
 ### /register
 
@@ -508,10 +490,49 @@ Change a user's balance by ID
 
 ## B01 OWASP
 ## B02 Deployment
+Everything is deployed with a free service. Here are the services used:
+- Database: PostgreSQL 14
+- Caching: Redis 7.4.0
+- REST API: Django Rest Framework 3.15.2
+
+Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
+Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 40 seconds. Please wait.
+If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
+
 ## B03 Polling
+It's done by making the client do a request. Then the Backend Server will wait until there is new data available. If there is, it will return the data. If until around 30 seconds there is no new data, it will return an empty data and with 204 status code. The client will then wait for a few seconds and do the request again.
+Pages that use polling:
+- / (Excluding the recommendation)
+- /explore (including its search and paginated pages)
+- /details/{id}
+- /details/{id}/review (including its paginated pages)
+- /wishlist (including its search and paginated pages)
+- /bought (including its search and paginated pages)
+
 ## B04 Caching
+This is done with Redis. Result of some database queries that is frequently called will be cached. When the data is updated, the cache will be invalidated.
+The caching is done for the following pages:
+- / (Excluding the recommendation)
+- /explore (including its search and paginated pages)
+- /details/{id}
+- /details/{id}/review (including its paginated pages)
+- /wishlist (including its search and paginated pages)
+- /bought (including its search and paginated pages)
+
+You can test this by looking at the print in the terminal. It will print `CACHE HIT` if the data is fetched from the cache, and `CACHE MISS` if the data is fetched from the database. There is also a print of the cache key that is used and the execution time.
+Here is an example of the print:
+
+<p style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+  <img src="./images/cache_hit.png" alt="Cache Hit">
+  <img src="./images/cache_miss.png" alt="Cache Miss">
+</p>
+
 ## B05 Lighthouse
+
+
 ## B06 Responsive Layout
+
+
 ## B07 Dokumentasi API
 ## B08 SOLID
 ## B09 Automated Testing
