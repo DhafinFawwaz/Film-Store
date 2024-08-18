@@ -31,7 +31,7 @@ async function refresh() {
         } catch (e) {
             // console.error(e);
         }
-        await wait(5000);
+        await wait(1000);
     }
 }
 

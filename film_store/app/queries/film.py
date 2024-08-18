@@ -160,6 +160,8 @@ def populate_film_details(request: APIRequest, context: dict, film: Film):
     else:
         print("\033[93mCache miss\033[0m")
 
+        film = Film.objects.get(id=film.id) # get the updated film
+
         # all reviews
         reviews = Review.objects.filter(film=film).exclude(review__isnull=True).order_by('-updated_at')[:3]
         reviews = ReviewViewContextSerializer(reviews, many=True).data

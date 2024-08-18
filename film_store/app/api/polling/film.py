@@ -32,9 +32,6 @@ from app.models import Film
 
 def process_polling(request: APIRequest, cache_key: str, find_film_func: Callable):
     try:
-        page = int(request.GET.get('page', 1))
-        query = request.GET.get('q', None)
-
         data = cache.get(cache_key)
         while not data: # wait for data to be available. This should be really rare to happen.
             sleep(3)
@@ -53,10 +50,8 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
             print(f"{waited} s | Waiting for new data.")
             might_be_new_data = cache.get(cache_key)
             if not might_be_new_data: # case cache invalidated when saving models
+                print("\033[94mCache invalidated. Re-fetching data.\033[0m")
                 req = request
-                req.GET = {}
-                if query: req.GET['q'] = query
-                if page: req.GET['page'] = page
                 find_film_func(req, data)
                 break
 
@@ -64,7 +59,8 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
                 might_be_new_data = json.loads(might_be_new_data)
                 might_be_new_datetime = datetime.fromisoformat(might_be_new_data['iat'])
                 if might_be_new_datetime != iat: # if this equals, then cache is still the same. Not modified by other request
-                    data = might_be_new_data
+                    find_film_func(req, data)
+                    print("\033[94mNew data available.\033[0m")
                     break 
         
             sleep(sleep_time)
@@ -160,7 +156,11 @@ def wishlist_film_polling(request: APIRequest, *args, **kwargs):
 @api_view(['GET'])
 @public
 def film_details(request: APIRequest, id: int, *args, **kwargs):
-    film = Film.objects.get(id=id)
+    film = None
+    try: film = Film.objects.get(id=id)
+    except Film.DoesNotExist:
+        return APIResponse(data=None, status=status.HTTP_404_NOT_FOUND)
+
     return process_polling(
         request=request,
         cache_key = f"film_{id}",
@@ -183,7 +183,10 @@ def film_details(request: APIRequest, id: int, *args, **kwargs):
 @protected
 def reviews(request: APIRequest, id: int, *args, **kwargs):
     page = int(request.GET.get('page', 1))
-    film = Film.objects.get(id=id)
+    film = None
+    try: film = Film.objects.get(id=id)
+    except Film.DoesNotExist:
+        return APIResponse(data=None, status=status.HTTP_404_NOT_FOUND)
     return process_polling(
         request=request,
         cache_key = f"reviews_film_{id}_page_{page}",

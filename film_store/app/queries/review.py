@@ -44,6 +44,7 @@ def find_and_populate_paginated_film_review(request: APIRequest, context: dict, 
         iat = datetime.fromisoformat(data['iat'])
     else:
         print("\033[93mCache miss\033[0m")
+        film = Film.objects.get(id=film.id) # get the updated film
         reviews = find_reviews(film)
         paginator = Paginator(reviews, 8)
         page = clamp(page, 1, paginator.num_pages)
