@@ -42,10 +42,37 @@ docker-compose up web
 
 
 # 📍 Used Design Patterns
-<!-- Design pattern yang digunakan dan alasannya,  -->
 
-APIResponse Builder Pattern
-APIView, protected, swagger Decorator
+## Builder Pattern
+According to [Refactoring Guru](https://refactoring.guru/design-patterns/builder) Builder Pattern is a creational design pattern that lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction code.
+
+Builder pattern is used in the APIResponse class. The APIResponse class is used to create a response object that will be returned by the API. This makes it really easy and clean to create a response object. We can chain multiple methods to either set the data, set the status code, set as error, error message, etc. Here is some section of the code that uses the builder pattern:
+<div>
+  <img src="./images/builder_pattern1.png" width=49%>
+  <img src="./images/builder_pattern2.png" width=44%>
+</div>
+It can be used to easily create a response object. In the image, we chain it into setting cookies when user logged in. We chain it with error message and status code when there is an error. If we're not using the builder pattern, passing everything in the constructor and nulling the unused fields can be really messy and hard to read.
+
+
+## Decorator Pattern
+According to [Refactoring Guru](https://refactoring.guru/design-patterns/decorator) Decorator Pattern is a structural design pattern that lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+
+In python there's a built in way to implement this almost magically. We can use the `@` symbol to decorate a function. This is used in the APIView class. The APIView class is a class that is used to create an API endpoint. We can decorate it with `@protected`, `@public`, `@admin_only` to determine who can access the rest API. We can also decorate the class with the `@swagger` decorator to add the swagger documentation to the endpoint. As for frontend, there's also `@unauthorized` which can be used to redirect user to the home page if they are already logged in. Here is some section of the code that uses the decorator pattern:
+
+<div>
+  <img src="./images/decorator_pattern1.png" width=48%>
+  <img src="./images/decorator_pattern2.png" width=49%>
+</div>
+As we can see, we're adding the `@swagger` decorator to the method to add the swagger documentation to the endpoint. We're also adding the `@admin_only` decorator to the method to make sure only admin can access the endpoint. This makes it really easy to add new behavior to the method without changing the method itself. Please note that this implementation of decorator pattern is specific to python. In other languages, we might need to create some wrapper interface to add new behavior to the object.
+
+
+## Observer Pattern
+According to [Refactoring Guru](https://refactoring.guru/design-patterns/observer) Observer Pattern is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they’re observing.
+
+Observer pattern is used in some places in the project. One of them are for the database signals when some data is changed to invalidate cache and also in the client side javascript to add a behavior when user clicks a certain button. Here is some section of the code that uses the observer pattern:
+
+
+Database Signals for caching, client side javascript addlistener
 
 
 # 💻 Technology Stack

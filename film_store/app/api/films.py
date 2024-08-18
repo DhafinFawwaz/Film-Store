@@ -138,7 +138,7 @@ class APIFilmDetail(APIView):
         },
         
     )
-    @protected
+    @public
     def get(self, request: Request, id: int = None, *args, **kwargs):
         if id is None: return APIResponseMissingIDError()
         try:
