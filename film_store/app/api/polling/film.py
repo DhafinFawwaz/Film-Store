@@ -28,6 +28,7 @@ from app.queries.review import find_and_populate_paginated_film_review
 import json
 from typing import Callable
 from app.models import Film
+from drf_yasg import openapi
 
 
 def process_polling(request: APIRequest, cache_key: str, find_film_func: Callable):
@@ -75,9 +76,12 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
 
 
 @swagger_auto_schema(
-    operation_summary="Search Film",
+    operation_summary="Polling search film",
     operation_description="Find film by search query or page. Will response when new data is available.",
-    request_body=LogoutResponseSchema,
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for films by title and director"),
+        openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get films in certain page")
+    ],
     responses={
         200: FilmResponse,
         204: FilmResponse,
@@ -97,9 +101,12 @@ def film_polling(request: APIRequest, *args, **kwargs):
 
 
 @swagger_auto_schema(
-    operation_summary="Search Bought Film",
+    operation_summary="Polling search bought film",
     operation_description="Find Bought film by search query or page. Will response when new data is available.",
-    request_body=LogoutResponseSchema,
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for bought films by title and director"),
+        openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get bought films in certain page")
+    ],
     responses={
         200: FilmResponse,
         204: FilmResponse,
@@ -119,9 +126,12 @@ def bought_film_polling(request: APIRequest, *args, **kwargs):
 
 
 @swagger_auto_schema(
-    operation_summary="Search Wishlist Film",
+    operation_summary="Polling search wishlist film",
     operation_description="Find Wishlist film by search query or page. Will response when new data is available.",
-    request_body=LogoutResponseSchema,
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for wishlisted films by title and director"),
+        openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get wishlisted films in certain page")
+    ],
     responses={
         200: FilmResponse,
         204: FilmResponse,
@@ -144,9 +154,8 @@ def wishlist_film_polling(request: APIRequest, *args, **kwargs):
 
 
 @swagger_auto_schema(
-    operation_summary="Get Film Details",
+    operation_summary="Polling get film details",
     operation_description="Will response when new data is available.",
-    request_body=LogoutResponseSchema,
     responses={
         200: FilmDetailResponse,
         204: FilmDetailResponse,
@@ -170,9 +179,8 @@ def film_details(request: APIRequest, id: int, *args, **kwargs):
 
 
 @swagger_auto_schema(
-    operation_summary="Film Reviews",
+    operation_summary="Polling get film reviews",
     operation_description="Find film reviews by page. Will response when new data is available.",
-    request_body=LogoutResponseSchema,
     responses={
         # 200: FilmResponse,
         # 204: FilmResponse,
