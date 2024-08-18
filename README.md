@@ -106,15 +106,15 @@ As we can see, the models (database in general) don't need to know how to implem
 # ✨ Bonus
 | Nomor |          Bonus            | Dikerjakan |
 | ----- | ------------------------- | ---------- |
-| B01   | OWASP                     |     ✅     |
+| B01   | OWASP                     |            |
 | B02   | Deployment                |     ✅     |
 | B03   | Polling                   |     ✅     |
 | B04   | Caching                   |     ✅     |
-| B05   | Lighthouse                |     ✅     |
+| B05   | Lighthouse                |            |
 | B06   | Responsive Layout         |     ✅     |
 | B07   | Dokumentasi API           |     ✅     |
-| B08   | SOLID                     |     ✅     |
-| B09   | Automated Testing         |     ✅     |
+| B08   | SOLID                     |            |
+| B09   | Automated Testing         |            |
 | B10   | Fitur Tambahan            |     ✅     |
 | B11   | Ember                     |     ✅     |
 
@@ -236,24 +236,37 @@ Website styling is created with Tailwind CSS. It is responsive and can be viewed
 ## B07 Dokumentasi API
 API Documentation is created with Swagger. You can access the documentation on 
 
-[https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+[https://filmstore-gokbzfw6.b4a.run/swagger/](https://filmstore-gokbzfw6.b4a.run/swagger/)
+
+Note that in some cases, the swagger documentation might take a long time to respond.
 
 
 ## B08 SOLID
 ### Single Responsibility Principle
-TBD
+According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Single-responsibility Principle (SRP) states a class should have one and only one reason to change, meaning that a class should have only one job.
+
+
+
 
 ### Open/Closed Principle
-TBD
+According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Open-closed Principle (OCP) states objects or entities should be open for extension but closed for modification.
+
+
+
 
 ### Liskov Substitution Principle
-TBD
+According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Liskov Substitution Principle states let q(x) be a property provable about objects of x of type T. Then q(y) should be provable for objects y of type S where S is a subtype of T.
+
+In the project, the Liskov Substitution Principle is used in the APIView class. The APIView class is a class that is used to create an API endpoint. We can create a new class that inherits from the APIView class and override the methods to add new behavior to the endpoint. This makes it really easy to add new behavior to the endpoint without changing the APIView class itself. Here is some section of the code that uses the Liskov Substitution Principle:
 
 ### Interface Segregation Principle
-TBD
+According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) The interface segregation principle states a client should never be forced to implement an interface that it doesn’t use, or clients shouldn’t be forced to depend on methods they do not use.
+
+
+
 
 ### Dependency Inversion Principle
-TBD
+According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Dependency inversion principle states entities must depend on abstractions, not on concretions. It states that the high-level module must not depend on the low-level module, but they should depend on abstractions.
 
 
 
