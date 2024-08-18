@@ -47,10 +47,12 @@ docker-compose up web
 According to [Refactoring Guru](https://refactoring.guru/design-patterns/builder) Builder Pattern is a creational design pattern that lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction code.
 
 Builder pattern is used in the APIResponse class. The APIResponse class is used to create a response object that will be returned by the API. This makes it really easy and clean to create a response object. We can chain multiple methods to either set the data, set the status code, set as error, error message, etc. Here is some section of the code that uses the builder pattern:
+
 <div>
   <img src="./images/builder_pattern1.png" width=49%>
   <img src="./images/builder_pattern2.png" width=44%>
 </div>
+
 It can be used to easily create a response object. In the image, we chain it into setting cookies when user logged in. We chain it with error message and status code when there is an error. If we're not using the builder pattern, passing everything in the constructor and nulling the unused fields can be really messy and hard to read.
 
 
@@ -63,16 +65,23 @@ In python there's a built in way to implement this almost magically. We can use 
   <img src="./images/decorator_pattern1.png" width=48%>
   <img src="./images/decorator_pattern2.png" width=49%>
 </div>
+
 As we can see, we're adding the `@swagger` decorator to the method to add the swagger documentation to the endpoint. We're also adding the `@admin_only` decorator to the method to make sure only admin can access the endpoint. This makes it really easy to add new behavior to the method without changing the method itself. Please note that this implementation of decorator pattern is specific to python. In other languages, we might need to create some wrapper interface to add new behavior to the object.
 
 
 ## Observer Pattern
 According to [Refactoring Guru](https://refactoring.guru/design-patterns/observer) Observer Pattern is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they’re observing.
 
-Observer pattern is used in some places in the project. One of them are for the database signals when some data is changed to invalidate cache and also in the client side javascript to add a behavior when user clicks a certain button. Here is some section of the code that uses the observer pattern:
+Observer pattern is used in some places in the project. One of them are for the database signals when some data is changed to invalidate cache and also in the client side javascript to add a behavior when user clicks a certain button. In django, we can use the `@receiver` decorator to add a function that will be called when a signal is sent. In javascript, we can use the `addEventListener` method to add a function that will be called when an event is triggered. These things are already built in to the framework/language. So we don't have to setup the observer pattern ourselves.
 
+Here is some section of the code that uses the observer pattern:
+<div>
+  <img src="./images/observer_pattern2.png" width=48%>
+  <img src="./images/observer_pattern1.png" width=42%>
+</div>
 
-Database Signals for caching, client side javascript addlistener
+As we can see, the models (database in general) don't need to know how to implement the cache invalidation. It just needs to send a signal to whatever is listening to it. In this case, the cache invalidation function is listening to the signal and will be called when the signal is sent. This makes the code really clean and easy to read. The same goes for the client side javascript. The button doesn't need to know what to do when it's clicked. It just needs to send an event when it's clicked. The function that is listening to the event will be called when the event is triggered. This makes the code really clean and easy to read.
+
 
 
 # 💻 Technology Stack
