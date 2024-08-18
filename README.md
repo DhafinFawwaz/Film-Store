@@ -69,6 +69,7 @@ In python there's a built in way to implement this almost magically. We can use 
 As we can see, we're adding the `@swagger` decorator to the method to add the swagger documentation to the endpoint. We're also adding the `@admin_only` decorator to the method to make sure only admin can access the endpoint. This makes it really easy to add new behavior to the method without changing the method itself. Please note that this implementation of decorator pattern is specific to python. In other languages, we might need to create some wrapper interface to add new behavior to the object.
 
 
+
 ## Observer Pattern
 According to [Refactoring Guru](https://refactoring.guru/design-patterns/observer) Observer Pattern is a behavioral design pattern that lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they’re observing.
 
@@ -80,7 +81,7 @@ Here is some section of the code that uses the observer pattern:
   <img src="./images/observer_pattern1.png" width=42%>
 </div>
 
-As we can see, the models (database in general) don't need to know how to implement the cache invalidation. It just needs to send a signal to whatever is listening to it. In this case, the cache invalidation function is listening to the signal and will be called when the signal is sent. This makes the code really clean and easy to read. The same goes for the client side javascript. The button doesn't need to know what to do when it's clicked. It just needs to send an event when it's clicked. The function that is listening to the event will be called when the event is triggered. This makes the code really clean and easy to read.
+As we can see, the models (database in general) don't need to know how to implement the cache invalidation. It just needs to send a signal to whatever is listening to it. In this case, the cache invalidation function is listening to the signal and will be called when the signal is sent. If in the future we want to do a certain behaviour when the data in database is changed, we just need to listen to the event through the `@receiver` decorator. This makes the code really clean and easy to read. The same goes for the client side javascript. The button doesn't need to know what to do when it's clicked. It just needs to send an event when it's clicked. The function that is listening to the event will be called when the event is triggered. This makes the code really clean and easy to read.
 
 
 
