@@ -104,6 +104,7 @@ class FilmResponseSerializer(serializers.ModelSerializer):
         representation['genre'] = [genre.name for genre in genre_list]
         representation.pop('video')
         representation.pop('cover_image')
+        representation['price'] = float(representation['price'])
         return representation
     
 class FilmViewContextSerializer(FilmResponseSerializer):

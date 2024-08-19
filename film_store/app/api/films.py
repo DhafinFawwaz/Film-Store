@@ -21,7 +21,8 @@ from drf_yasg import openapi
 from app.api.swagger.film_schemas import FilmResponse, FilmFormParameters, FilmDetailResponse, FilmFormPutParameters
 from app.api.swagger.api_response_schema import APIErrorResponse
 from django.db.models import Q
-from app.queries.film import find_and_populate_paginated_all_film
+from app.queries.film import find_and_populate_paginated_all_film_query_only
+from django.core.cache import cache
 
 
 class APIFilm(APIView):
@@ -103,24 +104,18 @@ class APIFilm(APIView):
     )
     @admin_only
     def get(self, request: Request, *args, **kwargs):
-        films = []
-        if 'q' in self.request.GET and self.request.GET['q'] != '':
-            query = self.request.GET['q']
-            films = Film.objects.filter(
-                Q(title__icontains=query) | Q(director__icontains=query)
-            ).order_by('-release_year')
-        else:
-            films = Film.objects.all().order_by('-release_year')
-        film_serializer = FilmResponseSerializer(films, many=True)
+        context = {}
+        find_and_populate_paginated_all_film_query_only(request, context)
+        films = context['films']
 
         # prefix host to video_url and cover_image_url if not using Supabase
         if os.getenv("SUPABASE_KEY") is None:
-            for film in film_serializer.data:
+            for film in films:
                 film["video_url"] = request.build_absolute_uri(film["video_url"])
                 if film["cover_image_url"] is not None:
                     film["cover_image_url"] = request.build_absolute_uri(film["cover_image_url"])
 
-        return APIResponse(film_serializer.data)
+        return APIResponse(films)
         
 
 class APIFilmDetail(APIView):

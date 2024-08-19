@@ -17,6 +17,11 @@ def invalidate_film_cache(sender, instance: Film, **kwargs):
     print(f"cache_keys: {cache_keys}")
     cache.delete_many(cache.keys(cache_keys))
 
+    # all films
+    cache_keys = "film_all_query*"
+    print(f"cache_keys: {cache_keys}")
+    cache.delete_many(cache.keys(cache_keys))
+
 @receiver(post_delete, sender=Film)
 def invalidate_film_cache_on_delete(sender, instance, **kwargs):
     print("\033[93minvalidating Cache after film delete\033[0m")
@@ -28,5 +33,10 @@ def invalidate_film_cache_on_delete(sender, instance, **kwargs):
 
     # Film
     cache_keys = f"film_{instance.id}"
+    print(f"cache_keys: {cache_keys}")
+    cache.delete_many(cache.keys(cache_keys))
+
+    # all films
+    cache_keys = "film_all_query*"
     print(f"cache_keys: {cache_keys}")
     cache.delete_many(cache.keys(cache_keys))

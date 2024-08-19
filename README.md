@@ -60,8 +60,8 @@ According to [Refactoring Guru](https://refactoring.guru/design-patterns/builder
 Builder pattern is used in the APIResponse class. The APIResponse class is used to create a response object that will be returned by the API. This makes it really easy and clean to create a response object. We can chain multiple methods to either set the data, set the status code, set as error, error message, etc. Here is some section of the code that uses the builder pattern:
 
 <div>
-  <img src="./images/builder_pattern1.png" width=49%>
-  <img src="./images/builder_pattern2.png" width=44%>
+  <img src="./images/builder_pattern_1.png" width=49%>
+  <img src="./images/builder_pattern_2.png" width=44%>
 </div>
 
 It can be used to easily create a response object. In the image, we chain it into setting cookies when user logged in. We chain it with error message and status code when there is an error. If we're not using the builder pattern, passing everything in the constructor and nulling the unused fields can be really messy and hard to read.
@@ -73,8 +73,8 @@ According to [Refactoring Guru](https://refactoring.guru/design-patterns/decorat
 In python there's a built in way to implement this almost magically. We can use the `@` symbol to decorate a function. This is used in the APIView class. The APIView class is a class that is used to create an API endpoint. We can decorate it with `@protected`, `@public`, `@admin_only` to determine who can access the rest API. We can also decorate the class with the `@swagger` decorator to add the swagger documentation to the endpoint. As for frontend, there's also `@unauthorized` which can be used to redirect user to the home page if they are already logged in. Here is some section of the code that uses the decorator pattern:
 
 <div>
-  <img src="./images/decorator_pattern1.png" width=48%>
-  <img src="./images/decorator_pattern2.png" width=49%>
+  <img src="./images/decorator_pattern_1.png" width=48%>
+  <img src="./images/decorator_pattern_2.png" width=49%>
 </div>
 
 As we can see, we're adding the `@swagger` decorator to the method to add the swagger documentation to the endpoint. We're also adding the `@admin_only` decorator to the method to make sure only admin can access the endpoint. This makes it really easy to add new behavior to the method without changing the method itself. Please note that this implementation of decorator pattern is specific to python. In other languages, we might need to create some wrapper interface to add new behavior to the object.
@@ -88,15 +88,24 @@ Observer pattern is used in some places in the project. One of them are for the 
 
 Here is some section of the code that uses the observer pattern:
 <div>
-  <img src="./images/observer_pattern2.png" width=48%>
-  <img src="./images/observer_pattern1.png" width=42%>
+  <img src="./images/observer_pattern_2.png" width=48%>
+  <img src="./images/observer_pattern_1.png" width=42%>
 </div>
 
 As we can see, the models (database in general) don't need to know how to implement the cache invalidation. It just needs to send a signal to whatever is listening to it. In this case, the cache invalidation function is listening to the signal and will be called when the signal is sent. If in the future we want to do a certain behaviour when the data in database is changed, we just need to listen to the event through the `@receiver` decorator. This makes the code really clean and easy to read. The same goes for the client side javascript. The button doesn't need to know what to do when it's clicked. It just needs to send an event when it's clicked. The function that is listening to the event will be called when the event is triggered. This makes the code really clean and easy to read.
 
 
 ## Command Pattern
-TBD
+According to [Refactoring Guru](https://refactoring.guru/design-patterns/command) command pattern is a behavioral design pattern that turns a request into a stand-alone object that contains all information about the request. This transformation lets you pass requests as a method arguments, delay or queue a request’s execution, and support undoable operations.
+
+Here is some section of the code that uses the command pattern:
+<div>
+  <img src="./images/command_pattern_1.png" width=48%>
+  <img src="./images/command_pattern_2.png" width=40%>
+</div>
+
+As we can see in the image above, we can easily create a command by just inheriting the django built in base command class. Then we can easily call the command by running `python manage.py <COMMAND NAME>` like how we usually do it natively with django. This makes it really easy to create a command and run it.
+
 
 # 💻 Technology Stack
 

@@ -14,9 +14,10 @@ from datetime import datetime
 from typing import Callable
 from app.utils import duration_to_format
 from decimal import Decimal
+from rest_framework import serializers
 
 
-def find_and_populate_paginated_film(request: APIRequest, context: dict, cache_key: str, find_film_func: Callable, page: int):
+def find_and_populate_paginated_film(request: APIRequest, context: dict, cache_key: str, find_film_func: Callable, page: int, serializer: serializers = FilmViewContextSerializer):
     cached_films = None
     print(f"cache_key: {cache_key}")
     try: cached_films = cache.get(cache_key)
@@ -43,7 +44,7 @@ def find_and_populate_paginated_film(request: APIRequest, context: dict, cache_k
         paginator = Paginator(films, 8)
         page = clamp(page, 1, paginator.num_pages)
         films = paginator.get_page(page)
-        films_ctx = FilmViewContextSerializer(films, many=True).data
+        films_ctx = serializer(films, many=True).data
         elided_page = paginator.get_elided_page_range(page, on_each_side=1, on_ends=1)
         elided_page = [page for page in elided_page]
         num_pages = paginator.num_pages
@@ -99,7 +100,7 @@ def find_user_wishlist_film(request: APIRequest) -> BaseManager[Film]:
 
 
 @timeit("Get Paginated Films")
-def find_and_populate_paginated_all_film(request: APIRequest, context: dict):
+def find_and_populate_paginated_all_film(request: APIRequest, context: dict, serializer: serializers = FilmViewContextSerializer):
     page = int(request.GET.get('page', 1))
     query = request.GET.get('q', None)
     if query and query != '': context['query'] = query
@@ -108,8 +109,45 @@ def find_and_populate_paginated_all_film(request: APIRequest, context: dict):
         context=context,
         page=page,
         cache_key=f"films_page_{page}_query_{query}" if query else f"films_page_{page}",
-        find_film_func=find_film
+        find_film_func=find_film,
+        serializer=serializer
     )
+
+@timeit("Get Paginated Films")
+def find_and_populate_paginated_all_film_query_only(request: APIRequest, context: dict):
+    query = request.GET.get('q', "")
+    cached_films = None
+    cache_key = f"film_all_query_{query}"
+    print(f"cache_key: {cache_key}")
+    try: cached_films = cache.get(cache_key)
+    except Exception as e:
+        print(f"\033[91mError: Getting cache failed. {e}\033[0m")
+        cached_films = None
+
+    films_ctx = None
+    iat = None
+    if cached_films:
+        print("\033[92mCache hit\033[0m")
+        data = json.loads(cached_films)
+
+        films_ctx = data['films']
+        iat = datetime.fromisoformat(data['iat'])
+    else:
+        print("\033[93mCache miss\033[0m")
+        
+        films = find_film(request)
+        films_ctx = FilmResponseSerializer(films, many=True).data
+        iat = datetime.now()
+        try: cache.set(cache_key, json.dumps({
+                'films': films_ctx,
+                'iat': iat
+            }, cls=DjangoJSONEncoder))
+        except Exception as e:
+            print(f"\033[91mError: Setting cache failed. {e}\033[0m")
+
+    context['films'] = films_ctx
+    context['iat'] = iat
+
 
 @timeit("Get Paginated Bought Films")
 def find_and_populate_paginated_bought_film(request: APIRequest, context: dict):
