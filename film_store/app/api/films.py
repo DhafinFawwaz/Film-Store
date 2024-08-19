@@ -26,6 +26,8 @@ from app.queries.film import find_and_populate_paginated_all_film
 
 class APIFilm(APIView):
     parser_classes = [MultiPartParser]
+    permission_classes = []
+    authentication_classes = []
 
     def create_black_image():
         img = Image.new('RGB', (1, 1), color='black')
@@ -99,11 +101,8 @@ class APIFilm(APIView):
         },
         
     )
-    @public
+    @admin_only
     def get(self, request: Request, *args, **kwargs):
-
-        q = request.GET.get("q")
-        
         films = []
         if 'q' in self.request.GET and self.request.GET['q'] != '':
             query = self.request.GET['q']
@@ -126,6 +125,8 @@ class APIFilm(APIView):
 
 class APIFilmDetail(APIView):
     parser_classes = [MultiPartParser]
+    permission_classes = []
+    authentication_classes = []
     
     # /films/:id 
     @swagger_auto_schema(

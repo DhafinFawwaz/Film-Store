@@ -1,6 +1,7 @@
 
 from functools import wraps
-from app.auth.auth import populate_user_from_request, extract_request_from_args
+from app.auth.auth import Auth
+from app.auth.jwt import JWT
 from django.shortcuts import redirect
 from django.contrib import messages
 import time
@@ -8,9 +9,9 @@ import time
 def protected(view_func):
     @wraps(view_func)
     def _wrapped_view(*args, **kwargs):
-        request = extract_request_from_args(args)
+        request = Auth.extract_request_from_args(args)
         try: 
-            populate_user_from_request(request)
+            Auth.populate_user_from_request(request)
         except Exception as e: 
             messages.info(request, "Please Login", "Please Login to gain full access to the website")
             return redirect('/signin')
@@ -21,9 +22,9 @@ def protected(view_func):
 def unauthorized(view_func):
     @wraps(view_func)
     def _wrapped_view(*args, **kwargs):
-        request = extract_request_from_args(args)
+        request = Auth.extract_request_from_args(args)
         try: 
-            populate_user_from_request(request)
+            Auth.populate_user_from_request(request)
             messages.info(request, "You are already logged in", "Logout if you want to login with another account")
             return redirect('/')
         except Exception as e: request.user = None
@@ -34,8 +35,8 @@ def unauthorized(view_func):
 def public(view_func):
     @wraps(view_func)
     def _wrapped_view(*args, **kwargs):
-        request = extract_request_from_args(args)
-        try: populate_user_from_request(request)
+        request = Auth.extract_request_from_args(args)
+        try: Auth.populate_user_from_request(request)
         except Exception as e: request.user = None
         return view_func(*args, **kwargs)
     

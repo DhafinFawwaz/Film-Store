@@ -11,7 +11,7 @@ from app.api.route_decorator import protected, public
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from app.api.api_request import APIRequest
-from app.auth.jwt import JWT
+from app.auth.token import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes, authentication_classes
 from django.shortcuts import redirect

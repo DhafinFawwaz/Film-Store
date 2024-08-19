@@ -116,7 +116,9 @@ class FilmViewContextSerializer(FilmResponseSerializer):
         arr = []
         genre_list = val.genre.all()
         for genre in genre_list:
-            if len(arr) >= max_genre: break
+            if len(arr) >= max_genre: 
+                arr.append("...")
+                break
             arr.append(genre.name)
         representation['genre'] = arr
 

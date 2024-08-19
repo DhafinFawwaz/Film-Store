@@ -22,7 +22,7 @@ Launch docker, then run the following command:
 ```
 docker-compose up
 ```
-This will take a while. It will build the images which are the database, redis, and the monolith website, run the containers, build tailwind files, collect static files, insert admin to database, download the datasets, seeds the database, and finally start the website.
+This will take a while. It will build the images which are the database, redis, and the monolith website, run the containers, build tailwind files, collect static files, create admin account into the database, download the datasets, seeds the database, and finally start the website.
 Once it says something like `Listening at: http://0.0.0.0:8001`, you can access the website on [http://127.0.0.1:8000/](http://127.0.0.1:8000/). 
 
 ## Run Database
@@ -43,6 +43,14 @@ If you just want to run the backend, make sure both database and redis is runnin
 docker-compose up web
 ```
 
+
+# 🎥 Dataset
+
+Dataset taken from
+
+Images: [https://www.kaggle.com/datasets/rezaunderfit/48k-imdb-movies-data](https://www.kaggle.com/datasets/rezaunderfit/48k-imdb-movies-data)
+
+Videos: [https://www.freepik.com/](https://www.freepik.com/)
 
 # 📍 Used Design Patterns
 
@@ -87,6 +95,8 @@ Here is some section of the code that uses the observer pattern:
 As we can see, the models (database in general) don't need to know how to implement the cache invalidation. It just needs to send a signal to whatever is listening to it. In this case, the cache invalidation function is listening to the signal and will be called when the signal is sent. If in the future we want to do a certain behaviour when the data in database is changed, we just need to listen to the event through the `@receiver` decorator. This makes the code really clean and easy to read. The same goes for the client side javascript. The button doesn't need to know what to do when it's clicked. It just needs to send an event when it's clicked. The function that is listening to the event will be called when the event is triggered. This makes the code really clean and easy to read.
 
 
+## Command Pattern
+TBD
 
 # 💻 Technology Stack
 
@@ -113,7 +123,7 @@ As we can see, the models (database in general) don't need to know how to implem
 | B05   | Lighthouse                |            |
 | B06   | Responsive Layout         |     ✅     |
 | B07   | Dokumentasi API           |     ✅     |
-| B08   | SOLID                     |            |
+| B08   | SOLID                     |     ✅     |
 | B09   | Automated Testing         |            |
 | B10   | Fitur Tambahan            |     ✅     |
 | B11   | Ember                     |     ✅     |
@@ -245,28 +255,64 @@ Note that in some cases, the swagger documentation might take a long time to res
 ### Single Responsibility Principle
 According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Single-responsibility Principle (SRP) states a class should have one and only one reason to change, meaning that a class should have only one job.
 
+Example of the implementation is for the models. It can be seen in the image below.
 
+<div>
+  <img src="./images/single_responsibility_2.png" width=100%>
+  <img src="./images/single_responsibility_1.png" width=45%>
+  <img src="./images/single_responsibility_3.png" width=40%>
+</div>
+
+As we can see, the Film model is only responsible for the film data. If we want to serialize the film object to a python dict which is serializable to json, we create a new class called FilmRequestSerializer. We're not adding a new function inside the Film model class. If we want to do a cache invalidation when saving, we're not overriding the save method in the Film model class. We're using signals and make a function listen to it. This way, the Film model class follows the Single Responsibility Principle.
 
 
 ### Open/Closed Principle
 According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Open-closed Principle (OCP) states objects or entities should be open for extension but closed for modification.
 
+Example of the implementation is for the model serializer. It can be seen in the image below.
 
+<div>
+  <img src="./images/openclosed_1.png" width=100%>
+</div>
+
+As we can se in the image, we previously already have a FilmResponseSerializer. Then we want to create a new formated version for it that is used to render the html using template engine. One way to do it is by modifying the FilmResponseSerializer and create an if else check inside it. But that will violate the Open/Closed Principle. Instead, we create a new class called FilmViewContextSerializer which inherits from the FilmResponseSerializer. Then it will format the duration to format `hh:mm:ss` and limits the genre array visually. This way, we're extending the FilmResponseSerializer class without modifying it. Therefore, the FilmResponseSerializer class follows the Open/Closed Principle.
 
 
 ### Liskov Substitution Principle
 According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Liskov Substitution Principle states let q(x) be a property provable about objects of x of type T. Then q(y) should be provable for objects y of type S where S is a subtype of T.
 
-In the project, the Liskov Substitution Principle is used in the APIView class. The APIView class is a class that is used to create an API endpoint. We can create a new class that inherits from the APIView class and override the methods to add new behavior to the endpoint. This makes it really easy to add new behavior to the endpoint without changing the APIView class itself. Here is some section of the code that uses the Liskov Substitution Principle:
+Example of the implementation is for the overrided user model. It can be seen in the image below.
+
+<div>
+  <img src="./images/liskov_substitution_1.png" width=100%>
+  <img src="./images/liskov_substitution_2.png" width=100%>
+</div>
+
+As we can see in the image above, the GeneralUser class inherits the AbstractUser class which is a built-in class in Django. The GeneralUser class is used to override the AbstractUser class to add a new field called balance. For example, the method that populates user from API Request is used everywhere inside some decorators. Because it follows the Liskov Substitution Principle, we don't need to modify that method and everything will just work as initially.
+
 
 ### Interface Segregation Principle
 According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) The interface segregation principle states a client should never be forced to implement an interface that it doesn’t use, or clients shouldn’t be forced to depend on methods they do not use.
 
+Example of the implementation is for the model serializer. It can be seen in the image below.
 
+<div>
+  <img src="./images/interface_segregation_1.png" width=100%>
+</div>
+
+As we can see in the image, the APIFilmDetail class implements the http methods for GET, PUT, and DELETE. It's not forced to implement other methods like POST or PATCH. This way, the APIFilmDetail class follows the Interface Segregation Principle.
 
 
 ### Dependency Inversion Principle
 According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Dependency inversion principle states entities must depend on abstractions, not on concretions. It states that the high-level module must not depend on the low-level module, but they should depend on abstractions.
+
+<div>
+  <img src="./images/dependency_inversion_2.png" width=100%>
+  <img src="./images/dependency_inversion_1.png" width=45%>
+  <img src="./images/liskov_substitution_2.png" width=45%>
+</div>
+
+As we can see in the image above, we're not directly touching the JWT class when populating the user in the request object. We're using the Token class which is an abstraction for the JWT class which is the lower level module. This way, if we want to change the type of token, we can just create another class that inherits from the Token class and implement the methods. Then simply swap the JWT to that class when creating the Auth object. This way, the Token class follows the Dependency Inversion Principle.
 
 
 

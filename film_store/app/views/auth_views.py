@@ -9,7 +9,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 from app.views.views_class import UnauthorizedView, ProtectedView
 from django.http import HttpResponseNotAllowed
+from app.auth.token import Token
+from app.auth.auth import Auth
 from app.auth.jwt import JWT
+
 
 class Register(UnauthorizedView):
     form_class = forms.RegisterForm
@@ -54,7 +57,7 @@ class Login(UnauthorizedView):
                 messages.error(request, "Incorrect password")
                 return render(request, self.template_name, {"form": form})
             else:
-                token = JWT.encode(user)
+                token = Auth(JWT()).encode(user)
                 res = redirect('/')
                 res.set_cookie(
                     key = "token", 

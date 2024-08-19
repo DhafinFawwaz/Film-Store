@@ -11,6 +11,7 @@ from app.api.route_decorator import protected, public
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from app.api.api_request import APIRequest
+from app.auth.auth import Auth
 from app.auth.jwt import JWT
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes, authentication_classes
@@ -42,7 +43,8 @@ class APILogin(APIView):
             user = GeneralUser.objects.get(username = username)
 
             if user.check_password(password):
-                token = JWT.encode(user)
+
+                token = Auth(JWT()).encode(user)
                 res = APIResponse({
                     "username": user.username,
                     "token": str(token),
