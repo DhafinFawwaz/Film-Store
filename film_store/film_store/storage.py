@@ -14,7 +14,7 @@ class SupabaseStorage(Storage):
         pass
 
     def _save(self, name, content: File):
-        print("Uploading to bucket...")
+        print(f"Uploading {name} to bucket...")
         content_file = content.file
         content_file.seek(0)
         content_bytes = content_file.read()
@@ -22,7 +22,7 @@ class SupabaseStorage(Storage):
         data = self.supabase.storage.from_(self.bucket_name).upload(
             name, content_bytes, {"content-type": content_type}
         )
-        print("Successfully uploaded to bucket.")
+        print(f"Successfully uploaded {name} to bucket.")
         return data.json()["Key"]
 
     def exists(self, name):
@@ -32,6 +32,6 @@ class SupabaseStorage(Storage):
         return f"{settings.SUPABASE_URL}/storage/v1/object/public/{name}"
     
     def delete(self, name):
-        print("Deleting from bucket...")
+        print(f"Deleting {name} from bucket...")
         self.supabase.storage.from_(self.bucket_name).remove(name)
-        print("Successfully deleted from bucket.")
+        print(f"Successfully deleted {name} from bucket.")

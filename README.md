@@ -151,7 +151,7 @@ As we can see in the image above, we can easily create a command by just inherit
 | B02   | Deployment                |     ✅     |
 | B03   | Polling                   |     ✅     |
 | B04   | Caching                   |     ✅     |
-| B05   | Lighthouse                |            |
+| B05   | Lighthouse                |     ✅     |
 | B06   | Responsive Layout         |     ✅     |
 | B07   | Dokumentasi API           |     ✅     |
 | B08   | SOLID                     |     ✅     |
@@ -160,7 +160,14 @@ As we can see in the image above, we can easily create a command by just inherit
 | B11   | Ember                     |     ✅     |
 
 ## B01 OWASP
-TBD
+
+#### 1. Broken Access Control
+
+
+#### 2. Injection
+Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. Another example is when user input an sql query in a login form. For example `' OR 1=1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the query is not parameterized. Both of these is safe in this website.
+
+#### 3. Server-Side Request Forgery
 
 
 ## B02 Deployment
