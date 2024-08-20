@@ -28,6 +28,23 @@ Once it says something like `Listening at: http://0.0.0.0:8001`, you can access 
 ## Quick Alternative
 If you're on windows, you can also just double click the `run.bat`. It will rename the `.env.example` to `.env`, launch docker (then you need to click yes to enable administrator privilege), then run the `docker-compose up` command automatically.
 
+## Troubleshoot
+It's possible that you may see this error.
+```
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"POSTGRES_USER\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"POSTGRES_DB\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"SECRET_KEY\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"DB_HOST\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"DB_NAME\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"DB_USER\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"DB_PORT\" variable is not set. Defaulting to a blank string."
+time="2024-08-20T11:33:05+07:00" level=warning msg="The \"DB_PASS\" variable is not set. Defaulting to a blank string."
+env file <PATH TO PROJECT>\.env not found: CreateFile <PATH TO PROJECT>\.env: The system cannot find the file specified.
+```
+If this happens, it means you haven't renamed the `.env.example` to `.env`. Please rename it to `.env` and fill the environment variables as needed. It should already work with the default values, but you can change them if you want to.
+
+
+
 ## Run Database
 If you just want to run the database, you can run the following command:
 ```
