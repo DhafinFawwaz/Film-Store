@@ -107,6 +107,7 @@ class Explore(PublicView):
 
 
 
+# GET Cached
 class Details(PublicView):
     template_name = 'details/details.html'
 

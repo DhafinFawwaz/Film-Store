@@ -102,7 +102,7 @@ class APIFilm(APIView):
         },
         
     )
-    @admin_only
+    @protected
     def get(self, request: Request, *args, **kwargs):
         context = {}
         find_and_populate_paginated_all_film_query_only(request, context)
@@ -134,7 +134,7 @@ class APIFilmDetail(APIView):
         },
         
     )
-    @public
+    @protected
     def get(self, request: Request, id: int = None, *args, **kwargs):
         if id is None: return APIResponseMissingIDError()
         try:

@@ -28,7 +28,7 @@ from rest_framework.views import APIView
     },
     method="GET"
 )
-@api_view(['GET']) # /users?q, admin only
+@api_view(['GET']) # /users?q
 @admin_only
 def get_all_users(request: Request, *args, **kwargs):
     try:
@@ -112,6 +112,7 @@ class UsersAPI(APIView):
 
      # /users/:id
     
+    # /users/:id
     @swagger_auto_schema(
         operation_summary="Get user by ID",
         operation_description="Get user by ID",
