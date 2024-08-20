@@ -25,6 +25,9 @@ docker-compose up
 This will take a while. It will build the images which are the database, redis, and the monolith website, run the containers, build tailwind files, collect static files, create admin account into the database, download the datasets, seeds the database, and finally start the website.
 Once it says something like `Listening at: http://0.0.0.0:8001`, you can access the website on [http://127.0.0.1:8000/](http://127.0.0.1:8000/). 
 
+## Quick Alternative
+If you're on windows, you can also just double click the `run.bat`. It will rename the `.env.example` to `.env`, launch docker (then you need to click yes to enable administrator privilege), then run the `docker-compose up` command automatically.
+
 ## Run Database
 If you just want to run the database, you can run the following command:
 ```
