@@ -21,6 +21,7 @@ if (search) url += `&search=${ search }`;
 
 async function refresh() {
     while(true) {
+        console.log('Polling...');
         try {
             const res = await fetch(url); // might wait a long time
             const json = await res.json();

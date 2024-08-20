@@ -41,7 +41,7 @@
 {% endblock %}
         
 {% block authorized-js %}
-    <script src="{% static 'review/review.js' %}"></script>
+    {% if request.user %}
+        <script src="{% static 'review/review.js' %}"></script>
+    {% endif %}
 {% endblock %}
-
-

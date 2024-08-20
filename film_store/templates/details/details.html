@@ -239,7 +239,7 @@
 {% endblock %}
         
 {% block authorized-js %}
-    <script src="{% static 'details/details.js' %}"></script>
+    {% if request.user %}
+        <script src="{% static 'details/details.js' %}"></script>
+    {% endif %}
 {% endblock %}
-    
-

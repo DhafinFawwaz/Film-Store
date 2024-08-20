@@ -44,5 +44,7 @@
     
 
 {% block authorized-js %}
-    <script src="{% static 'film-polling.js' %}"></script>
+    {% if request.user %}
+        <script src="{% static 'film-polling.js' %}"></script>
+    {% endif %}
 {% endblock %}

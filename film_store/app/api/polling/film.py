@@ -29,26 +29,40 @@ import json
 from typing import Callable
 from app.models import Film
 from drf_yasg import openapi
+from uuid import uuid4
+
 
 
 def process_polling(request: APIRequest, cache_key: str, find_film_func: Callable):
+    user_id = request.user.id
+    user_poll_key = f"user_{user_id}_poll_uuid"
+    initial_user_poll_uuid = uuid4()
+    cache.set(user_poll_key, initial_user_poll_uuid)
+
+
+    print(f"User {user_id} polling {cache_key} with poll uuid {initial_user_poll_uuid}")
     try:
         data = cache.get(cache_key)
-        while not data: # wait for data to be available. This should be really rare to happen.
-            sleep(3)
-            data = cache.get(cache_key)        
+        if not data:
+            return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
         data = json.loads(data)
         iat = datetime.fromisoformat(data['iat'])
 
         might_be_new_data = None
 
-        max_wait = 6
+        max_wait = 30
         waited = 0
-        sleep_time = 3
+        sleep_time = 1
 
         data = {}
         while True:
-            print(f"{waited} s | Waiting for new data.")
+            current_user_poll_uuid = cache.get(user_poll_key)
+            if current_user_poll_uuid != initial_user_poll_uuid: # cancel request if same user polling more than 1
+                print("User polling more than 1. Cancel request.")
+                return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
+            
+
+            # print(f"{waited} s | Waiting for new data.")
             might_be_new_data = cache.get(cache_key)
             if not might_be_new_data: # case cache invalidated when saving models
                 print("\033[94mCache invalidated. Re-fetching data.\033[0m")
@@ -75,21 +89,21 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
         return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
 
 
-# @swagger_auto_schema(
-#     operation_summary="Polling search film",
-#     operation_description="Find film by search query or page. Will response when new data is available.",
-#     manual_parameters=[
-#         openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for films by title and director"),
-#         openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get films in certain page")
-#     ],
-#     responses={
-#         200: FilmResponse,
-#         204: FilmResponse,
-#     },
-#     method="GET"
-# )
+@swagger_auto_schema(
+    operation_summary="Polling search film",
+    operation_description="Find film by search query or page. Will response when new data is available.",
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for films by title and director"),
+        openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get films in certain page")
+    ],
+    responses={
+        200: FilmResponse,
+        204: FilmResponse,
+    },
+    method="GET"
+)
 @api_view(['GET'])
-@public
+@protected
 def film_polling(request: APIRequest, *args, **kwargs):
     page = int(request.GET.get('page', 1))
     query = request.GET.get('q', None)
@@ -100,19 +114,19 @@ def film_polling(request: APIRequest, *args, **kwargs):
     )
 
 
-# @swagger_auto_schema(
-#     operation_summary="Polling search bought film",
-#     operation_description="Find Bought film by search query or page. Will response when new data is available.",
-#     manual_parameters=[
-#         openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for bought films by title and director"),
-#         openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get bought films in certain page")
-#     ],
-#     responses={
-#         200: FilmResponse,
-#         204: FilmResponse,
-#     },
-#     method="GET"
-# )
+@swagger_auto_schema(
+    operation_summary="Polling search bought film",
+    operation_description="Find Bought film by search query or page. Will response when new data is available.",
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for bought films by title and director"),
+        openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get bought films in certain page")
+    ],
+    responses={
+        200: FilmResponse,
+        204: FilmResponse,
+    },
+    method="GET"
+)
 @api_view(['GET'])
 @protected
 def bought_film_polling(request: APIRequest, *args, **kwargs):
@@ -125,19 +139,19 @@ def bought_film_polling(request: APIRequest, *args, **kwargs):
     )
 
 
-# @swagger_auto_schema(
-#     operation_summary="Polling search wishlist film",
-#     operation_description="Find Wishlist film by search query or page. Will response when new data is available.",
-#     manual_parameters=[
-#         openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for wishlisted films by title and director"),
-#         openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get wishlisted films in certain page")
-#     ],
-#     responses={
-#         200: FilmResponse,
-#         204: FilmResponse,
-#     },
-#     method="GET"
-# )
+@swagger_auto_schema(
+    operation_summary="Polling search wishlist film",
+    operation_description="Find Wishlist film by search query or page. Will response when new data is available.",
+    manual_parameters=[
+        openapi.Parameter('q', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Search for wishlisted films by title and director"),
+        openapi.Parameter('Page', openapi.IN_QUERY, type=openapi.TYPE_STRING, required=False, description="Get wishlisted films in certain page")
+    ],
+    responses={
+        200: FilmResponse,
+        204: FilmResponse,
+    },
+    method="GET"
+)
 @api_view(['GET'])
 @protected
 def wishlist_film_polling(request: APIRequest, *args, **kwargs):
@@ -163,7 +177,7 @@ def wishlist_film_polling(request: APIRequest, *args, **kwargs):
     method="GET"
 )
 @api_view(['GET'])
-@public
+@protected
 def film_details(request: APIRequest, id: int, *args, **kwargs):
     film = None
     try: film = Film.objects.get(id=id)
@@ -182,8 +196,8 @@ def film_details(request: APIRequest, id: int, *args, **kwargs):
     operation_summary="Polling get film reviews",
     operation_description="Find film reviews by page. Will response when new data is available.",
     responses={
-        # 200: FilmResponse,
-        # 204: FilmResponse,
+        200: FilmResponse,
+        204: FilmResponse,
     },
     method="GET"
 )

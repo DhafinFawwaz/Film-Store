@@ -47,4 +47,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "cd film_store && gunicorn film_store.wsgi:application --bind 0.0.0.0:8001 --workers 4 --threads 2 & nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "cd film_store && gunicorn film_store.wsgi:application --bind 0.0.0.0:8001 --workers 4 --threads 8 & nginx -g 'daemon off;'"]

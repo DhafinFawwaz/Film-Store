@@ -174,7 +174,7 @@ Please note that the website will sleep if there is no activity for 30 minutes. 
 If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
 
 ## B03 Polling
-It's done by making the client do a request. Then the Backend Server will wait until there is new data available. If there is, it will return the data. If until around 30 seconds there is no new data, it will return an empty data and with 204 status code. The client will then wait for a few seconds and do the request again.
+It's done by making the client do a request. Then the Backend Server will wait until there is new data available. If there is, it will return the data. If until around 30 seconds there is no new data, it will return an empty data and with 204 status code. The client will then wait for a few seconds and do the request again. Please note that only logged in user can do polling to reduce request.
 Pages that use polling:
 - / (Excluding the recommendation)
 - /explore (including its search and paginated pages)
