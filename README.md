@@ -279,7 +279,7 @@ API Documentation is created with Swagger. You can access the documentation on e
 
 Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
-Redoc: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+Redoc: [https://filmstore-gokbzfw6.b4a.run/redoc](https://filmstore-gokbzfw6.b4a.run/redoc)
 
 Note that in some cases, the documentation might take a long time to respond.
 
@@ -396,7 +396,7 @@ Detailed API documentation can be accessed on either
 
 Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
-Redoc: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+Redoc: [https://filmstore-gokbzfw6.b4a.run/redoc](https://filmstore-gokbzfw6.b4a.run/redoc)
 
 ## Version: v1
 
