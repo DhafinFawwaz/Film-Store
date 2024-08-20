@@ -82,8 +82,8 @@ According to [Refactoring Guru](https://refactoring.guru/design-patterns/builder
 Builder pattern is used in the APIResponse class. The APIResponse class is used to create a response object that will be returned by the API. This makes it really easy and clean to create a response object. We can chain multiple methods to either set the data, set the status code, set as error, error message, etc. Here is some section of the code that uses the builder pattern:
 
 <div>
-  <img src="./images/builder_pattern_1.png" width=49%>
-  <img src="./images/builder_pattern_2.png" width=44%>
+  <img src="./images/pattern/builder_pattern_1.png" width=49%>
+  <img src="./images/pattern/builder_pattern_2.png" width=44%>
 </div>
 
 It can be used to easily create a response object. In the image, we chain it into setting cookies when user logged in. We chain it with error message and status code when there is an error. If we're not using the builder pattern, passing everything in the constructor and nulling the unused fields can be really messy and hard to read.
@@ -95,8 +95,8 @@ According to [Refactoring Guru](https://refactoring.guru/design-patterns/decorat
 In python there's a built in way to implement this almost magically. We can use the `@` symbol to decorate a function. This is used in the APIView class. The APIView class is a class that is used to create an API endpoint. We can decorate it with `@protected`, `@public`, `@admin_only` to determine who can access the rest API. We can also decorate the class with the `@swagger` decorator to add the swagger documentation to the endpoint. As for frontend, there's also `@unauthorized` which can be used to redirect user to the home page if they are already logged in. Here is some section of the code that uses the decorator pattern:
 
 <div>
-  <img src="./images/decorator_pattern_1.png" width=48%>
-  <img src="./images/decorator_pattern_2.png" width=49%>
+  <img src="./images/pattern/decorator_pattern_1.png" width=48%>
+  <img src="./images/pattern/decorator_pattern_2.png" width=49%>
 </div>
 
 As we can see, we're adding the `@swagger` decorator to the method to add the swagger documentation to the endpoint. We're also adding the `@admin_only` decorator to the method to make sure only admin can access the endpoint. This makes it really easy to add new behavior to the method without changing the method itself. Please note that this implementation of decorator pattern is specific to python. In other languages, we might need to create some wrapper interface to add new behavior to the object.
@@ -110,8 +110,8 @@ Observer pattern is used in some places in the project. One of them are for the 
 
 Here is some section of the code that uses the observer pattern:
 <div>
-  <img src="./images/observer_pattern_2.png" width=48%>
-  <img src="./images/observer_pattern_1.png" width=42%>
+  <img src="./images/pattern/observer_pattern_2.png" width=48%>
+  <img src="./images/pattern/observer_pattern_1.png" width=42%>
 </div>
 
 As we can see, the models (database in general) don't need to know how to implement the cache invalidation. It just needs to send a signal to whatever is listening to it. In this case, the cache invalidation function is listening to the signal and will be called when the signal is sent. If in the future we want to do a certain behaviour when the data in database is changed, we just need to listen to the event through the `@receiver` decorator. This makes the code really clean and easy to read. The same goes for the client side javascript. The button doesn't need to know what to do when it's clicked. It just needs to send an event when it's clicked. The function that is listening to the event will be called when the event is triggered. This makes the code really clean and easy to read.
@@ -122,8 +122,8 @@ According to [Refactoring Guru](https://refactoring.guru/design-patterns/command
 
 Here is some section of the code that uses the command pattern:
 <div>
-  <img src="./images/command_pattern_1.png" width=48%>
-  <img src="./images/command_pattern_2.png" width=40%>
+  <img src="./images/pattern/command_pattern_1.png" width=48%>
+  <img src="./images/pattern/command_pattern_2.png" width=40%>
 </div>
 
 As we can see in the image above, we can easily create a command by just inheriting the django built in base command class. Then we can easily call the command by running `python manage.py <COMMAND NAME>` like how we usually do it natively with django. This makes it really easy to create a command and run it.
@@ -178,7 +178,7 @@ It's done by making the client do a request. Then the Backend Server will wait u
 Pages that use polling:
 - / (Excluding the recommendation)
 - /explore (including its search and paginated pages)
-- /details/{id}
+- /details/{id} (excluding the interactive star rating button)
 - /details/{id}/review (including its paginated pages)
 - /wishlist (including its search and paginated pages)
 - /bought (including its search and paginated pages)
@@ -188,7 +188,7 @@ This is done with Redis. Result of some database queries that is frequently call
 The caching is done for the following pages:
 - / (Excluding the recommendation)
 - /explore (including its search and paginated pages)
-- /details/{id}
+- /details/{id} (excluding the interactive star rating button)
 - /details/{id}/review (including its paginated pages)
 - /wishlist (including its search and paginated pages)
 - /bought (including its search and paginated pages)
@@ -196,82 +196,89 @@ The caching is done for the following pages:
 You can test this by looking at the print in the terminal. It will print `CACHE HIT` if the data is fetched from the cache, and `CACHE MISS` if the data is fetched from the database. There is also a print of the cache key that is used and the execution time.
 Here is an example of the print:
 
-<img src="./images/cache_hit.png" alt="Cache Hit">
-<img src="./images/cache_miss.png" alt="Cache Miss">
+<img src="./images/cache/cache_hit.png" alt="Cache Hit">
+<img src="./images/cache/cache_miss.png" alt="Cache Miss">
 
 ## B05 Lighthouse
-TBD
+[Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) is an open-source, automated tool for improving the quality of web pages. You can run it against any web page, public or requiring authentication. It has audits for performance, accessibility, progressive web apps, SEO, and more.
 
 ## B06 Responsive Layout
 Website styling is created with Tailwind CSS. It is responsive and can be viewed on any device. Here are some screenshots of the website on different devices:
 #### Login
 <div>
-  <img src="./images/login_sm.png" width=12.5%>
-  <img src="./images/login_md.png" width=26%>
-  <img src="./images/login_lg.png" width=57%>
+  <img src="./images/responsive/login_sm.png" width=12.5%>
+  <img src="./images/responsive/login_md.png" width=26%>
+  <img src="./images/responsive/login_lg.png" width=57%>
 </div>
 
 #### Register
 <div>
-  <img src="./images/register_sm.png" width=12.5%>
-  <img src="./images/register_md.png" width=26%>
-  <img src="./images/register_lg.png" width=57%>
+  <img src="./images/responsive/register_sm.png" width=12.5%>
+  <img src="./images/responsive/register_md.png" width=26%>
+  <img src="./images/responsive/register_lg.png" width=57%>
 </div>
 
 #### Home
 <div>
-  <img src="./images/home_sm.png" width=12.5%>
-  <img src="./images/home_md.png" width=26%>
-  <img src="./images/home_lg.png" width=57%>
+  <img src="./images/responsive/home_sm.png" width=12.5%>
+  <img src="./images/responsive/home_md.png" width=26%>
+  <img src="./images/responsive/home_lg.png" width=57%>
 </div>
 
 #### Explore
 <div>
-  <img src="./images/explore_sm.png" width=12.5%>
-  <img src="./images/explore_md.png" width=26%>
-  <img src="./images/explore_lg.png" width=57%>
+  <img src="./images/responsive/explore_sm.png" width=12.5%>
+  <img src="./images/responsive/explore_md.png" width=26%>
+  <img src="./images/responsive/explore_lg.png" width=57%>
 </div>
 
 #### Details
 <div>
-  <img src="./images/details_sm.png" width=12.5%>
-  <img src="./images/details_md.png" width=26%>
-  <img src="./images/details_lg.png" width=57%>
+  <img src="./images/responsive/details_sm.png" width=12.5%>
+  <img src="./images/responsive/details_md.png" width=26%>
+  <img src="./images/responsive/details_lg.png" width=57%>
 </div>
 
 #### Details 2
 <div>
-  <img src="./images/details2_sm.png" width=12.5%>
-  <img src="./images/details2_md.png" width=26%>
-  <img src="./images/details2_lg.png" width=57%>
+  <img src="./images/responsive/details2_sm.png" width=12.5%>
+  <img src="./images/responsive/details2_md.png" width=26%>
+  <img src="./images/responsive/details2_lg.png" width=57%>
 </div>
 
 #### Review
 <div>
-  <img src="./images/review_sm.png" width=12.5%>
-  <img src="./images/review_md.png" width=26%>
-  <img src="./images/review_lg.png" width=57%>
+  <img src="./images/responsive/review_sm.png" width=12.5%>
+  <img src="./images/responsive/review_md.png" width=26%>
+  <img src="./images/responsive/review_lg.png" width=57%>
 </div>
 
 #### Wishlist
 <div>
-  <img src="./images/wishlist_sm.png" width=12.5%>
-  <img src="./images/wishlist_md.png" width=26%>
-  <img src="./images/wishlist_lg.png" width=57%>
+  <img src="./images/responsive/wishlist_sm.png" width=12.5%>
+  <img src="./images/responsive/wishlist_md.png" width=26%>
+  <img src="./images/responsive/wishlist_lg.png" width=57%>
 </div>
 
 #### Bought
 <div>
-  <img src="./images/bought_sm.png" width=12.5%>
-  <img src="./images/bought_md.png" width=26%>
-  <img src="./images/bought_lg.png" width=57%>
+  <img src="./images/responsive/bought_sm.png" width=12.5%>
+  <img src="./images/responsive/bought_md.png" width=26%>
+  <img src="./images/responsive/bought_lg.png" width=57%>
 </div>
 
 #### Profile
 <div>
-  <img src="./images/profile_sm.png" width=12.5%>
-  <img src="./images/profile_md.png" width=26%>
-  <img src="./images/profile_lg.png" width=57%>
+  <img src="./images/responsive/profile_sm.png" width=12.5%>
+  <img src="./images/responsive/profile_md.png" width=26%>
+  <img src="./images/responsive/profile_lg.png" width=57%>
+</div>
+
+#### Watch
+<div>
+  <img src="./images/responsive/watch_sm.png" width=12.5%>
+  <img src="./images/responsive/watch_md.png" width=26%>
+  <img src="./images/responsive/watch_lg.png" width=57%>
 </div>
 
 ## B07 Dokumentasi API
@@ -291,9 +298,9 @@ According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.
 Example of the implementation is for the models. It can be seen in the image below.
 
 <div>
-  <img src="./images/single_responsibility_2.png" width=100%>
-  <img src="./images/single_responsibility_1.png" width=45%>
-  <img src="./images/single_responsibility_3.png" width=40%>
+  <img src="./images/solid/single_responsibility_2.png" width=100%>
+  <img src="./images/solid/single_responsibility_1.png" width=45%>
+  <img src="./images/solid/single_responsibility_3.png" width=40%>
 </div>
 
 As we can see, the Film model is only responsible for the film data. If we want to serialize the film object to a python dict which is serializable to json, we create a new class called FilmRequestSerializer. We're not adding a new function inside the Film model class. If we want to do a cache invalidation when saving, we're not overriding the save method in the Film model class. We're using signals and make a function listen to it. This way, the Film model class follows the Single Responsibility Principle.
@@ -305,7 +312,7 @@ According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.
 Example of the implementation is for the model serializer. It can be seen in the image below.
 
 <div>
-  <img src="./images/openclosed_1.png" width=100%>
+  <img src="./images/solid/openclosed_1.png" width=100%>
 </div>
 
 As we can se in the image, we previously already have a FilmResponseSerializer. Then we want to create a new formated version for it that is used to render the html using template engine. One way to do it is by modifying the FilmResponseSerializer and create an if else check inside it. But that will violate the Open/Closed Principle. Instead, we create a new class called FilmViewContextSerializer which inherits from the FilmResponseSerializer. Then it will format the duration to format `hh:mm:ss` and limits the genre array visually. This way, we're extending the FilmResponseSerializer class without modifying it. Therefore, the FilmResponseSerializer class follows the Open/Closed Principle.
@@ -317,8 +324,8 @@ According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.
 Example of the implementation is for the overrided user model. It can be seen in the image below.
 
 <div>
-  <img src="./images/liskov_substitution_1.png" width=100%>
-  <img src="./images/liskov_substitution_2.png" width=100%>
+  <img src="./images/solid/liskov_substitution_1.png" width=100%>
+  <img src="./images/solid/liskov_substitution_2.png" width=100%>
 </div>
 
 As we can see in the image above, the GeneralUser class inherits the AbstractUser class which is a built-in class in Django. The GeneralUser class is used to override the AbstractUser class to add a new field called balance. For example, the method that populates user from API Request is used everywhere inside some decorators. Because it follows the Liskov Substitution Principle, we don't need to modify that method and everything will just work as initially.
@@ -330,7 +337,7 @@ According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.
 Example of the implementation is for the model serializer. It can be seen in the image below.
 
 <div>
-  <img src="./images/interface_segregation_1.png" width=100%>
+  <img src="./images/solid/interface_segregation_1.png" width=100%>
 </div>
 
 As we can see in the image, the APIFilmDetail class implements the http methods for GET, PUT, and DELETE. It's not forced to implement other methods like POST or PATCH. This way, the APIFilmDetail class follows the Interface Segregation Principle.
@@ -340,9 +347,9 @@ As we can see in the image, the APIFilmDetail class implements the http methods 
 According to [Samuel Oloruntoba and Anish Singh Walia](https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design) Dependency inversion principle states entities must depend on abstractions, not on concretions. It states that the high-level module must not depend on the low-level module, but they should depend on abstractions.
 
 <div>
-  <img src="./images/dependency_inversion_2.png" width=100%>
-  <img src="./images/dependency_inversion_1.png" width=45%>
-  <img src="./images/liskov_substitution_2.png" width=45%>
+  <img src="./images/solid/dependency_inversion_2.png" width=100%>
+  <img src="./images/solid/dependency_inversion_1.png" width=45%>
+  <img src="./images/solid/liskov_substitution_2.png" width=45%>
 </div>
 
 As we can see in the image above, we're not directly touching the JWT class when populating the user in the request object. We're using the Token class which is an abstraction for the JWT class which is the lower level module. This way, if we want to change the type of token, we can just create another class that inherits from the Token class and implement the methods. Then simply swap the JWT to that class when creating the Auth object. This way, the Token class follows the Dependency Inversion Principle.
@@ -360,28 +367,28 @@ TBD (screenshots)
 The additional features done are:
 #### 1. Film Recommendation
 <div>
-  <img src="./images/home_sm.png" width=12.5%>
-  <img src="./images/home_md.png" width=26%>
-  <img src="./images/home_lg.png" width=57%>
+  <img src="./images/responsive/home_sm.png" width=12.5%>
+  <img src="./images/responsive/home_md.png" width=26%>
+  <img src="./images/responsive/home_lg.png" width=57%>
 </div>
 
 #### 2. Rating & Review
 <div>
-  <img src="./images/details_sm.png" width=12.5%>
-  <img src="./images/details_md.png" width=26%>
-  <img src="./images/details_lg.png" width=57%>
+  <img src="./images/responsive/details_sm.png" width=12.5%>
+  <img src="./images/responsive/details_md.png" width=26%>
+  <img src="./images/responsive/details_lg.png" width=57%>
 </div>
 <div>
-  <img src="./images/review_sm.png" width=12.5%>
-  <img src="./images/review_md.png" width=26%>
-  <img src="./images/review_lg.png" width=57%>
+  <img src="./images/responsive/review_sm.png" width=12.5%>
+  <img src="./images/responsive/review_md.png" width=26%>
+  <img src="./images/responsive/review_lg.png" width=57%>
 </div>
 
 #### 3. Wishlist
 <div>
-  <img src="./images/wishlist_sm.png" width=12.5%>
-  <img src="./images/wishlist_md.png" width=26%>
-  <img src="./images/wishlist_lg.png" width=57%>
+  <img src="./images/responsive/wishlist_sm.png" width=12.5%>
+  <img src="./images/responsive/wishlist_md.png" width=26%>
+  <img src="./images/responsive/wishlist_lg.png" width=57%>
 </div>
 
 

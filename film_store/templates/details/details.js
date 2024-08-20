@@ -86,7 +86,7 @@ function updateFilmDetails(data) {
     dialogFilmPrice.textContent = `Price:🪙 ${film.price}`
 
     // dialog-balance-left-if-purchased may not exist if not buyable
-    if(dialogBalanceLeftIfPurchased) dialogBalanceLeftIfPurchased.textContent = `Balance Left:🪙 ${data.balanceLeftIfPurchased}`;
+    if(dialogBalanceLeftIfPurchased) dialogBalanceLeftIfPurchased.textContent = `Balance Left:🪙 ${data.balance_left_if_purchased}`;
 
 
     filmCoverImageUrl.src = film.cover_image_url;
