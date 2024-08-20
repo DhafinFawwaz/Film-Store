@@ -26,7 +26,7 @@ This will take a while. It will build the images which are the database, redis, 
 Once it says something like `Listening at: http://0.0.0.0:8001`, you can access the website on [http://127.0.0.1:8000/](http://127.0.0.1:8000/). 
 
 ## Quick Alternative
-If you're on windows, you can also just double click the `run.bat`. It will rename the `.env.example` to `.env`, launch docker (then you need to click yes to enable administrator privilege), then run the `docker-compose up` command automatically.
+If you're on windows, you can also just double click the `run.bat`. It will rename the `.env.example` to `.env`, launch docker (then you need to click yes to enable administrator privilege), then run the `docker-compose up` command automatically. It depends if your docker is installed in `C:\Program Files\Docker\Docker\Docker Desktop.exe` though. If not, the `run.bat` file may not work.
 
 ## Troubleshoot
 It's possible that you may see this error.
