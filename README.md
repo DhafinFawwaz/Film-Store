@@ -11,7 +11,7 @@
 # 🌐 Deploy URL
 Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
 
-Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 40 seconds. Please wait.
+Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 60 seconds. Please wait.
 If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
 
 # 🏃🏻‍♂️ How to Run

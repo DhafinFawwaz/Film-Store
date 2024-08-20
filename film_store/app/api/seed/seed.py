@@ -58,11 +58,17 @@ def start_seeding():
     dataset = json.load(open("dataset/dataset.json"))
 
     print("Seeding genres...")
+    length = len(dataset["genre"])
+    count = 0
     for genre in dataset["genre"]:
         g = Genre.objects.create(name=genre)
         g.save()
+        count += 1
+        print(f"Seeding genres... {count}/{length}")
 
     print("Seeding films...")
+    length = len(dataset["films"])
+    count = 0
     for film in dataset["films"]:
         title = film['name']
         description = film['description']
@@ -96,7 +102,12 @@ def start_seeding():
                 g = Genre.objects.get(name=genre)
                 f.genre.add(g)
 
+        count += 1
+        print(f"Seeding films... {count}/{length}")
+
     print("Seeding users...")
+    length = len(dataset["user"])
+    count = 0
     for user in dataset["user"]:
         username = user['username']
         email = user['email']
@@ -127,8 +138,13 @@ def start_seeding():
 
         u.save()
 
+        count += 1
+        print(f"Seeding users... {count}/{length}")
+
 
     print("Seeding reviews...")
+    length = len(dataset["review"])
+    count = 0
     for rev in dataset["review"]:
         film = rev['film']
         user = rev['username']
@@ -145,4 +161,7 @@ def start_seeding():
             created_at=created_at
         )
         r.save()
+
+        count += 1
+        print(f"Seeding reviews... {count}/{length}")
 

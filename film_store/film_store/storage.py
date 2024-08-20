@@ -1,22 +1,26 @@
 from django.core.files.storage import Storage
 from django.conf import settings
 from supabase import create_client, Client
+from django.core.files.base import File
+import mimetypes
 
 class SupabaseStorage(Storage):
     def __init__(self, bucket_name="film-store-storage", **kwargs):
+        print("Initializing SupabaseStorage...")
         self.bucket_name = bucket_name
         self.supabase: Client = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
 
     def _open(self, name, mode="rb"):
         pass
 
-    def _save(self, name, content):
+    def _save(self, name, content: File):
         print("Uploading to bucket...")
         content_file = content.file
         content_file.seek(0)
         content_bytes = content_file.read()
+        content_type, _ = mimetypes.guess_type(content.name)
         data = self.supabase.storage.from_(self.bucket_name).upload(
-            name, content_bytes, {"content-type": content.content_type}
+            name, content_bytes, {"content-type": content_type}
         )
         print("Successfully uploaded to bucket.")
         return data.json()["Key"]
