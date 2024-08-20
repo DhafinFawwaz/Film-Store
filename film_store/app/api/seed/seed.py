@@ -38,25 +38,23 @@ def clear_db():
     Review.objects.all().delete()
 
 def disable_signals():
-    signals.post_save.disconnect(sender=Film)
-    signals.post_delete.disconnect(sender=Film)
-    signals.post_save.disconnect(sender=Review)
-    signals.post_delete.disconnect(sender=Review)
-    signals.m2m_changed.disconnect(sender=GeneralUser.bought_films.through)
-    signals.m2m_changed.disconnect(sender=GeneralUser.wishlist_films.through)
+    signals.post_save.disconnect(receiver=film_signals.invalidate_film_cache, sender=Film)
+    signals.post_delete.disconnect(receiver=film_signals.invalidate_film_cache_on_delete, sender=Film)
+    signals.post_save.disconnect(receiver=review_signals.invalidate_review_cache, sender=Review)
+    signals.post_delete.disconnect(receiver=review_signals.invalidate_review_cache_on_delete, sender=Review)
+    signals.m2m_changed.disconnect(receiver=user_signals.invalidate_user_cache_on_bought_film_change, sender=GeneralUser.bought_films.through)
+    signals.m2m_changed.disconnect(receiver=user_signals.invalidate_user_cache_on_bought_film_change, sender=GeneralUser.wishlist_films.through)
 
 
 def enable_signals():
-    signals.post_save.connect(sender=Film, receiver=film_signals.invalidate_film_cache)
-    signals.post_delete.connect(sender=Film, receiver=film_signals.invalidate_film_cache_on_delete)
-    signals.post_save.connect(sender=Review, receiver=review_signals.invalidate_review_cache)
-    signals.post_delete.connect(sender=Review, receiver=review_signals.invalidate_review_cache_on_delete)
-    signals.m2m_changed.connect(sender=GeneralUser.bought_films.through, receiver=user_signals.invalidate_user_cache_on_bought_film_change)
-    signals.m2m_changed.connect(sender=GeneralUser.wishlist_films.through, receiver=user_signals.invalidate_user_cache_on_bought_film_change)
+    signals.post_save.connect(receiver=film_signals.invalidate_film_cache, sender=Film)
+    signals.post_delete.connect(receiver=film_signals.invalidate_film_cache_on_delete, sender=Film)
+    signals.post_save.connect(receiver=review_signals.invalidate_review_cache, sender=Review)
+    signals.post_delete.connect(receiver=review_signals.invalidate_review_cache_on_delete, sender=Review)
+    signals.m2m_changed.connect(receiver=user_signals.invalidate_user_cache_on_bought_film_change, sender=GeneralUser.bought_films.through)
+    signals.m2m_changed.connect(receiver=user_signals.invalidate_user_cache_on_bought_film_change, sender=GeneralUser.wishlist_films.through)
 
 def start_seeding():
-    disable_signals()
-
     dataset = json.load(open("dataset/dataset.json"))
 
     print("Seeding genres...")
@@ -148,4 +146,3 @@ def start_seeding():
         )
         r.save()
 
-    enable_signals()
