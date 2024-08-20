@@ -85,7 +85,7 @@ class UsersAPI(APIView):
 
     # /users/:id
     @swagger_auto_schema(
-        operation_summary="Delete a user",
+        operation_summary="Delete a user by ID",
         operation_description="Delete a user by ID",
         responses={
             200: UserDetailResponse,

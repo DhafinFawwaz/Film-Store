@@ -391,7 +391,7 @@ Ember/Bucket is used for the deployment to store image and video files. The buck
 
 
 # 🌐 API Endpoints
-API Documentation for Film Store
+
 Detailed API documentation can be accessed on either
 
 Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
@@ -402,6 +402,30 @@ Redoc: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b
 
 **Contact information:**  
 dhafin.fawwaz@gmail.com  
+
+
+## Endpoints
+| Route | Method | Description |
+| -------- | ----------- | ----------- |
+| /films | GET | Get all films |
+| /films | POST | Upload a new film |
+| /films/{id} | GET | Get a film details by ID |
+| /films/{id} | PUT | Update a film |
+| /films/{id} | DELETE | Delete a film |
+| /login | POST | Login a user |
+| /polling/bought | GET | Polling search bought film |
+| /polling/details/{id} | GET | Polling get film details |
+| /polling/details/{id}/review | GET | Polling get film reviews |
+| /polling/film | GET | Polling search film |
+| /polling/wishlist | GET | Polling search wishlist film |
+| /register | POST | Register a user |
+| /self | GET | Get current user data |
+| /users | GET | Get all users |
+| /users/{id} | GET | Get user by ID |
+| /users/{id} | DELETE | Delete user by ID |
+| /users/{id}/balance | POST | Modify a user's balance |
+
+
 
 ### Security
 **Bearer**  
