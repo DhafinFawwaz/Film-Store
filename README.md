@@ -275,11 +275,13 @@ Website styling is created with Tailwind CSS. It is responsive and can be viewed
 </div>
 
 ## B07 Dokumentasi API
-API Documentation is created with Swagger. You can access the documentation on 
+API Documentation is created with Swagger. You can access the documentation on either
 
-[https://filmstore-gokbzfw6.b4a.run/swagger/](https://filmstore-gokbzfw6.b4a.run/swagger/)
+Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
-Note that in some cases, the swagger documentation might take a long time to respond.
+Redoc: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+
+Note that in some cases, the documentation might take a long time to respond.
 
 
 ## B08 SOLID
@@ -390,7 +392,11 @@ Ember/Bucket is used for the deployment to store image and video files. The buck
 
 # 🌐 API Endpoints
 API Documentation for Film Store
-Detailed API documentation can be accessed on [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+Detailed API documentation can be accessed on either
+
+Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
+
+Redoc: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
 ## Version: v1
 
