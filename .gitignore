@@ -8,6 +8,8 @@ film_store/media/videos/*
 film_store/static
 film_store/theme/static
 output.json
+output-filtered-genre.json
+output-filtered.json
 dataset
 dataset.zip
 

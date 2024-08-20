@@ -233,7 +233,7 @@ if os.environ.get('USE_SUPABASE'):
     SUPABASE_ROOT_PATH = '/'
 
 
-DATASET_URL = "https://drive.google.com/uc?export=download&id=1nfRkHVPdgSPeBlRYe6dcsFT5MWe4DC-C"
+DATASET_URL = os.environ.get('DATASET_URL')
 
 # API Documentation
 SWAGGER_SETTINGS = {

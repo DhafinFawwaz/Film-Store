@@ -6,8 +6,13 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Username', 'class': 'text-night-50'}))
+    username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'icon_src': 'https://api.iconify.design/mdi/user.svg?color=%2354565c', 'placeholder': 'Username/Email', 'class': 'text-night-50'}))
     password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'icon_src': 'https://api.iconify.design/mdi/password.svg?color=%2354565c', 'placeholder': 'Password'}))
+
+    # modify label
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = "Username/Email"
 
     def clean(self):
         username = self.cleaned_data.get('username')
@@ -16,19 +21,22 @@ class LoginForm(forms.Form):
 
         user = None
 
-        if validate_email(username):
-            try: user = GeneralUser.objects.get(email=username)
+        try:
+            validate_email(username)
+            try: 
+                user = GeneralUser.objects.get(email=username)
             except GeneralUser.DoesNotExist as e:
-                self.add_error('email', "Email "+ username +" does not exist")
-                raise forms.ValidationError("Email "+ username +" does not exist")
-        else:        
+                self.add_error('username', username +" does not exist")
+                raise forms.ValidationError(username +" does not exist")
+        except forms.ValidationError as e:
             try: user = GeneralUser.objects.get(username=username)
             except GeneralUser.DoesNotExist as e:
-                self.add_error('username', "Username "+ username +" does not exist")
-                raise forms.ValidationError("Username "+ username +" does not exist")
+                self.add_error('username', username +" does not exist")
+                raise forms.ValidationError(username +" does not exist")
         
         
         if user.check_password(password):
+            self.cleaned_data['user'] = user
             return self.cleaned_data
         else:
             self.add_error('password', "Wrong password")

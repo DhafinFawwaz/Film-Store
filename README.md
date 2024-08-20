@@ -52,6 +52,8 @@ Images: [https://www.kaggle.com/datasets/rezaunderfit/48k-imdb-movies-data](http
 
 Videos: [https://www.freepik.com/](https://www.freepik.com/)
 
+Seeding the database took so much time and effort. The movies and images needs to be cleaned because of many inconsistency. The Videos needs to be hand picked for short videos because we're using free hosting here. Please appreciate it 😅
+
 # 📍 Used Design Patterns
 
 ## Builder Pattern

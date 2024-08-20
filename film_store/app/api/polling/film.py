@@ -42,7 +42,7 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
 
         might_be_new_data = None
 
-        max_wait = 30
+        max_wait = 6
         waited = 0
         sleep_time = 3
 

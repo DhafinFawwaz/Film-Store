@@ -9,6 +9,8 @@ arr = json.load(open('output-filtered-genre.json'))
 
 if not os.path.exists('images'):
     os.mkdir('images')
+if not os.path.exists('videos'):
+    os.mkdir('videos')
 
 progress = 0
 
@@ -21,7 +23,7 @@ for film in arr:
         # r = requests.get(film['image'])
         # with open(f'images/{film["name"]}.jpg', 'wb') as f:
         #     f.write(r.content)
-        film['image'] = f'dataset/images/{film["name"]}.jpg'
+        film['image'] = f'dataset/images/{film["name"]}.webp'
         film['video'] = f'dataset/videos/{video_names[progress]}'
         film['price'] = random.choice(range(300, 5001, 100))
         film['duration'] = random.choice(range(10, 7201, 1))
@@ -102,7 +104,7 @@ max_review_per_film = user_amount
 dataset["review"] = []
 review_count = {}
 for film in dataset["films"]:
-    if random.random() < 0.5: continue # try to make atleast 50% of film has no review
+    if random.random() < 0.2: continue # try to make atleast 20% of film has no review
 
     username_list = []
     username_list = random.sample([user["username"] for user in dataset["user"]], max_review_per_film)

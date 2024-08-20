@@ -13,7 +13,7 @@ min_year = 2011
 max_genre_amount = 5
 
 # filter corrupted images and vulgar words
-filter_words = ['king', 'prey', 'black', 'thou', 'charles', 'air', 'zombie', 'nude', 'seyyit', 'camp', 'avatar', 'collided', 'blood', 'dune', 'eating', 'kurtaran', 'aus', 'dyke', 'halbe', 'hell', 'earth', 'night', 'motel', 'road', 'people', 'baby', 'rental', 'genesis', 'dni', 'alan']
+filter_words = ['king', 'prey', 'black', 'thou', 'charles', 'air', 'zombie', 'nude', 'seyyit', 'camp', 'avatar', 'collided', 'blood', 'dune', 'eating', 'kurtaran', 'aus', 'dyke', 'cock', 'halbe', 'hell', 'earth', 'night', 'motel', 'road', 'people', 'baby', 'rental', 'genesis', 'dni', 'alan']
 
 for film in data:
     if any([word in film['name'].lower() for word in filter_words]): continue

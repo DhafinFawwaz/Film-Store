@@ -48,6 +48,13 @@ async function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms))
 
 refresh(); 
 
+function formatPrice(price) {
+    // if no decimal, add .00
+    const str = price.toString();
+    if (str.indexOf('.') === -1) return price + '.0';
+    return price;
+}
+
 function buildCard(film) {
     // This is very unsafe, but we trust the data from the server
     const str = `<a href="/details/${ film.id }" class="max-w-56 rounded-2xl hover:scale-105 ease-out-back-expo duration-150 focus:ring-4 focus:scale-107 focus:ring-indigo-600 drop-shadow-md relative h-80   xxs:h-88 md:h-96 focus:z-10 hover:z-10">
@@ -67,7 +74,7 @@ function buildCard(film) {
 
             <div class="flex flex-row justify-between font-bold text-sm mt-2">
                 <div class="font-light text-xs text-gray-300 line-clamp-1">${ film.duration }</div>
-                <div class="font-semibold text-xs line-clamp-1">🪙 ${ film.price }</div>
+                <div class="font-semibold text-xs line-clamp-1">🪙 ${ formatPrice(film.price) }</div>
             </div>
         </div>
         <div class="w-full overflow-hidden hover:z-10 focus:z-10">

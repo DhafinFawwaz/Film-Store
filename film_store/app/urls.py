@@ -1,6 +1,7 @@
 from django.urls import path
 from app.api import auth
 from app.api import user
+from app.api.user import UsersAPI
 from app.api.films import APIFilm, APIFilmDetail
 from app.api.polling import film
 from .views import auth_views, film_views
@@ -40,9 +41,8 @@ urlpatterns = [
     path('self', auth.self),
 
     path('users', user.get_all_users),
-    path('users/<int:id>', user.get_user_by_id),
+    path('users/<int:id>', UsersAPI.as_view()),
     path('users/<int:id>/balance', user.increment_user_balance_by_id),
-    path('users/<int:id>', user.delete_user_by_id),
 
     path('films/<int:id>', APIFilmDetail.as_view()),
     path('films', APIFilm.as_view()),

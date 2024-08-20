@@ -11,6 +11,8 @@ from drf_yasg.utils import swagger_auto_schema
 from app.api.swagger.auth_schemas import UsersResponse, UserDetailResponse, UserBalanceResponse, UserDeleteResponse
 from drf_yasg import openapi
 from app.api.swagger.api_response_schema import APIErrorResponse
+from rest_framework.parsers import MultiPartParser
+from rest_framework.views import APIView
 
 
 @swagger_auto_schema(
@@ -45,31 +47,6 @@ def get_all_users(request: Request, *args, **kwargs):
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-@swagger_auto_schema(
-    operation_summary="Get user by ID",
-    operation_description="Get user by ID",
-    responses={
-        200: UserDetailResponse,
-        400: APIErrorResponse,
-        401: APIErrorResponse,
-    },
-    method="GET"
-)
-@api_view(['GET']) # /user/:id
-@admin_only
-def get_user_by_id(request: Request, id: int = None, *args, **kwargs):
-    try:
-        user = GeneralUser.objects.get(id=id)
-        user_dict = GeneralUserSerializer(user)
-
-        return APIResponse(user_dict.data)
-    
-    except GeneralUser.DoesNotExist as e:
-        return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
-
-    except Exception as e:
-        return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 @swagger_auto_schema(
     operation_summary="Modify a user's balance",
@@ -101,20 +78,59 @@ def increment_user_balance_by_id(request: Request, id: int = None, *args, **kwar
     except Exception as e:
         return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class UsersAPI(APIView):
+    parser_classes = [MultiPartParser]
+    permission_classes = []
+    authentication_classes = []
 
-@api_view(['DELETE']) # /users/:id
-@admin_only
-def delete_user_by_id(request: Request, id: int = None, *args, **kwargs):
-    try:
-        user = GeneralUser.objects.get(id=id)
-        user_dict = GeneralUserSerializer(user)
-        res = user_dict.data # must be done before delete
-        user.delete()
+    # /users/:id
+    @swagger_auto_schema(
+        operation_summary="Delete a user",
+        operation_description="Delete a user by ID",
+        responses={
+            200: UserDetailResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+    )
+    @admin_only
+    def delete(self, request: Request, id: int = None, *args, **kwargs):
+        print("delete_user_by_id")
+        try:
+            user = GeneralUser.objects.get(id=id)
+            user_dict = GeneralUserSerializer(user)
+            res = user_dict.data # must be done before delete
+            user.delete()
 
-        return APIResponse(res)
+            return APIResponse(res)
+        
+        except GeneralUser.DoesNotExist as e:
+            return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+     # /users/:id
     
-    except GeneralUser.DoesNotExist as e:
-        return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
-    
-    except Exception as e:
-        return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
+    @swagger_auto_schema(
+        operation_summary="Get user by ID",
+        operation_description="Get user by ID",
+        responses={
+            200: UserDetailResponse,
+            400: APIErrorResponse,
+            401: APIErrorResponse,
+        },
+    )
+    @admin_only
+    def get(self, request: Request, id: int = None, *args, **kwargs):
+        try:
+            user = GeneralUser.objects.get(id=id)
+            user_dict = GeneralUserSerializer(user)
+
+            return APIResponse(user_dict.data)
+        
+        except GeneralUser.DoesNotExist as e:
+            return APIResponse().error("User with id = "+ id +" does not exist").set_status(status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)

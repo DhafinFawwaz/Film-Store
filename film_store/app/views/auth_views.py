@@ -48,34 +48,21 @@ class Login(UnauthorizedView):
         if not form.is_valid(): 
             messages.error(request, "Failed to Login", extra_tags='Please complete the form properly')
             return render(request, self.template_name, {"form": form})
-        try:
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = GeneralUser.objects.get(username = username)
+        
+        user = form.cleaned_data['user']
+        token = Auth(JWT()).encode(user)
+        res = redirect('/')
+        res.set_cookie(
+            key = "token", 
+            value = token,
+            expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+            secure = False,
+            httponly = True,
+            samesite = False
+        )
+        messages.success(request, "Welcome "+ user.username, extra_tags='You have logged in successfully')
+        return res
 
-            if not user.check_password(password):
-                messages.error(request, "Incorrect password")
-                return render(request, self.template_name, {"form": form})
-            else:
-                token = Auth(JWT()).encode(user)
-                res = redirect('/')
-                res.set_cookie(
-                    key = "token", 
-                    value = token,
-                    expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    secure = False,
-                    httponly = True,
-                    samesite = False
-                )
-                messages.success(request, "Welcome "+ username, extra_tags='You have logged in successfully')
-                return res
-        except GeneralUser.DoesNotExist:
-            messages.error(request, "Failed to Login", "Username "+ username +" does not exist")
-            return render(request, self.template_name, {"form": form})
-
-        except Exception as e:
-            messages.error(request, "Failed to Login", str(e))
-            return render(request, self.template_name, {"form": form})
 
 class Logout(ProtectedView):
 

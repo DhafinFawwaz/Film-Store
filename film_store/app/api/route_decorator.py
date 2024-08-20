@@ -22,9 +22,11 @@ def admin_only(view_func):
     @wraps(view_func)
     @protected
     def _wrapped_view(*args, **kwargs):
-        print("admin_only")
         request = Auth.extract_request_from_args(args)
-        if request.user.username != 'admin':
+        try:
+            if request.user.username != 'admin':
+                return APIResponse().error("Unauthorized").set_status(status.HTTP_403_FORBIDDEN)
+        except Exception as e:
             return APIResponse().error("Unauthorized").set_status(status.HTTP_403_FORBIDDEN)
         return view_func(*args, **kwargs)
     return _wrapped_view
@@ -35,7 +37,6 @@ def public(view_func):
     @authentication_classes([])
     @permission_classes([])
     def _wrapped_view(*args, **kwargs):
-        print("public")
         request = Auth.extract_request_from_args(args)
         try: Auth.populate_user_from_request(request)
         except Exception as e: request.user = None

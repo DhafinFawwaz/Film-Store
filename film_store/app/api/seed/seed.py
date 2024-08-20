@@ -9,7 +9,6 @@ from app.serializers import GenreSerializer, GeneralUserSerializer, ReviewSerial
 from datetime import datetime
 from django.core.files import File
 
-
 def download_dataset():
     if os.path.exists("dataset"): return
 
