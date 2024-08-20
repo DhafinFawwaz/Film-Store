@@ -201,6 +201,66 @@ Here is an example of the print:
 
 ## B05 Lighthouse
 [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) is an open-source, automated tool for improving the quality of web pages. You can run it against any web page, public or requiring authentication. It has audits for performance, accessibility, progressive web apps, SEO, and more.
+#### Login
+<div>
+  <img src="./images/lighthouse/login_m.png" width=49%>
+  <img src="./images/lighthouse/login_d.png" width=49%>
+</div>
+
+#### Register
+<div>
+  <img src="./images/lighthouse/register_d.png" width=49%>
+  <img src="./images/lighthouse/register_m.png" width=49%>
+</div>
+
+#### Home
+<div>
+  <img src="./images/lighthouse/home_d.png" width=49%>
+  <img src="./images/lighthouse/home_m.png" width=49%>
+</div>
+
+#### Explore
+<div>
+  <img src="./images/lighthouse/explore_d.png" width=49%>
+  <img src="./images/lighthouse/explore_m.png" width=49%>
+</div>
+
+#### Details
+<div>
+  <img src="./images/lighthouse/details_d.png" width=49%>
+  <img src="./images/lighthouse/details_m.png" width=49%>
+</div>
+
+#### Review
+<div>
+  <img src="./images/lighthouse/review_d.png" width=49%>
+  <img src="./images/lighthouse/review_m.png" width=49%>
+</div>
+
+#### Wishlist
+<div>
+  <img src="./images/lighthouse/wishlist_d.png" width=49%>
+  <img src="./images/lighthouse/wishlist_m.png" width=49%>
+</div>
+
+#### Bought
+<div>
+  <img src="./images/lighthouse/bought_d.png" width=49%>
+  <img src="./images/lighthouse/bought_m.png" width=49%>
+</div>
+
+#### Profile
+<div>
+  <img src="./images/lighthouse/profile_d.png" width=49%>
+  <img src="./images/lighthouse/profile_m.png" width=49%>
+</div>
+
+#### Watch
+<div>
+  <img src="./images/lighthouse/watch_d.png" width=49%>
+  <img src="./images/lighthouse/watch_m.png" width=49%>
+</div>
+
 
 ## B06 Responsive Layout
 Website styling is created with Tailwind CSS. It is responsive and can be viewed on any device. Here are some screenshots of the website on different devices:

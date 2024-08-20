@@ -38,7 +38,6 @@ let url = origin + "/polling/details/" + id;
 
 async function refresh() {
     while(true) {
-        console.log('Refreshing...');
         try {
             const res = await fetch(url); // might wait a long time
             const json = await res.json();
