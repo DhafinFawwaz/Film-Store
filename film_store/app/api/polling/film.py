@@ -52,13 +52,13 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
 
         max_wait = 30
         waited = 0
-        sleep_time = 1
+        sleep_time = 2
 
         data = {}
         while True:
             current_user_poll_uuid = cache.get(user_poll_key)
             if current_user_poll_uuid != initial_user_poll_uuid: # cancel request if same user polling more than 1
-                print("User polling more than 1. Cancel request.")
+                print(f"User {current_user_poll_uuid} polling more than 1. Cancel request.")
                 return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
             
 
@@ -70,7 +70,7 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
                 find_film_func(req, data)
                 break
 
-            else: # case another request updated the cache
+            else: # case another request updated the cache. Should be very rare because the cache should already be invalidated
                 might_be_new_data = json.loads(might_be_new_data)
                 might_be_new_datetime = datetime.fromisoformat(might_be_new_data['iat'])
                 if might_be_new_datetime != iat: # if this equals, then cache is still the same. Not modified by other request
