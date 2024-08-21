@@ -32,6 +32,7 @@ class SupabaseStorage(Storage):
         return f"{settings.SUPABASE_URL}/storage/v1/object/public/{name}"
     
     def delete(self, name):
+        name = name.replace("film-store-storage/", "")
         print(f"Deleting {name} from bucket...")
         self.supabase.storage.from_(self.bucket_name).remove(name)
         print(f"Successfully deleted {name} from bucket.")
