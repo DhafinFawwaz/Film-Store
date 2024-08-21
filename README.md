@@ -500,7 +500,6 @@ dhafin.fawwaz@gmail.com
 | /users/{id}/balance | POST | Modify a user's balance |
 
 
-
 ### Security
 **Bearer**  
 
@@ -681,20 +680,27 @@ The user will be logged in and a token will be returned
 ### /polling/bought
 
 #### GET
+##### Summary:
+
+Polling search bought film
+
 ##### Description:
 
-
+Find Bought film by search query or page. Will response when new data is available.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| q | query | Search for bought films by title and director | No | string |
+| Page | query | Get bought films in certain page | No | string |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 |  |
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 |  | object |
+| 204 |  | object |
 
 ### /polling/details/{id}
 
@@ -739,45 +745,60 @@ Find film reviews by page. Will response when new data is available.
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 |  |
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 |  | object |
+| 204 |  | object |
 
 ### /polling/film
 
 #### GET
+##### Summary:
+
+Polling search film
+
 ##### Description:
 
-
+Find film by search query or page. Will response when new data is available.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| q | query | Search for films by title and director | No | string |
+| Page | query | Get films in certain page | No | string |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 |  |
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 |  | object |
+| 204 |  | object |
 
 ### /polling/wishlist
 
 #### GET
+##### Summary:
+
+Polling search wishlist film
+
 ##### Description:
 
-
+Find Wishlist film by search query or page. Will response when new data is available.
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ---- |
+| q | query | Search for wishlisted films by title and director | No | string |
+| Page | query | Get wishlisted films in certain page | No | string |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 |  |
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 |  | object |
+| 204 |  | object |
 
 ### /register
 
@@ -862,6 +883,29 @@ Get user by ID
 ##### Description:
 
 Get user by ID
+
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| id | path |  | Yes | string |
+
+##### Responses
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 |  | object |
+| 400 |  | object |
+| 401 |  | object |
+
+#### DELETE
+##### Summary:
+
+Delete a user by ID
+
+##### Description:
+
+Delete a user by ID
 
 ##### Parameters
 
