@@ -86,3 +86,5 @@ class TestFilm(EndToEndTest):
         self.simulate_logout(page)
         page.close()
 
+
+    # TODO: also test rest api and make sure only admin can access with the correct token

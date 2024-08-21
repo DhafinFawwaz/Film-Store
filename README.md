@@ -166,16 +166,51 @@ As we can see in the image above, we can easily create a command by just inherit
 #### 1. Broken Access Control
 Reference: [https://owasp.org/Top10/A01_2021-Broken_Access_Control/](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
 
-Example of these can happen when user can access a page that they're not supposed to. For example, accessing the admin page when they're not an admin. This can happen if the page is not protected with the correct permission. This test is simulated in the end to end test cases. You can see more in the [Automated Testing](#b09-automated-testing) section. 
+Example of these can happen when user can access a page that they're not supposed to. For example, accessing the admin page when they're not an admin. This can happen if the page is not protected with the correct permission. This test can be simulated by running
+```
+python film_store/manage.py test film_store/app/test --pattern="test_access.py"
+python film_store/manage.py test film_store/app/test --pattern="test_film.py"
+python film_store/manage.py test film_store/app/test --pattern="test_rest.py"
+```
 
+More about how to run this in the [Automated Testing](#b09-automated-testing) section.
+
+Here is the result of the test:
+<div>
+  <img src="./images/owasp/broken_access_control.png">
+</div>
 
 #### 2. Injection
 Reference: [https://owasp.org/Top10/A03_2021-Injection/](https://owasp.org/Top10/A03_2021-Injection/)
 
-Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. Another example is when user input an sql query in a login form. For example `' OR 1=1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the query is not parameterized. Both of these is safe in this website. This test is simulated in the end to end test cases. You can see more in the [Automated Testing](#b09-automated-testing) section.
+Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. Another example is when user input an sql query in a login form. For example `' OR 1=1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the query is not parameterized. Both of these is safe in this website. This test is simulated in the end to end test cases. 
+
+Here is the result of the test:
+<div>
+  <img src="./images/owasp/injection.png">
+</div>
+
+More about how to run this in the [Automated Testing](#b09-automated-testing) section.
+
+Here is the result of the test:
+<div>
+  <img src="./images/owasp/injection.png">
+</div>
 
 #### 3. Security Misconfiguration
 Reference: [https://owasp.org/Top10/A05_2021-Security_Misconfiguration/](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
+
+Example of this can happen when directory listing is not disabled on the server. If an attacker found the list of directories, they might be able to find the source code of the server. Even if its a compiled version of the code, [decompiler](https://en.wikipedia.org/wiki/Decompiler) exist. For example is forgetting to remove `autoindex on;` from the nginx configuration. This test can be simulated by running
+```
+python film_store/manage.py test film_store/app/test --pattern="test_misconfig.py"
+```
+
+More about how to run this in the [Automated Testing](#b09-automated-testing) section.
+
+Here is the result of the test:
+<div>
+  <img src="./images/owasp/security_misconfiguration.png">
+</div>
 
 
 ## B02 Deployment
@@ -452,7 +487,16 @@ Then run the following command:
 python film_store/manage.py test film_store/app/test
 ```
 
-TBD (screenshots)
+Framework that is used to simulate browser is Playwright. Its an end-to-end testing framework for web apps. It can be used to simulate browser and do some actions like clicking a button, filling a form, etc. There are many things that are tested. Description of them can be find in the assert lines in the source code. The tests are in [test](film_store/app/test/) folder.
+
+Here is the result of the test:
+<div>
+  <img src="./images/test/access.png">
+  <img src="./images/test/film.png">
+  <img src="./images/test/login.png">
+  <img src="./images/test/misconfig.png">
+  <img src="./images/test/register.png">
+</div>
 
 ## B10 Fitur Tambahan
 The additional features done are:

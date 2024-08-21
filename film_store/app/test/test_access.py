@@ -102,5 +102,4 @@ class TestAccess(EndToEndTest):
         self.assertEqual(page.url, f"{self.live_server_url}/", f"Authenticated User should not be able to access signup page")
         page.close()
 
-    # def test_details(self):
-    #     pass
+    
