@@ -12,7 +12,7 @@
 Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
 
 Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 60 seconds. Please wait.
-If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
+If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit. Please be aware that since the database, file storage, and redis use a free cloud hosting, and the server location is spread around the world, the website can be slow. Please be patient. Not the case for self host tho. For self host, you can try it in the `How to Run` below.
 
 # 🏃🏻‍♂️ How to Run
 ## Quick Start
@@ -24,6 +24,8 @@ docker-compose up
 ```
 This will take a while. It will build the images which are the database, redis, and the monolith website, run the containers, build tailwind files, collect static files, create admin account into the database, download the datasets, seeds the database, and finally start the website.
 Once it says something like `Listening at: http://0.0.0.0:8001`, you can access the website on [http://127.0.0.1:8000/](http://127.0.0.1:8000/). 
+
+Also note that the docker-compose version is for self hosting. The database, file storage, and redis is done in the same device with docker. The deployed version uses free cloud hosting. 
 
 ## Quick Alternative
 If you're on windows, you can also just double click the `run.bat`. It will rename the `.env.example` to `.env`, launch docker (then you need to click yes to enable administrator privilege), then run the `docker-compose up` command automatically. It depends if your docker is installed in `C:\Program Files\Docker\Docker\Docker Desktop.exe` though. If not, the `run.bat` file may not work.
