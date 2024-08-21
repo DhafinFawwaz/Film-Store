@@ -31,7 +31,13 @@ COPY . .
 
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs
+
 RUN npm install -g tailwindcss
+
+RUN python film_store/manage.py tailwind install
+
+RUN playwright install
+RUN playwright install-deps
 
 # Nginx
 RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*

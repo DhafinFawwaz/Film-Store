@@ -428,8 +428,18 @@ As we can see in the image above, we're not directly touching the JWT class when
 ## B09 Automated Testing
 Automated Unit Test is done with Django's built-in testing framework. The tests are located in the `tests.py` file in each app. The tests are run with the following command:
 ```
-docker-compose run web python manage.py test
+docker-compose run web python film_store/manage.py test film_store/app/test
 ```
+
+if you want to see the test with browser simulation, you have to make sure python is installed in your machine. Then install all dependencies with the following command:
+```
+pip install -r requirements.txt
+```
+Then run the following command:
+```
+python film_store/manage.py test film_store/app/test
+```
+
 TBD (screenshots)
 
 ## B10 Fitur Tambahan
