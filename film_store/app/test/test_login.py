@@ -6,7 +6,7 @@ from app.test.endtoendtest import EndToEndTest
 from playwright.sync_api import Page
 from django.db import connections
 
-class AuthViewTests(EndToEndTest):
+class TestLogin(EndToEndTest):
     def setUp(cls):
         GeneralUser.objects.create_superuser(
             username='admin',
@@ -56,5 +56,3 @@ class AuthViewTests(EndToEndTest):
         page.click('[value=Login]')
         self.assertEqual(page.url, f"{self.live_server_url}/signin", f"User should not be able to login with wrong password")
         page.close()
-
-

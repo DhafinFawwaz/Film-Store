@@ -45,3 +45,22 @@ class MinimumLengthValidator:
             "Password must contain at least %(min_length)d characters.",
             self.min_length,
         ) % {"min_length": self.min_length}
+
+
+class HasDigitValidator:
+    """
+    Validate that the password has a digit.
+    """
+
+    def __init__(self, min_length=8):
+        self.min_length = min_length
+
+    def validate(self, password: str, user=None):
+        if not any(char.isdigit() for char in password):
+            raise ValidationError(
+                "Password must contain digit.",
+                code="password_no_digit",
+            )
+
+    def get_help_text(self):
+        return "Password must contain digit."

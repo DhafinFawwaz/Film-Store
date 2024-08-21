@@ -28,14 +28,14 @@ class EndToEndTest(StaticLiveServerTestCase):
         page.click('button:has(div:text("Logout"))')
         self.assertEqual(page.url, f"{self.live_server_url}/signin", f"User should be able to logout")
 
-    def simulate_register_normal_user(self, page: Page):
+    def simulate_register_normal_user(self, page: Page, username = "normal_user", email = "normal_user@email.com", first_name = "Normal", last_name = "User", password = "Supersecretpassword123"):
         page.goto(f"{self.live_server_url}/signup")
         self.assertEqual(page.url, f"{self.live_server_url}/signup", f"User should be logged out before registering")
-        page.fill('[name=username]', 'normal_user')
-        page.fill('[name=email]', 'normal_user@email.com')
-        page.fill('[name=first_name]', 'Normal')
-        page.fill('[name=last_name]', 'User')
-        page.fill('[name=password1]', 'Supersecretpassword123')
-        page.fill('[name=password2]', 'Supersecretpassword123')
+        page.fill('[name=username]', username)
+        page.fill('[name=email]', email)
+        page.fill('[name=first_name]', first_name)
+        page.fill('[name=last_name]', last_name)
+        page.fill('[name=password1]', password)
+        page.fill('[name=password2]', password)
         page.click('[value=Register]')
         self.assertEqual(page.url, f"{self.live_server_url}/signin", "normal_user should be able to register")
