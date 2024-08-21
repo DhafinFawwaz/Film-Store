@@ -149,7 +149,7 @@ As we can see in the image above, we can easily create a command by just inherit
 # ✨ Bonus
 | Nomor |          Bonus            | Dikerjakan |
 | ----- | ------------------------- | ---------- |
-| B01   | OWASP                     |            |
+| B01   | OWASP                     |     ✅     |
 | B02   | Deployment                |     ✅     |
 | B03   | Polling                   |     ✅     |
 | B04   | Caching                   |     ✅     |
@@ -157,19 +157,25 @@ As we can see in the image above, we can easily create a command by just inherit
 | B06   | Responsive Layout         |     ✅     |
 | B07   | Dokumentasi API           |     ✅     |
 | B08   | SOLID                     |     ✅     |
-| B09   | Automated Testing         |            |
+| B09   | Automated Testing         |     ✅     |
 | B10   | Fitur Tambahan            |     ✅     |
 | B11   | Ember                     |     ✅     |
 
 ## B01 OWASP
 
 #### 1. Broken Access Control
+Reference: [https://owasp.org/Top10/A01_2021-Broken_Access_Control/](https://owasp.org/Top10/A01_2021-Broken_Access_Control/)
+
+Example of these can happen when user can access a page that they're not supposed to. For example, accessing the admin page when they're not an admin. This can happen if the page is not protected with the correct permission. This test is simulated in the end to end test cases. You can see more in the [Automated Testing](#b09-automated-testing) section. 
 
 
 #### 2. Injection
-Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. Another example is when user input an sql query in a login form. For example `' OR 1=1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the query is not parameterized. Both of these is safe in this website.
+Reference: [https://owasp.org/Top10/A03_2021-Injection/](https://owasp.org/Top10/A03_2021-Injection/)
 
-#### 3. Server-Side Request Forgery
+Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. Another example is when user input an sql query in a login form. For example `' OR 1=1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the query is not parameterized. Both of these is safe in this website. This test is simulated in the end to end test cases. You can see more in the [Automated Testing](#b09-automated-testing) section.
+
+#### 3. Security Misconfiguration
+Reference: [https://owasp.org/Top10/A05_2021-Security_Misconfiguration/](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
 
 
 ## B02 Deployment
@@ -435,6 +441,12 @@ if you want to see the test with browser simulation, you have to make sure pytho
 ```
 pip install -r requirements.txt
 ```
+
+add this to the `.env` file:
+```
+DEBUG=1
+```
+
 Then run the following command:
 ```
 python film_store/manage.py test film_store/app/test

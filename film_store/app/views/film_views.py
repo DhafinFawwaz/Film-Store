@@ -134,6 +134,10 @@ class BuyFilm(ProtectedView):
             return redirect('/')
         user: GeneralUser = self.request.user
 
+        if user.bought_films.filter(id=film.id).exists():
+            messages.error(request, 'Film Already Bought', extra_tags='The film is already in your bought films')
+            return redirect(f'/details/{film_id}')
+
         if user.balance < film.price:
             messages.error(request, 'Insufficient Balance', extra_tags="You don't have enough balance to purchase this film")
             return redirect(f'/details/{film_id}')

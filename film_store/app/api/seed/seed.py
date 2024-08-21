@@ -56,7 +56,9 @@ def enable_signals():
 
 def start_seeding():
     dataset = json.load(open("dataset/dataset.json"))
+    seed_db(dataset)
 
+def seed_db(dataset: dict):
     print("Seeding genres...")
     length = len(dataset["genre"])
     count = 0
