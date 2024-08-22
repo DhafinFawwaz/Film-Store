@@ -13,6 +13,7 @@ from drf_yasg import openapi
 from app.api.swagger.api_response_schema import APIErrorResponse
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
+from decimal import Decimal
 
 
 @swagger_auto_schema(
@@ -66,7 +67,7 @@ def increment_user_balance_by_id(request: Request, id: int = None, *args, **kwar
         if increment is None: return APIResponse().error("increment is required in body").set_status(status.HTTP_400_BAD_REQUEST)
 
         user = GeneralUser.objects.get(id=id)
-        user.balance += increment
+        user.balance += Decimal(increment)
         user.save()
 
         user_dict = GeneralUserSerializer(user)

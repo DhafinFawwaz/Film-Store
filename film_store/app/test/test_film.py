@@ -17,6 +17,9 @@ class TestFilm(EndToEndTest):
 
     def setUp(self):
         super().setUp()
+        self.seed_test_db()
+
+    def seed_test_db(self):
         dataset = json.load(open("dataset/dataset.json"))
         selected_films = ["The Batman", "No Time to Die", "Mauri", "Ek Doctor Ki Maut"]
 
@@ -285,6 +288,8 @@ class TestFilm(EndToEndTest):
         page.goto(f"{self.live_server_url}/details/{ek_docktor_ki_maut.id}/watch")
         self.assertEqual(page.url, f"{self.live_server_url}/details/{ek_docktor_ki_maut.id}", f"Unpurchased film should not be able to be watched")
 
+        page.close()
+
     def test_rating(self):
         page = self.browser.new_page()
 
@@ -309,6 +314,7 @@ class TestFilm(EndToEndTest):
         rating_text = page.locator("p:text('3.5 out of 5')")
         self.assertTrue(rating_text.is_visible(), "Rating should be 3.5 out of 5")
 
+        page.close()
 
     def test_review(self):
         page = self.browser.new_page()

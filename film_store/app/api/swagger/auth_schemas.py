@@ -19,8 +19,7 @@ RegisterFormBody = openapi.Schema(
         'email': openapi.Schema(type=openapi.TYPE_STRING, description="The email of the user"),
         'first_name': openapi.Schema(type=openapi.TYPE_STRING, description="The first name of the user"),
         'last_name': openapi.Schema(type=openapi.TYPE_STRING, description="The last name of the user"),
-        'password1': openapi.Schema(type=openapi.TYPE_STRING, description="The password of the user"),
-        'password2': openapi.Schema(type=openapi.TYPE_STRING, description="Confirm the password for the user"),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description="The password of the user"),
     }
 )
 

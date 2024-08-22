@@ -143,7 +143,7 @@ class APIFilmDetail(APIView):
 
             return APIResponse(film_serializer.data)
         except Film.DoesNotExist:
-            return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+            return APIResponse().error("Film with id = "+ str(id) +" not found").set_status(status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -194,7 +194,7 @@ class APIFilmDetail(APIView):
             
         
         except Film.DoesNotExist:
-            return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+            return APIResponse().error("Film with id = "+ str(id) +" not found").set_status(status.HTTP_404_NOT_FOUND)
         
         except Exception as e:
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -221,7 +221,7 @@ class APIFilmDetail(APIView):
             return APIResponse(res)
 
         except Film.DoesNotExist:
-            return APIResponse().error("Film with id = "+ id +" not found").set_status(status.HTTP_404_NOT_FOUND)
+            return APIResponse().error("Film with id = "+ str(id) +" not found").set_status(status.HTTP_404_NOT_FOUND)
         
         except Exception as e:
             return APIResponse().error(str(e)).set_status(status.HTTP_500_INTERNAL_SERVER_ERROR)

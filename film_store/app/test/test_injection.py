@@ -17,30 +17,8 @@ class TestInjection(EndToEndTest):
 
     def setUp(self):
         super().setUp()
-        dataset = json.load(open("dataset/dataset.json"))
-        selected_films = ["The Batman", "No Time to Die", "Mauri", "Ek Doctor Ki Maut"]
+        self.seed_test_db_no_review()
 
-        film_to_remove = []
-        for film in dataset['films']:
-            if film["name"] not in selected_films:
-                film_to_remove.append(film)
-        for film in film_to_remove:
-            dataset['films'].remove(film)
-        
-
-        the_batman = TestInjection.find_film(dataset['films'], "The Batman")
-        no_time_to_die = TestInjection.find_film(dataset['films'], "No Time to Die")
-        mauri = TestInjection.find_film(dataset['films'], "Mauri")
-        ek_doctor_ki_maut = TestInjection.find_film(dataset['films'], "Ek Doctor Ki Maut")
-        the_batman['price'] = 1000
-        no_time_to_die['price'] = 2000
-        mauri['price'] = 3000
-        ek_doctor_ki_maut['price'] = 4000
-        
-
-        dataset['user'] = []
-        dataset['review'] = []
-        seed_db(dataset)
     
     # Taken from: https://github.com/payloadbox/sql-injection-payload-list?tab=readme-ov-file
     def get_username_password_to_inject(self):

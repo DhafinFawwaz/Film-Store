@@ -15,13 +15,8 @@ class PasswordValidator:
             raise ValidationError(f"Password must be less than 256 characters long")
         if not any(char.isdigit() for char in value):
             raise ValidationError(f"Password must contain at least one digit")
-        if not any(char.isupper() for char in value):
-            raise ValidationError(f"Password must contain at least one uppercase letter")
-        if not any(char.islower() for char in value):
-            raise ValidationError(f"Password must contain at least one lowercase letter")
-        if not any(char in "!@#$%^&*()-_=+[]{}|;:,.<>?/" for char in value):
-            raise ValidationError(f"Password must contain at least one special character")
-
+        if not any(char.isalpha() for char in value):
+            raise ValidationError(f"Password must contain at least one letter")
 class GeneralUserSerializer(serializers.ModelSerializer):
     id = serializers.CharField(required=False)
     username = serializers.CharField(required=True, min_length=4, max_length=30, validators=[UniqueValidator(queryset=GeneralUser.objects.all(), message="This username is taken")])

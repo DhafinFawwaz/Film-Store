@@ -5,6 +5,8 @@ from django.db import connections
 from playwright.sync_api import Page
 from app.models import GeneralUser
 from django.core.cache import cache
+from app.api.seed.seed import seed_db
+import json
 
 class EndToEndTest(StaticLiveServerTestCase):
     serialized_rollback = True
@@ -66,5 +68,34 @@ class EndToEndTest(StaticLiveServerTestCase):
         self.assertEqual(page.url, f"{self.live_server_url}/signin", "normal_user should be able to register")
 
 
-    def login_admin_rest() -> dict:
-        return ""
+    def find_film(self, arr, name):
+        for film in arr:
+            if film["name"] == name:
+                return film
+            
+    def seed_test_db_no_review(self):
+        dataset = json.load(open("dataset/dataset.json"))
+        selected_films = ["The Batman", "No Time to Die", "Mauri", "Ek Doctor Ki Maut"]
+
+        film_to_remove = []
+        for film in dataset['films']:
+            if film["name"] not in selected_films:
+                film_to_remove.append(film)
+        for film in film_to_remove:
+            dataset['films'].remove(film)
+        
+
+        the_batman = self.find_film(dataset['films'], "The Batman")
+        no_time_to_die = self.find_film(dataset['films'], "No Time to Die")
+        mauri = self.find_film(dataset['films'], "Mauri")
+        ek_doctor_ki_maut = self.find_film(dataset['films'], "Ek Doctor Ki Maut")
+        the_batman['price'] = 1000
+        no_time_to_die['price'] = 2000
+        mauri['price'] = 3000
+        ek_doctor_ki_maut['price'] = 4000
+        
+
+        dataset['user'] = []
+        dataset['review'] = []
+        seed_db(dataset)
+    
