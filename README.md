@@ -518,11 +518,9 @@ Here's some screenshots of the tests:
 </div>
 
 Here's recording of the test. Quite satisfying:
-<div>
-  <video src="./images/test/endtoend.mp4">
-</div>
 
-https://github.com/DhafinFawwaz/Film-Store/blob/main/images/test/endtoend.mp4
+https://github.com/user-attachments/assets/05428a2c-3d85-42c1-af0b-631060736aba
+
 
 
 ## B10 Fitur Tambahan
