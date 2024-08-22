@@ -522,6 +522,8 @@ Here's recording of the test. Quite satisfying:
   <video src="./images/test/endtoend.mp4">
 </div>
 
+https://github.com/DhafinFawwaz/Film-Store/blob/main/images/test/endtoend.mp4
+
 
 ## B10 Fitur Tambahan
 The additional features done are:
