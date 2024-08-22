@@ -96,7 +96,6 @@ class UsersAPI(APIView):
     )
     @admin_only
     def delete(self, request: Request, id: int = None, *args, **kwargs):
-        print("delete_user_by_id")
         try:
             user = GeneralUser.objects.get(id=id)
             user_dict = GeneralUserSerializer(user)

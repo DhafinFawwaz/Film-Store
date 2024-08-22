@@ -10,11 +10,6 @@ import json
 
 class TestFilm(EndToEndTest):
 
-    def find_film(arr, name):
-        for film in arr:
-            if film["name"] == name:
-                return film
-
     def setUp(self):
         super().setUp()
         self.seed_test_db()
@@ -31,10 +26,10 @@ class TestFilm(EndToEndTest):
             dataset['films'].remove(film)
         
 
-        the_batman = TestFilm.find_film(dataset['films'], "The Batman")
-        no_time_to_die = TestFilm.find_film(dataset['films'], "No Time to Die")
-        mauri = TestFilm.find_film(dataset['films'], "Mauri")
-        ek_doctor_ki_maut = TestFilm.find_film(dataset['films'], "Ek Doctor Ki Maut")
+        the_batman = self.find_film(dataset['films'], "The Batman")
+        no_time_to_die = self.find_film(dataset['films'], "No Time to Die")
+        mauri = self.find_film(dataset['films'], "Mauri")
+        ek_doctor_ki_maut = self.find_film(dataset['films'], "Ek Doctor Ki Maut")
         the_batman['price'] = 1000
         no_time_to_die['price'] = 2000
         mauri['price'] = 3000

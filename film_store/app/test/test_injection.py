@@ -10,11 +10,6 @@ import json
 
 class TestInjection(EndToEndTest):
 
-    def find_film(arr, name):
-        for film in arr:
-            if film["name"] == name:
-                return film
-
     def setUp(self):
         super().setUp()
         self.seed_test_db_no_review()

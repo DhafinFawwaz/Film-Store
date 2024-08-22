@@ -7,9 +7,12 @@ from app.models import GeneralUser
 from django.core.cache import cache
 from app.api.seed.seed import seed_db
 import json
+from io import StringIO
+import sys
 
 class EndToEndTest(StaticLiveServerTestCase):
     serialized_rollback = True
+    _original_stdout = None
 
     @classmethod
     def setUpClass(cls):
@@ -17,6 +20,9 @@ class EndToEndTest(StaticLiveServerTestCase):
         super().setUpClass()
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch(headless= not int(os.environ.get("TEST_HEAD", 1)))
+
+        EndToEndTest._original_stdout = sys.stdout
+        sys.stdout = StringIO()
 
     @classmethod
     def tearDownClass(cls):
@@ -26,6 +32,8 @@ class EndToEndTest(StaticLiveServerTestCase):
         connections.close_all()
         cache.clear()
 
+        sys.stdout = EndToEndTest._original_stdout
+
     def setUp(self):
         cache.clear()
         GeneralUser.objects.create_superuser(
@@ -33,6 +41,7 @@ class EndToEndTest(StaticLiveServerTestCase):
             password='admin123',
             email='admin@email.com',
         )
+    
 
     def simulate_click_nav(self, page: Page, href: str):
         page.hover('#nav-button')

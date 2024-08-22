@@ -58,7 +58,7 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
         while True:
             current_user_poll_uuid = cache.get(user_poll_key)
             if current_user_poll_uuid != initial_user_poll_uuid: # cancel request if same user polling more than 1
-                print(f"User {current_user_poll_uuid} polling more than 1. Cancel request.")
+                # print(f"User {current_user_poll_uuid} polling more than 1. Cancel request.")
                 return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
             
 
