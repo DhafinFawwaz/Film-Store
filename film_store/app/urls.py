@@ -24,7 +24,6 @@ urlpatterns = [
     path('', film_views.Home.as_view()),    
     path('explore', film_views.Explore.as_view()),    
     path('wishlist', film_views.Wishlist.as_view()),
-    path('review', film_views.ReviewView.as_view()),
     path('bought', film_views.Bought.as_view()),
     path('details/<int:id>', film_views.Details.as_view()),
     path('details/<int:id>/buy', film_views.BuyFilm.as_view()),

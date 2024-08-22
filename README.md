@@ -172,23 +172,25 @@ python film_store/manage.py test film_store/app/test --pattern="test_access.py"
 python film_store/manage.py test film_store/app/test --pattern="test_film.py"
 python film_store/manage.py test film_store/app/test --pattern="test_rest.py"
 ```
+Note that the tests are separated because in the test_film, we need to seed the database first. We don't want to seed the database multiple times because it will take a long time.
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
 
 Here is the result of the test:
 <div>
-  <img src="./images/owasp/broken_access_control.png">
+  <img src="./images/owasp/broken_access_control_1.png">
+  <img src="./images/owasp/broken_access_control_2.png">
+  <img src="./images/owasp/broken_access_control_3.png">
 </div>
 
 #### 2. Injection
 Reference: [https://owasp.org/Top10/A03_2021-Injection/](https://owasp.org/Top10/A03_2021-Injection/)
 
-Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. Another example is when user input an sql query in a login form. For example `' OR 1=1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the query is not parameterized. Both of these is safe in this website. This test is simulated in the end to end test cases. 
+Example of these can happen when user input is not sanitized. For example, commentting with javascript `<script>` tag and the website uses innerhtml to render the content. This will make the browser run that script. It can be used to retrieve the content of user's local storage or cookies, and attacker might be able to login as that user. Another example is when user input an sql query in a login form. For example `" OR "1"="1`. This will make the query always true and the user can login without the correct password. This can happen if the input is not sanitized and the sql query is not parameterized. Both of these is safe in this website. This test can be simulated by running
 
-Here is the result of the test:
-<div>
-  <img src="./images/owasp/injection.png">
-</div>
+```
+python film_store/manage.py test film_store/app/test --pattern="test_injection.py"
+```
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
 

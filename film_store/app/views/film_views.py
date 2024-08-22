@@ -229,7 +229,7 @@ class Wishlist(ProtectedView):
         return render(request, self.template_name, context)
 
 # GET Cached
-class ReviewView(ProtectedView):
+class ReviewView(PublicView):
     template_name = 'review/review.html'
 
     def get(self, request, *args, **kwargs):
