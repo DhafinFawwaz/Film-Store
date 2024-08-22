@@ -34,8 +34,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
 
 RUN npm install -g tailwindcss
 
-RUN python film_store/manage.py tailwind install
-
 RUN playwright install
 RUN playwright install-deps
 
