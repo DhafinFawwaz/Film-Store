@@ -11,6 +11,10 @@
 # 🌐 Deploy URL
 Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
 
+Alternative: [https://film-store-production.up.railway.app](https://film-store-production.up.railway.app)
+
+The alternative one can be faster than the main one because the redis server is from the same host provider which makes their location close. But the free plan limit is even worse. It uses 5$ credit system and it can be wasted so fast.
+
 Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 60 seconds. Please wait.
 If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit. Please be aware that since the database, file storage, and redis use a free cloud hosting, and the server location is spread around the world, the website can be slow. Please be patient. Not the case for self host tho. For self host, you can try it in the `How to Run` below.
 
@@ -240,6 +244,9 @@ Everything is deployed with a free service. Here are the services used:
 - REST API: Django Rest Framework 3.15.2
 
 Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a.run)
+
+Alternative: [https://film-store-production.up.railway.app](https://film-store-production.up.railway.app)
+
 Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 40 seconds. Please wait.
 If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit.
 
@@ -416,7 +423,12 @@ API Documentation is created with Swagger. You can access the documentation on e
 
 Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
+Alternative: [https://film-store-production.up.railway.app/swagger](https://film-store-production.up.railway.app/swagger)
+
+
 Redoc: [https://filmstore-gokbzfw6.b4a.run/redoc](https://filmstore-gokbzfw6.b4a.run/redoc)
+
+Alternative: [https://film-store-production.up.railway.app/swagger](https://film-store-production.up.railway.app/swagger)
 
 Note that in some cases, the documentation might take a long time to respond.
 
@@ -563,7 +575,13 @@ Detailed API documentation can be accessed on either
 
 Swagger: [https://filmstore-gokbzfw6.b4a.run/swagger](https://filmstore-gokbzfw6.b4a.run/swagger)
 
+Alternative: [https://film-store-production.up.railway.app/swagger](https://film-store-production.up.railway.app/swagger)
+
+
 Redoc: [https://filmstore-gokbzfw6.b4a.run/redoc](https://filmstore-gokbzfw6.b4a.run/redoc)
+
+Alternative: [https://film-store-production.up.railway.app/redoc](https://film-store-production.up.railway.app/redoc)
+
 
 ## Version: v1
 
