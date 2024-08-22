@@ -227,7 +227,8 @@ else:
 CSRF_TRUSTED_ORIGINS = [
     "https://filmstore-gokbzfw6.b4a.run",
     "http://127.0.0.1:8000",
-    "https://labpro-fe.hmif.dev/"
+    "https://labpro-fe.hmif.dev/",
+    "https://film-store-production.up.railway.app",
 ]
 
 if os.environ.get('SUPABASE_KEY') and os.environ.get('SUPABASE_URL'):
