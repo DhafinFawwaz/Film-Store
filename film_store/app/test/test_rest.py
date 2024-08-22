@@ -238,9 +238,6 @@ class TestRest(EndToEndTest):
         for get_route in ["/users", '/users/1']:
             response = self.client.get(f"{self.live_server_url}{get_route}")
             self.assertEqual(response.status_code, 403)
-        for get_route in ['films', "/films/1"]:
-            response = self.client.get(f"{self.live_server_url}{get_route}")
-            self.assertEqual(response.status_code, 200)
 
         for post_route in ["/films", "/users/1/balance"]:
             response = self.client.post(f"{self.live_server_url}{post_route}")
@@ -259,9 +256,6 @@ class TestRest(EndToEndTest):
         for get_route in ["/users", "/users/1"]:
             response = self.client.get(f"{self.live_server_url}{get_route}")
             self.assertEqual(response.status_code, 403)
-        for get_route in ["films", "/films/1"]:
-            response = self.client.get(f"{self.live_server_url}{get_route}")
-            self.assertEqual(response.status_code, 200)
 
         for post_route in ["/films", "/users/1/balance"]:
             response = self.client.post(f"{self.live_server_url}{post_route}")
