@@ -25,6 +25,7 @@ class EndToEndTest(StaticLiveServerTestCase):
         cache.clear()
 
     def setUp(self):
+        cache.clear()
         GeneralUser.objects.create_superuser(
             username='admin',
             password='admin123',
@@ -63,3 +64,7 @@ class EndToEndTest(StaticLiveServerTestCase):
         page.fill('[name=password2]', password)
         page.click('[value=Register]')
         self.assertEqual(page.url, f"{self.live_server_url}/signin", "normal_user should be able to register")
+
+
+    def login_admin_rest() -> dict:
+        return ""

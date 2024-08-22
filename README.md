@@ -172,7 +172,13 @@ python film_store/manage.py test film_store/app/test --pattern="test_access.py"
 python film_store/manage.py test film_store/app/test --pattern="test_film.py"
 python film_store/manage.py test film_store/app/test --pattern="test_rest.py"
 ```
-Note that the tests are separated because in the test_film, we need to seed the database first. We don't want to seed the database multiple times because it will take a long time.
+or if you want to use docker (but there will be no GUI or browser simulation visually (headless))
+```
+docker-compose run web python film_store/manage.py test film_store/app/test --pattern="test_access.py"
+docker-compose run web python film_store/manage.py test film_store/app/test --pattern="test_film.py"
+docker-compose run web python film_store/manage.py test film_store/app/test --pattern="test_rest.py"
+```
+
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
 
@@ -191,8 +197,14 @@ Example of these can happen when user input is not sanitized. For example, comme
 ```
 python film_store/manage.py test film_store/app/test --pattern="test_injection.py"
 ```
+or if you want to use docker (but there will be no GUI or browser simulation visually (headless))
+```
+docker-compose run web python film_store/manage.py test film_store/app/test --pattern="test_injection.py"
+```
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
+
+For the SQL injection, we test many kinds of payloads. Its taken from [here](https://gist.github.com/SantoshSrinivas79/69f235e0876a87c53668). For the XXS, we simply post comment with `<script>document.body.innerHTML="";</script>`. This way we can simply check if the whole webpage is erased, then the ijection is successful.
 
 Here is the result of the test:
 <div>
@@ -205,6 +217,10 @@ Reference: [https://owasp.org/Top10/A05_2021-Security_Misconfiguration/](https:/
 Example of this can happen when directory listing is not disabled on the server. If an attacker found the list of directories, they might be able to find the source code of the server. Even if its a compiled version of the code, [decompiler](https://en.wikipedia.org/wiki/Decompiler) exist. For example is forgetting to remove `autoindex on;` from the nginx configuration. This test can be simulated by running
 ```
 python film_store/manage.py test film_store/app/test --pattern="test_misconfig.py"
+```
+or if you want to use docker (but there will be no GUI or browser simulation visually (headless))
+```
+docker-compose run web python film_store/manage.py test film_store/app/test --pattern="test_misconfig.py"
 ```
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
