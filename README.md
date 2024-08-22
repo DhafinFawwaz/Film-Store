@@ -586,6 +586,9 @@ dhafin.fawwaz@gmail.com
 | /users/{id}/balance | POST | Modify a user's balance |
 
 
+<details>
+<summary>Click to expand the API Documentation (Warning! this will be very long)</summary>
+
 ### Security
 **Bearer**  
 
@@ -1031,4 +1034,7 @@ Change a user's balance by ID
 | 200 |  | object |
 | 400 |  | object |
 | 401 |  | object |
+
+
+</details>
 
