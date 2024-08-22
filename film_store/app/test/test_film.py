@@ -201,7 +201,6 @@ class TestFilm(EndToEndTest):
 
     def set_balance(self, page: Page, balance: int, username="normal_user"):
         GeneralUser.objects.filter(username=username).update(balance=balance)
-        # TODO: change this with rest api
 
     def test_purchase(self):
         page = self.browser.new_page()
@@ -344,6 +343,3 @@ class TestFilm(EndToEndTest):
         self.assertTrue(review_text.is_visible(), "Updated review by normal_user should be visible")
 
         page.close()
-
-    # make review with <script> tag injection
-    # TODO: test all rest api access, also test rest api and make sure only admin can access with the correct token

@@ -48,5 +48,3 @@ class TestLogin(EndToEndTest):
         page.click('[value=Login]')
         self.assertEqual(page.url, f"{self.live_server_url}/signin", f"User should not be able to login with wrong password")
         page.close()
-
-    # TODO: Login with sql injection
