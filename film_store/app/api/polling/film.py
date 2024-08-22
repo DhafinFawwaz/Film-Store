@@ -40,7 +40,7 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
     cache.set(user_poll_key, initial_user_poll_uuid)
 
 
-    print(f"User {user_id} polling {cache_key} with poll uuid {initial_user_poll_uuid}")
+    # print(f"User {user_id} polling {cache_key} with poll uuid {initial_user_poll_uuid}")
     try:
         data = cache.get(cache_key)
         if not data:
@@ -85,7 +85,6 @@ def process_polling(request: APIRequest, cache_key: str, find_film_func: Callabl
         
         return APIResponse(data=data, status=status.HTTP_200_OK)
     except Exception as e:
-        print(e)
         return APIResponse(data=None, status=status.HTTP_204_NO_CONTENT)
 
 
