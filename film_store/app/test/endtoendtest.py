@@ -21,8 +21,8 @@ class EndToEndTest(StaticLiveServerTestCase):
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch(headless= not int(os.environ.get("TEST_HEAD", 1)))
 
-        EndToEndTest._original_stdout = sys.stdout
-        sys.stdout = StringIO()
+        # EndToEndTest._original_stdout = sys.stdout
+        # sys.stdout = StringIO()
 
     @classmethod
     def tearDownClass(cls):
@@ -32,7 +32,7 @@ class EndToEndTest(StaticLiveServerTestCase):
         connections.close_all()
         cache.clear()
 
-        sys.stdout = EndToEndTest._original_stdout
+        # sys.stdout = EndToEndTest._original_stdout
 
     def setUp(self):
         cache.clear()
@@ -41,6 +41,9 @@ class EndToEndTest(StaticLiveServerTestCase):
             password='admin123',
             email='admin@email.com',
         )
+
+    def tearDown(self):
+        cache.clear()
     
 
     def simulate_click_nav(self, page: Page, href: str):

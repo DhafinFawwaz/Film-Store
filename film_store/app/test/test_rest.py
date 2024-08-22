@@ -232,6 +232,7 @@ class TestRest(EndToEndTest):
     def test_admin_route_as_user(self):
         self.test_get_current_user() # will also create a user
         token = self.test_login_and_get_token("normal_user", "supersecretpassword123")
+        print(token)
 
         # with no token
         for get_route in ["/users", '/users/1']:
