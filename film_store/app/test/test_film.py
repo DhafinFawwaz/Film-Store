@@ -233,8 +233,8 @@ class TestFilm(EndToEndTest):
         self.assertTrue(button.is_enabled())
         button.click()
         page.wait_for_timeout(200)
-        balance_text = page.locator("#user-balance-absolute").text_content()
-        self.assertEqual(balance_text, "2500", "User should be able to purchase a film")
+        balance_text = int(page.locator("#user-balance-absolute").text_content())
+        self.assertEqual(balance_text, 2500, "User should be able to purchase a film")
         page.click('text="Back"')
 
         page.click('text="No Time to Die"')
@@ -244,8 +244,8 @@ class TestFilm(EndToEndTest):
         self.assertTrue(button.is_enabled())
         button.click()
         page.wait_for_timeout(200)
-        balance_text = page.locator("#user-balance-absolute").text_content()
-        self.assertEqual(balance_text, "500", "User should be able to purchase a film")
+        balance_text = int(page.locator("#user-balance-absolute").text_content())
+        self.assertEqual(balance_text, 500, "User should be able to purchase a film")
         page.click('text="Back"')
 
         page.click('text="The Batman"')
