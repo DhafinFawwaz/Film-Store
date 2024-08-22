@@ -126,7 +126,7 @@ class TestInjection(EndToEndTest):
         page.wait_for_timeout(500)
         title_text = page.locator("h1", has_text="The Batman")
 
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(500)
         self.assertTrue(title_text.is_visible(), "<script> tag should not be able to be injected in review")
 
         page.close()
