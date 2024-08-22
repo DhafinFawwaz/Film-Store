@@ -13,10 +13,10 @@ Website URL: [https://filmstore-gokbzfw6.b4a.run](https://filmstore-gokbzfw6.b4a
 
 Alternative: [https://film-store-production.up.railway.app](https://film-store-production.up.railway.app)
 
-The alternative one can be faster than the main one because the redis server is from the same host provider which makes their location close. But the free plan limit is even worse. It uses 5$ credit system and it can be wasted so fast.
-
 Please note that the website will sleep if there is no activity for 30 minutes. So if accessed while the website is sleeping, it will wake up first and can take around 20 - 60 seconds. Please wait.
 If using chrome mobile, please update the chrome version to the newest version. It uses the new css unit called `dvh`. If not, it's still safe, it will fallback to vh unit. Please be aware that since the database, file storage, and redis use a free cloud hosting, and the server location is spread around the world, the website can be slow. Please be patient. Not the case for self host tho. For self host, you can try it in the `How to Run` below.
+
+Also, the alternative one is faster than the main one because the redis server is from the same host provider which makes their location close. But the free plan limit is even worse. It uses 5$ credit system and it can be wasted so fast.
 
 # 🏃🏻‍♂️ How to Run
 ## Quick Start
@@ -508,6 +508,7 @@ if you want to see the test with browser simulation, you have to make sure pytho
 ```
 pip install -r requirements.txt
 ```
+It's recommended to use a virtual environment though.
 
 add this to the `.env` file:
 ```
