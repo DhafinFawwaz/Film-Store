@@ -186,9 +186,9 @@ More about how to run this in the [Automated Testing](#b09-automated-testing) se
 
 Here are part of the code.
 <div>
-  <img src="./images/owasp/broken_access_control_1.png">
-  <img src="./images/owasp/broken_access_control_2.png">
-  <img src="./images/owasp/broken_access_control_3.png">
+  <img src="./images/owasp/access_1.png" width=46%>
+  <img src="./images/owasp/access_2.png" width=46%>
+  <img src="./images/owasp/access_3.png" width=46%>
 </div>
 
 #### 2. Injection
@@ -229,7 +229,7 @@ More about how to run this in the [Automated Testing](#b09-automated-testing) se
 
 Here is part of the code.
 <div>
-  <img src="./images/owasp/security_misconfiguration.png">
+  <img src="./images/owasp/misconfig.png">
 </div>
 
 
@@ -509,16 +509,19 @@ python film_store/manage.py test film_store/app/test
 
 Please note that the tests requires that the dataset is already downloaded. Please atleast run the website once to download the dataset.
 
-Framework that is used to simulate browser is Playwright. Its an end-to-end testing framework for web apps. It can be used to simulate browser and do some actions like clicking a button, filling a form, etc. There are many things that are tested. Description of them can be find in the assert lines in the source code. The tests are in [test](film_store/app/test/) folder.
+Framework that is used to simulate browser is Playwright. Its an end-to-end testing framework for web apps. It can be used to simulate browser and do some actions like clicking a button, filling a form, etc. There are many things that are tested. Description of them can be find in the assert lines in the source code. The tests are in [test](film_store/app/test/) folder. For the unit test, it's done with Django's built-in testing framework. The only unit test is inside the `test_rest.py`. The rest are end to end tests.
 
-Here is the result of the test:
+Here's some screenshots of the tests:
 <div>
-  <img src="./images/test/access.png">
-  <img src="./images/test/film.png">
-  <img src="./images/test/login.png">
-  <img src="./images/test/misconfig.png">
-  <img src="./images/test/register.png">
+  <img src="./images/test/all_1.png">
+  <img src="./images/test/all_2.png">
 </div>
+
+Here's part of the tests simulation:
+<div>
+  <video src="./images/test/test.mp4">
+</div>
+
 
 ## B10 Fitur Tambahan
 The additional features done are:
