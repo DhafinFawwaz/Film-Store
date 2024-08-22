@@ -184,7 +184,7 @@ For the `test_rest.py` its the one in `test_admin_route_as_user`. For `test_film
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
 
-Here is the result of the test:
+Here are part of the code.
 <div>
   <img src="./images/owasp/broken_access_control_1.png">
   <img src="./images/owasp/broken_access_control_2.png">
@@ -208,7 +208,7 @@ More about how to run this in the [Automated Testing](#b09-automated-testing) se
 
 For the SQL injection, we test many kinds of payloads. Its taken from [here](https://gist.github.com/SantoshSrinivas79/69f235e0876a87c53668). For the XXS, we simply post comment with `<script>document.body.innerHTML="";</script>`. This way we can simply check if the whole webpage is erased, then the ijection is successful.
 
-Here is the result of the test:
+Here is part of the code.
 <div>
   <img src="./images/owasp/injection.png">
 </div>
@@ -227,7 +227,7 @@ docker-compose run web python film_store/manage.py test film_store/app/test --pa
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
 
-Here is the result of the test:
+Here is part of the code.
 <div>
   <img src="./images/owasp/security_misconfiguration.png">
 </div>
