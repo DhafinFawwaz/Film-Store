@@ -48,14 +48,7 @@ class APILogin(APIView):
                 res = APIResponse({
                     "username": user.username,
                     "token": str(token),
-                }).set_cookie(
-                    key = "token", 
-                    value = token,
-                    expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    secure = False,
-                    httponly = True,
-                    samesite = False
-                )
+                })
                 return res
             else:
                 return APIResponse().error("Wrong password").set_status(status.HTTP_401_UNAUTHORIZED)

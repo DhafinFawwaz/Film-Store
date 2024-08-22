@@ -179,6 +179,8 @@ docker-compose run web python film_store/manage.py test film_store/app/test --pa
 docker-compose run web python film_store/manage.py test film_store/app/test --pattern="test_rest.py"
 ```
 
+For the `test_rest.py` its the one in `test_admin_route_as_user`. For `test_film.py` and `test_access.py` protected and unprotected pages is always tested.
+
 
 More about how to run this in the [Automated Testing](#b09-automated-testing) section.
 
@@ -504,6 +506,8 @@ Then run the following command:
 ```
 python film_store/manage.py test film_store/app/test
 ```
+
+Please note that the tests requires that the dataset is already downloaded. Please atleast run the website once to download the dataset.
 
 Framework that is used to simulate browser is Playwright. Its an end-to-end testing framework for web apps. It can be used to simulate browser and do some actions like clicking a button, filling a form, etc. There are many things that are tested. Description of them can be find in the assert lines in the source code. The tests are in [test](film_store/app/test/) folder.
 

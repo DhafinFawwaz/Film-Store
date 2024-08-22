@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright
-from app.models import GeneralUser
+from app.models import GeneralUser, Film
 from app.test.endtoendtest import EndToEndTest
 from playwright.sync_api import Page
 from django.db import connections
@@ -50,6 +50,7 @@ class TestRest(EndToEndTest):
         self.assertIsNotNone(token)
         return token
 
+
     def test_get_all_films(self):
         token = self.test_login_and_get_token()
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
@@ -70,6 +71,7 @@ class TestRest(EndToEndTest):
         self.assertEqual(int(film1.get('duration')), int(film2.get('duration')))
 
     def test_upload_film(self):
+
         token = self.test_login_and_get_token()
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
 
@@ -132,6 +134,7 @@ class TestRest(EndToEndTest):
         token = self.test_login_and_get_token()
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
         films = self.test_get_all_films()
+        print(films)
         film_id = films[0]['id']
         
         film_delete_url = f"{self.live_server_url}/films/{film_id}"
@@ -168,6 +171,7 @@ class TestRest(EndToEndTest):
         response = self.client.get(current_user_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data.get('data').get('username'), user['username'])
+        
 
     def test_get_all_users(self):
         self.test_get_current_user() # will also create a user
@@ -222,3 +226,50 @@ class TestRest(EndToEndTest):
         })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data.get('data').get('balance'), 2500)
+
+
+    
+    def test_admin_route_as_user(self):
+        self.test_get_current_user() # will also create a user
+        token = self.test_login_and_get_token("normal_user", "supersecretpassword123")
+
+        # with no token
+        for get_route in ["/users", '/users/1']:
+            response = self.client.get(f"{self.live_server_url}{get_route}")
+            self.assertEqual(response.status_code, 403)
+        for get_route in ['films', "/films/1"]:
+            response = self.client.get(f"{self.live_server_url}{get_route}")
+            self.assertEqual(response.status_code, 200)
+
+        for post_route in ["/films", "/users/1/balance"]:
+            response = self.client.post(f"{self.live_server_url}{post_route}")
+            self.assertEqual(response.status_code, 403)
+        
+        for put_route in ["/films/1"]:
+            response = self.client.put(f"{self.live_server_url}{put_route}")
+            self.assertEqual(response.status_code, 403)
+        
+        for delete_route in ["/films/1", "/users/1"]:
+            response = self.client.delete(f"{self.live_server_url}{delete_route}")
+            self.assertEqual(response.status_code, 403)
+
+        # with invalid token
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        for get_route in ["/users", "/users/1"]:
+            response = self.client.get(f"{self.live_server_url}{get_route}")
+            self.assertEqual(response.status_code, 403)
+        for get_route in ["films", "/films/1"]:
+            response = self.client.get(f"{self.live_server_url}{get_route}")
+            self.assertEqual(response.status_code, 200)
+
+        for post_route in ["/films", "/users/1/balance"]:
+            response = self.client.post(f"{self.live_server_url}{post_route}")
+            self.assertEqual(response.status_code, 403)
+        
+        for put_route in ["/films/1"]:
+            response = self.client.put(f"{self.live_server_url}{put_route}")
+            self.assertEqual(response.status_code, 403)
+        
+        for delete_route in ["/films/1", "/users/1"]:
+            response = self.client.delete(f"{self.live_server_url}{delete_route}")
+            self.assertEqual(response.status_code, 403)

@@ -7,7 +7,9 @@ from app.api.polling import film
 from .views import auth_views, film_views
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def logout_url(request):
     if request.method == 'POST': return auth.logout(request)
     elif request.method == 'GET': return render(request, '404.html')
