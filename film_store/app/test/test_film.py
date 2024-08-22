@@ -54,7 +54,7 @@ class TestFilm(EndToEndTest):
     
 
     def test_details_review_access(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         films = Film.objects.all()
         for film in films:
@@ -65,7 +65,7 @@ class TestFilm(EndToEndTest):
         page.close()
 
         # manual
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}")
         for film in films:
             page.click(f'text="{film.title}"')
@@ -85,7 +85,7 @@ class TestFilm(EndToEndTest):
         page.close()
 
     def test_wishlist(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         films = Film.objects.all()
 
@@ -173,7 +173,7 @@ class TestFilm(EndToEndTest):
         page.close()
 
     def test_search(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         self.simulate_register(page)
         self.simulate_login(page)
@@ -201,7 +201,7 @@ class TestFilm(EndToEndTest):
         GeneralUser.objects.filter(username=username).update(balance=balance)
 
     def test_purchase(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         self.simulate_register(page)
         self.simulate_login(page)
@@ -286,7 +286,7 @@ class TestFilm(EndToEndTest):
         page.close()
 
     def test_rating(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         for i in range(4):
             self.simulate_register(page, f"normal_user{i}", f"normal_user{i}@email.com", "Normal", f"User{i}")
@@ -312,7 +312,7 @@ class TestFilm(EndToEndTest):
         page.close()
 
     def test_review(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         the_batman = Film.objects.get(title="The Batman")
         Review.objects.filter(film=the_batman).delete()

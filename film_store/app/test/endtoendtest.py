@@ -19,8 +19,8 @@ class EndToEndTest(StaticLiveServerTestCase):
         os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
         super().setUpClass()
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless= not int(os.environ.get("TEST_HEAD", 1)))
-
+        cls.browser = cls.playwright.chromium.launch(headless= not int(os.environ.get("TEST_HEAD", 1)), args=["--start-maximized"])
+        cls.browser.new_context(no_viewport=True)
         # EndToEndTest._original_stdout = sys.stdout
         # sys.stdout = StringIO()
 

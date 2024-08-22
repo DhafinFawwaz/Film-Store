@@ -8,7 +8,7 @@ from django.db import connections
 class TestAccess(EndToEndTest):
     
     def test_home(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         self.simulate_register(page)
         self.simulate_login(page)
@@ -23,7 +23,7 @@ class TestAccess(EndToEndTest):
         page.close()
 
     def test_profile(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         page.goto(f"{self.live_server_url}/profile")
         self.assertEqual(page.url, f"{self.live_server_url}/signin", f"Unauthenticated User should be redirected to signin page")
@@ -41,7 +41,7 @@ class TestAccess(EndToEndTest):
         page.close()
 
     def test_bought(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         page.goto(f"{self.live_server_url}/bought")
         self.assertEqual(page.url, f"{self.live_server_url}/signin", f"Unauthenticated User should be redirected to signin page")
@@ -59,7 +59,7 @@ class TestAccess(EndToEndTest):
         page.close()
 
     def test_wishlist(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         page.goto(f"{self.live_server_url}/wishlist")
         self.assertEqual(page.url, f"{self.live_server_url}/signin", f"Unauthenticated User should be redirected to signin page")
@@ -77,7 +77,7 @@ class TestAccess(EndToEndTest):
         page.close()
 
     def test_logout(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         self.simulate_register(page)
         self.simulate_login(page)
 
@@ -85,7 +85,7 @@ class TestAccess(EndToEndTest):
         page.close()
 
     def test_signin(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         self.simulate_register(page)
         self.simulate_login(page)
@@ -94,7 +94,7 @@ class TestAccess(EndToEndTest):
         page.close()
 
     def test_signup(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         self.simulate_register(page)
         self.simulate_login(page)

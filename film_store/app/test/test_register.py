@@ -8,7 +8,7 @@ from django.db import connections
 class TestLogin(EndToEndTest):
 
     def test_register_with_existing_username(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         self.simulate_register(page)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'normal_user')  # Existing username
@@ -22,7 +22,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_existing_email(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         self.simulate_register(page)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
@@ -36,7 +36,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_empty_username(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=email]', 'new_user@email.com')
         page.fill('[name=first_name]', 'New')
@@ -48,7 +48,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_empty_email(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=first_name]', 'New')
@@ -60,7 +60,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_empty_first_name(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -72,7 +72,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_empty_last_name(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -84,7 +84,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_empty_password1(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -96,7 +96,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_empty_password2(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -108,7 +108,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_short_password(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -121,7 +121,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_no_digit_in_password(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -134,7 +134,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_register_with_no_letter_in_password(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')
@@ -148,7 +148,7 @@ class TestLogin(EndToEndTest):
 
 
     def test_register_with_non_matching_passwords(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signup")
         page.fill('[name=username]', 'new_user')
         page.fill('[name=email]', 'new_user@email.com')

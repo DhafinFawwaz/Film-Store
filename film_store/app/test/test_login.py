@@ -8,7 +8,7 @@ from django.db import connections
 class TestLogin(EndToEndTest):
     
     def test_admin(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         page.goto(f"{self.live_server_url}/signin")
         page.fill('[name=username]', 'admin')
         page.fill('[name=password]', 'admin123')
@@ -19,7 +19,7 @@ class TestLogin(EndToEndTest):
 
 
     def test_normal_user(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         self.simulate_register(page)
         page.goto(f"{self.live_server_url}/signin")
         page.fill('[name=username]', 'normal_user')
@@ -30,7 +30,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_nonexistentuser(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         self.simulate_register(page)
         page.goto(f"{self.live_server_url}/signin")
         page.fill('[name=username]', 'nonexistentuser')
@@ -40,7 +40,7 @@ class TestLogin(EndToEndTest):
         page.close()
 
     def test_wrongpassword(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         self.simulate_register(page)
         page.goto(f"{self.live_server_url}/signin")
         page.fill('[name=username]', 'normal_user')

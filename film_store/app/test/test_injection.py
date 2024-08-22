@@ -98,7 +98,7 @@ class TestInjection(EndToEndTest):
         ]
 
     def test_inject_login(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         for p in self.get_username_password_to_inject():
             page.goto(f"{self.live_server_url}/signin")
             page.fill('[name=username]', p)
@@ -109,7 +109,7 @@ class TestInjection(EndToEndTest):
 
 
     def test_inject_review(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
 
         the_batman = Film.objects.get(title="The Batman")
 

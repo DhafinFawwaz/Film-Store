@@ -8,7 +8,7 @@ from django.db import connections
 class TestMisconfig(EndToEndTest):
     
     def test_home(self):
-        page = self.browser.new_page()
+        page = self.browser.new_page(no_viewport=True)
         def handle_response(response):
             if response.status == 404:
                 self.assertEqual(response.status, 404, f"Status Code {response.status} received for /")
