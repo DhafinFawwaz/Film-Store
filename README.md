@@ -517,9 +517,9 @@ Here's some screenshots of the tests:
   <img src="./images/test/all_2.png">
 </div>
 
-Here's part of the tests simulation:
+Here's recording of the test. Quite satisfying:
 <div>
-  <video src="./images/test/test.mp4">
+  <video src="./images/test/endtoend.mp4">
 </div>
 
 
